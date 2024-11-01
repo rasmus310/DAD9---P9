@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
-  Button,
   Modal,
   ModalHeader,
   ModalBody,
@@ -9,7 +8,8 @@ import {
   FormGroup,
   Input,
   Label,
-} from "reactstrap";
+  Button,
+} from 'reactstrap';
 
 export default class CustomModal extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class CustomModal extends Component {
   handleChange = (e) => {
     let { name, value } = e.target;
 
-    if (e.target.type === "checkbox") {
+    if (e.target.type === 'checkbox') {
       value = e.target.checked;
     }
 
@@ -72,13 +72,11 @@ export default class CustomModal extends Component {
                 Completed
               </Label>
             </FormGroup>
+            <Button color="primary" onClick={() => onSave(this.state.activeItem)}>
+              Save
+            </Button>
           </Form>
         </ModalBody>
-        <ModalFooter>
-          <Button color="success" onClick={() => onSave(this.state.activeItem)}>
-            Save
-          </Button>
-        </ModalFooter>
       </Modal>
     );
   }

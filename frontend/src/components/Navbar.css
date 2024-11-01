@@ -1,0 +1,20 @@
+.navbar {
+  display: flex;
+  justify-content: flex-start; /* Align items to the start (left) */
+  align-items: center; /* Center items vertically in the navbar*/
+  width: 100%;
+  background-color: #d3d3d3;
+  padding: 20px; /* Add some space to the text so its not so UGLAY */
+}
+  
+  .nav-item {
+    font-size: 1.2em;
+    color: black;
+    margin-right: 50px; /* Add some space between items */
+  }
+  
+  .nav-item.active {
+    color: #6b21e6; /* Purple color to highlight the active tab */
+    font-weight: bold;
+  }
+  
