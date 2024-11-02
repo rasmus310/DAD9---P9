@@ -14,7 +14,8 @@
   }
   
   .nav-item.active {
-    color: #6b21e6; /* Purple color to highlight the active tab */
+    color: #004285; /* Purple color to highlight the active tab */
     font-weight: bold;
+    border-bottom: 3px solid #004285; /* Thicker underline than just using the "text-decoration: underline;"*/
   }
   
