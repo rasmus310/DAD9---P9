@@ -10,7 +10,7 @@ function SearchSection() {
       <button className="search-button">SØG</button>
       <div className="results">
         <h3>Resultater</h3>
-        <div className="result-box"> {/* Placeholder for results */}
+        <div className="result-box"> {/* Her skal resultalterne så dynamisk sættes ind */}
           <button className="save-button">GEM SØGNING</button>
         </div>
       </div>

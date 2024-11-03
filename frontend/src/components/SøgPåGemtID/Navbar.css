@@ -6,7 +6,17 @@
   background-color: #d3d3d3;
   padding: 20px; /* Add some space to the text so its not so UGLAY */
 }
-  
+
+.nav-logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-right: 50px; /* Add some space between the logo and the nav items */
+  background-color: white; /* White background */
+  color: #004285; /* Blue characters */
+  padding: 5px 10px; /* Add some padding */
+  border-radius: 5px; /* Optional: Add some border radius for rounded corners */
+}
+
   .nav-item {
     font-size: 1.2em;
     color: black;
