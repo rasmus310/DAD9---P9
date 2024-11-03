@@ -25,7 +25,7 @@ function FilterSearch() {
     <div className="filter-search">
       {/* Search bar for searching by ID */}
       <div className="search-bar">
-        <input type="text" placeholder="Søg efter ID..." />
+        <input type="text" placeholder="Søg efter filter..." />
         <button className="search-button">SØG</button>
       </div>
 
