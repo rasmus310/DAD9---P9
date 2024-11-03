@@ -6,7 +6,7 @@ import { useState } from "react";
 function SimpleSearch() {
 
     const [response, setResponse] = useState("ingen søgning foretaget");
-    const [selected_criteria, set_criteria] = useState("");
+    const [selected_criteria, setCriteria] = useState("");
 
 
     async function handleClick() {
@@ -19,7 +19,7 @@ function SimpleSearch() {
     }
 
     function handleSelect(event) {
-        set_criteria(event.target.value);
+        setCriteria(event.target.value);
     }
 
     return (
