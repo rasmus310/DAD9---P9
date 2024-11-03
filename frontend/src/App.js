@@ -1,14 +1,19 @@
 import React from 'react';
-import Navbar from './components/Navbar';
-import SearchSection from './components/SearchSection';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Navbar from './components/SøgPåGemtID/Navbar';
+import SearchSection from './components/SøgPåGemtID/SearchSection';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <SearchSection />
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/search-id" element={<SearchSection />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
