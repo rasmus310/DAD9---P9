@@ -4,6 +4,31 @@
     width: 60%;
     margin: 0 auto;
   }
+
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .search-bar input[type="text"] {
+    width: 50%;
+    padding: 10px;
+    border: 2px solid #6b21e6;
+    border-radius: 8px;
+    margin-top: 40px;
+  }
+  
+  .search-button {
+    background-color: #6b21e6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: 40px;
+  }
   
   .filter-options {
     display: flex;
@@ -19,30 +44,6 @@
   
   .filter label {
     font-weight: bold;
-  }
-  
-  .search-bar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .search-bar input[type="text"] {
-    width: 50%;
-    padding: 10px;
-    border: 2px solid #6b21e6;
-    border-radius: 8px;
-  }
-  
-  .search-button {
-    background-color: #6b21e6;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
   }
   
   .random-results {
