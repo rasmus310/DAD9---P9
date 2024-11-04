@@ -45,12 +45,15 @@ def simple_search2_view(request):
     q = Q()
 
     if filter_value:
-
+        # flere søgekriterier samles i et dynamisk genereret Q object, som indeholder alle søgekriterier og valgte værdier 
         # loop både key + value med items() method 
         for key, value in filter_value.items():
-            # Update the Q object with the criteria
-            # Note: Assuming that value is a single value, adjust if it's a list
-            q &= Q(**{key: value})  # Combine the current condition with the existing Q object
+            # opdater Q objektet med kriterie (fungerer nu kun med enkelt value for hvert kriterie - fx kun én valgt / sendt værdi for ejendomstype)
+            # tilføj kriterie til eksisterende Q objekt 
+            # **{key: value} "udpakker" dictionary. 
+            # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilgøjes Q objektet som kriterie for søgning
+            # når der addes flere, svarer det til AND
+            q &= Q(**{key: value})  
 
         # find ejendomme i databasen
         matching_properties = Ejendomsdata.objects.filter(q)
