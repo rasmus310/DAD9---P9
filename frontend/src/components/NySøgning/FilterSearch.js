@@ -59,13 +59,13 @@ function FilterSearch() {
         </div>
         <div className="filter">
           <label>Forurening</label>
-          <input
-            type="text"
-            placeholder="Forurening"
-            onChange={(e) => handleFilterChange('forurening', e.target.value)}
-          />
-        </div>
+          <select onChange={(e) => handleFilterChange('forurening', e.target.value)}>
+            <option value="">Vælg forurening</option>
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            </select>
       </div>
+    </div>
       {/* This is the placeholder for our results (we should gon make it dynamic soon enough) */}
       <div className="result-box">
         <button className="save-button">GEM SØGNING</button>
