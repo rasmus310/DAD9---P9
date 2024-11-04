@@ -27,6 +27,10 @@ function FilterSearch() {
       <div className="search-bar">
         <input type="text" placeholder="Søg efter filter..." />
         <button className="search-button">SØG</button>
+        <div className="random-results">
+          <input type="checkbox" id="randomResults" />
+          <label htmlFor="randomResults">Tilfældige resultater</label>
+        </div>
       </div>
 
       {/* Filter options for various property attributes */}
@@ -38,7 +42,7 @@ function FilterSearch() {
             <option value="landbrug">Landbrug</option>
             <option value="kontor">Kontor bygning</option>
             <option value="privat">Privat villa</option>
-            <option value="privat">Single-line item</option>
+            <option value="single">Single-line item</option>
           </select>
         </div>
         <div className="filter">
