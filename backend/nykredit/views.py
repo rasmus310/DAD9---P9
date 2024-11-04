@@ -46,7 +46,7 @@ def simple_search2_view(request):
 
     if filter_value:
 
-        # Iterate over the criteria and values
+        # loop både key + value med items() method 
         for key, value in filter_value.items():
             # Update the Q object with the criteria
             # Note: Assuming that value is a single value, adjust if it's a list

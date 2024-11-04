@@ -9,7 +9,7 @@ function SimpleSearch() {
     const [selected_criteria, setCriteria] = useState("");
 
 
-    async function handleClick() {
+    async function handleSearch() {
         try {
             const response = await axios.get('simple_search/', {params: {filter : selected_criteria}});
             setResponse(response.data);
@@ -35,7 +35,7 @@ function SimpleSearch() {
                 <option value="9999">Test: ikke eksisterende værdi</option>
             </select>
 
-            <button type="submit" onClick={handleClick}>søg</button>
+            <button type="submit" onClick={handleSearch}>søg</button>
             
             <p>valgt: {selected_criteria}</p>
             <p>søgeresultat: {response.response}</p>
