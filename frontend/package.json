@@ -9,11 +9,21 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
+<<<<<<< HEAD
     "bootstrap": "^5.3.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
     "react-scripts": "^5.0.1",
+=======
+    "bootstrap": "^4.6.0",
+    "dom": "^0.0.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router": "^6.27.0",
+    "react-router-dom": "^6.27.0",
+    "react-scripts": "5.0.1",
+>>>>>>> b0a4b80c4e6a62e8fab4042b89245ca9fa8e0da6
     "reactstrap": "^8.9.0",
     "web-vitals": "^2.1.4"
   },
