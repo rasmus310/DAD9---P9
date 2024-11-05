@@ -18,10 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from nykredit import views
+from nykredit.views import simple_search_view
+from nykredit.views import simple_search2_view
 
 router = routers.DefaultRouter()
-router.register(r'nykredit', views.NykreditView, 'nykredit')
+#router.register(r'nykredit', views.simple_search_view, 'nykredit')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('simple_search/', simple_search_view, name='simple_search_view'),
+    path('simple_search2/', simple_search2_view, name='simple_search2_view')
 ]

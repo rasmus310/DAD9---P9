@@ -96,6 +96,7 @@ DATABASES = {
         'PASSWORD': '03yzcweUbvCjMSsSe1Va',       
         'HOST': 'nykredit.cjkmayqueywc.eu-north-1.rds.amazonaws.com',         
         'PORT': '3306',                    
+
     }
 }
 
