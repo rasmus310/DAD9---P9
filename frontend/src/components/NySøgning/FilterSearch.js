@@ -25,7 +25,13 @@ function FilterSearch() {
     <div className="filter-search">
       {/* Search bar for searching by ID */}
       <div className="search-bar">
-        <input type="text" placeholder="Søg efter filter..." />
+        <input type="text" list="filters" placeholder="Søg efter filter..." />
+        <datalist id="filters">
+          <option value="Ejendomstype" />
+          <option value="Antal matrikler" />
+          <option value="Størrelse" />
+          <option value="Forurening" />
+        </datalist>
         <button className="search-button">SØG</button>
         <div className="random-results">
           <input type="checkbox" id="randomResults" />
