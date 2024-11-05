@@ -1,0 +1,31 @@
+.navbar {
+  display: flex;
+  justify-content: flex-start; /* Align items to the start (left) */
+  align-items: center; /* Center items vertically in the navbar*/
+  width: 100%;
+  background-color: #d3d3d3;
+  padding: 20px; /* Add some space to the text so its not so UGLAY */
+}
+
+.nav-logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-right: 50px; /* Add some space between the logo and the nav items */
+  background-color: white; /* White background */
+  color: #004285; /* Blue characters */
+  padding: 5px 10px; /* Add some padding */
+  border-radius: 5px; /* Optional: Add some border radius for rounded corners */
+}
+
+  .nav-item {
+    font-size: 1.2em;
+    color: black;
+    margin-right: 50px; /* Add some space between items */
+  }
+  
+  .nav-item.active {
+    color: #004285; /* Purple color to highlight the active tab */
+    font-weight: bold;
+    border-bottom: 3px solid #004285; /* Thicker underline than just using the "text-decoration: underline;"*/
+  }
+  
