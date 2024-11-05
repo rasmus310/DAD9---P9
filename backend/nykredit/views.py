@@ -59,12 +59,12 @@ def simple_search2_view(request):
 
         # hvis ejendomme er fundet / eksisterer
         if matching_properties.exists():
-            # bed om at returnere 1 ejendom
-            property = random.choice(matching_properties)
+            # bed om at returnere alle ejendomme
+            properties = list(matching_properties)
             # print til terminal for test 
-            print(property)
+            print(properties)
             
-            return Response({"response" : property})
+            return Response({"response" : properties})
 
     # response hvis filter valgt men ingen ejendomme fundet
     response_message = f"GET request successful with filter {filter_data.values()} but no matching data"
