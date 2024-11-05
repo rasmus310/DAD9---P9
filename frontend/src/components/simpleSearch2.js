@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
 import { useState } from "react";
-//import axios from "axios";
 
 function SimpleSearch2() {
 
@@ -68,7 +67,7 @@ function SimpleSearch2() {
             <button type="submit" onClick={handleSearch}>søg</button>
             
             <div>
-                <p>søgeresultat: {response.response}</p>  
+                <p>søgeresultat: {JSON.stringify(response)}</p>  
             </div>
             
         </div>

@@ -26,7 +26,6 @@ function App() {
   return (
     <div>
       <SimpleSearch2></SimpleSearch2>
-
     </div>
   )
 }
