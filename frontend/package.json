@@ -35,11 +35,11 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-  "parser": "@babel/eslint-parser",
-  "parserOptions": {
-    "requireConfigFile": false
-  }
-},
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
