@@ -24,7 +24,6 @@ class Ejendomsdata(models.Model):
         managed = False
         db_table = 'ejendomsdata'
 
-
 class Ejendomstype(models.Model):
     ejendomstype_kode = models.BigIntegerField(primary_key=True)
     ejendomstype = models.TextField(blank=True, null=True)

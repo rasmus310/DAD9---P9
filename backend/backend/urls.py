@@ -28,5 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('simple_search/', simple_search_view, name='simple_search_view'),
-    path('simple_search2/', simple_search2_view, name='simple_search2_view')
+    path('simple_search2/', simple_search2_view, name='simple_search2_view'),
+    path('api/ejendomstype-options/', views.ejendomstype_options, name='ejendomstype_options')
+
 ]

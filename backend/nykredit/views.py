@@ -5,8 +5,16 @@ from rest_framework.response import Response
 from .models import Ejendomsdata
 import random
 from django.db.models import Q
+from django.http import JsonResponse
+from .models import Ejendomstype
+
 
 # Create your views here.
+
+def ejendomstype_options(request):
+    # Get distinct values for the `ejendomstype` field
+    options = Ejendomstype.objects.values_list('ejendomstype', flat=True).distinct()
+    return JsonResponse(list(options), safe=False)
 
 # simple_search
 @api_view(['GET'])
