@@ -5,27 +5,16 @@ import { useState } from "react";
 
 function SimpleSearch2() {
 
-    const [response, setResponse] = useState("ingen søgning foretaget");
+    const [response, setResponse] = useState("");
     const [selected_criteria, setCriteria] = useState([]);
+    //const [selected_criteria, setCriteria] = useState({});
 
     async function handleSearch() {
         try {
-            //const request_object = Object.fromEntries(selected_criteria);
             const response = await axios.get('simple_search2/', {params: selected_criteria});
             setResponse(response.data);
         } catch {
-            setResponse("request fejlet.. tag dig sammen amatør-udvikler")
-        }
-    }
-
-    function handleSelectOLD(event) {
-        const name = event.target.name;
-        const value = event.target.value;
-
-        if (value === "") {
-            setCriteria([["",""]]); 
-        } else {
-            setCriteria([[name, value]]); 
+            setResponse({ ejendomsID: null, antal_matches: "request fejlet.. tag dig sammen amatør-udvikler" });
         }
     }
 
@@ -46,8 +35,9 @@ function SimpleSearch2() {
 
     return (
         <div>
-            <h3>SS_2 risikovurdering</h3>
-            <select name="ejendomstype_kode" value={selected_criteria.value} onChange={handleSelect} >
+            <h3>V0.2 multiple søgekriterier i dynamisk genereret søgning</h3>
+            <p>Ejendomstype</p>
+            <select name="ejendomstype_kode__ejendomstype_kode" value={selected_criteria["ejendomstype_kode__ejendomstype_kode"]||""} onChange={handleSelect} >
                 <option value="">-</option>
                 <option value="131">Parcelhus</option>
                 <option value="132">Parcelhus med erhverv</option>
@@ -56,18 +46,31 @@ function SimpleSearch2() {
                 <option value="148">Hobbylandbrug 5-10 ha</option>
                 <option value="9999">Test: ikke eksisterende værdi</option>
             </select>
-            <select name="risikovurdering" value={selected_criteria.value} onChange={handleSelect} >
+            <p>Risikovurdering</p>
+            <select name="risikovurdering" value={selected_criteria["risikovurdering"]||""} onChange={handleSelect} >
                 <option value="">-</option>
                 <option value="Normal ejendom">Normal ejendom</option>
                 <option value="Øget risiko">Øget risiko</option>
                 <option value="Begrænset risiko">Begrænset risiko</option>
                 <option value="Ikke risikovurderet">Ikke risikovurderet</option>
             </select>
-
+            <p>FK_BRAND</p>
+            <select name="fk_brand" value={selected_criteria["fk_brand"]||""} onChange={handleSelect} >
+                <option value="">-</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+            <p>Postnummer</p>
+            <input name="lokation__postnummer" value={selected_criteria["lokation__postnummer"]||""} type="text" placeholder="Search" onChange={handleSelect}/>
+            
+            <p>søg</p>
+    
             <button type="submit" onClick={handleSearch}>søg</button>
             
-            <p>valgt: {selected_criteria[0]} {selected_criteria[1]}</p>
-            <p>søgeresultat: {response.response}</p>
+            <div>
+                <p>søgeresultat: {response.response}</p>  
+            </div>
+            
         </div>
     )
     

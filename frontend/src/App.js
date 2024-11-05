@@ -8,7 +8,6 @@ function App() {
   return (
       <div className = "App">
         <div>Nykredit testdata søgeværktøj</div>
-        <SimpleSearch></SimpleSearch>
         <SimpleSearch2></SimpleSearch2>
       </div>
   )
