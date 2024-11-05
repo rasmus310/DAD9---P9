@@ -57,13 +57,16 @@ def simple_search2_view(request):
         # find ejendomme i databasen
         matching_properties = Ejendomsdata.objects.filter(q).values(*fields)
 
+        # omdan matching_properties ttil list for at muliggøre random.sample()
+        matching_properties = list(Ejendomsdata.objects.filter(q).values(*fields))
+
         # hvis ejendomme er fundet / eksisterer
-        if matching_properties.exists():
+        if matching_properties:
             # bed om at returnere 1 ejendom
-            property = random.choice(matching_properties)
+            property = random.sample(matching_properties,3)
             # print til terminal for test 
             print(property)
-            
+
             return Response({"response" : property})
 
     # response hvis filter valgt men ingen ejendomme fundet
