@@ -40,6 +40,9 @@ def simple_search2_view(request):
     # Test: print modtagne søgekriterier i ter
     print(f"Filters received: {filter_data}")
 
+    # antal ønskede resultater. Skal sendes fra frontend 
+    limit = 20
+
     q = Q()
     fields = ['id']
 
@@ -54,20 +57,24 @@ def simple_search2_view(request):
             q &= Q(**{key: value}) 
             #q = q & Q(**{key: value}) 
 
-        # find ejendomme i databasen
-        matching_properties = Ejendomsdata.objects.filter(q).values(*fields)
-
-        # omdan matching_properties ttil list for at muliggøre random.sample()
-        matching_properties = list(Ejendomsdata.objects.filter(q).values(*fields))
+        # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
+        properties = list(Ejendomsdata.objects.filter(q).values(*fields))
 
         # hvis ejendomme er fundet / eksisterer
-        if matching_properties.exists():
+        if properties:
             # bed om at returnere alle ejendomme
-            properties = list(matching_properties)
+            #properties = list(matching_properties)
             # print til terminal for test 
             print(properties)
-            
-            return Response({"response" : properties})
+
+            # returner antal valgte søge resultater, hvis ikke der er færre resultater end ønsket 
+            if len(properties) >= limit:
+                # vælg antal random resultater
+                random_selection = random.sample(properties, limit)
+                return Response({"response" : random_selection})
+            # hvis færre resultater end ønsked, returner alle fundne resultater
+            else:
+                return Response({"response" : properties})
 
     # response hvis filter valgt men ingen ejendomme fundet
     response_message = f"GET request successful with filter {filter_data.values()} but no matching data"
