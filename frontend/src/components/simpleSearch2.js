@@ -3,7 +3,6 @@ import axios from "axios";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import { MenuItem, Select, Typography } from "@mui/material";
-import "@fontsource/roboto";
 
 function SimpleSearch2() {
   const [response, setResponse] = useState("");
