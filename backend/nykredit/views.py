@@ -31,37 +31,53 @@ def simple_search_view(request):
     return Response({"response" : response_message})
 
 
-
 # simple_search2
 @api_view(['GET'])
 def simple_search2_view(request):
     # get filterdata (QueryDict) og lav om til dictionary
-    # OBS brug QueryDict hvis man kan vælge flere værdier for hvet filter (fx to ejendomstyper)
     filter_data = request.GET.dict()
 
-    # Test: print modtagne søgekriterier i ter
+    # Test: print modtagne søgekriterier
     print(f"Filters received: {filter_data}")
 
+    # antal ønskede resultater sendt som andre søgekriterier fra frontend som key:value pair med key "antal_resultater". 
+    #limit = 20
+    limit = int(filter_data.pop('antal_resultater', 10))
+    # Test: print søgekriterirer efter antal_resultater er slettet
+    print(f"Filtre efter pop af antal_rsultater: {filter_data}")
+
     q = Q()
+    fields = ['id']
 
     if filter_data:
-        # flere søgekriterier samles i et dynamisk genereret Q object, som indeholder alle søgekriterier og valgte værdier 
         # loop både key + value med items() method 
         # (fungerer nu kun med enkelt value for hvert kriterie - fx kun én valgt/sendt værdi for ejendomstype)
         for key, value in filter_data.items():
+            fields.append(key)
             # tilføj kriterie til eksisterende Q objekt ved at AND dem sammen
             # **{key: value} "udpakker" dictionary 
             # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilføjes Q objektet som kriterie for søgning
             q &= Q(**{key: value}) 
             #q = q & Q(**{key: value}) 
 
-        # find ejendomme i databasen
-        matching_properties = Ejendomsdata.objects.filter(q)
+        # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
+        properties = list(Ejendomsdata.objects.filter(q).values(*fields))
 
         # hvis ejendomme er fundet / eksisterer
-        if matching_properties.exists():
-            property = random.choice(matching_properties)
-            return Response({"response" : property.id})
+        if properties:
+            # bed om at returnere alle ejendomme
+            #properties = list(matching_properties)
+            # print til terminal for test 
+            print(properties)
+
+            # returner antal valgte søge resultater, hvis ikke der er færre resultater end ønsket 
+            if len(properties) >= limit:
+                # vælg antal random resultater
+                random_selection = random.sample(properties, limit)
+                return Response({"response" : random_selection})
+            # hvis færre resultater end ønsked, returner alle fundne resultater
+            else:
+                return Response({"response" : properties})
 
     # response hvis filter valgt men ingen ejendomme fundet
     response_message = f"GET request successful with filter {filter_data.values()} but no matching data"
