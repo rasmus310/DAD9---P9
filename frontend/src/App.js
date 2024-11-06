@@ -5,8 +5,10 @@ import Navbar from './components/SøgPåGemtID/Navbar';
 import SearchSection from './components/SøgPåGemtID/SearchSection';
 import FilterSearch from './components/NySøgning/FilterSearch';
 import FilterComponent from './components/FilterComponent';
+import SimpleSearch2 from './components/simpleSearch2';
 import './App.css';
 
+/*
 function App() {
   const [filters, setFilters] = useState({
     ejendomstype: '',
@@ -49,6 +51,14 @@ function App() {
       </div>
     </Router>
   );
+}*/
+
+function App() {
+  return (
+    <div>
+      <SimpleSearch2></SimpleSearch2>
+    </div>
+  )
 }
 
 export default App;

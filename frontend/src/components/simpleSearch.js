@@ -38,7 +38,7 @@ function SimpleSearch() {
             <button type="submit" onClick={handleSearch}>søg</button>
             
             <p>valgt: {selected_criteria}</p>
-            <p>søgeresultat: {response.response}</p>
+            <p>søgeresultat: {response.response.id}</p>
             
         
         </div>
