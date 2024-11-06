@@ -1,5 +1,7 @@
 // FilterComponent.js
 import React, { useEffect, useState } from 'react';
+import { MenuItem, Select, Typography } from "@mui/material"; //https://mui.com/x/introduction/
+
 
 function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange }) {
   const [options, setOptions] = useState([]);
@@ -13,15 +15,25 @@ function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange })
 
   return (
     <div>
-      <label htmlFor={valueKey}>{label}</label>
-      <select id={valueKey} name={valueKey} onChange={onChange}>
-        <option value="">Select {label}</option>
+      <Typography variant="h6" component="label" htmlFor={valueKey}>
+        {label}
+      </Typography>
+      <Select
+        id={valueKey}
+        name={valueKey}
+        onChange={onChange}
+        displayEmpty
+        fullWidth
+      >
+        <MenuItem value="">
+          <em>Select {label}</em>
+        </MenuItem>
         {options.map((option, index) => (
-          <option key={index} value={option[valueKey]}>
+          <MenuItem key={index} value={option[valueKey]}>
             {option[displayKey]}
-          </option>
+          </MenuItem>
         ))}
-      </select>
+      </Select>
     </div>
   );
 }
