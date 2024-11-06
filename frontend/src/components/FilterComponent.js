@@ -1,16 +1,21 @@
 // FilterComponent.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { MenuItem, Select, Typography } from "@mui/material"; //https://mui.com/x/introduction/
 
-
-function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange }) {
+function FilterComponent({
+  apiEndpoint,
+  label,
+  valueKey,
+  displayKey,
+  onChange,
+}) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
     fetch(apiEndpoint)
-      .then(response => response.json())
-      .then(data => setOptions(data))
-      .catch(error => console.error('Error fetching options:', error));
+      .then((response) => response.json())
+      .then((data) => setOptions(data))
+      .catch((error) => console.error("Error fetching options:", error));
   }, [apiEndpoint]);
 
   return (
