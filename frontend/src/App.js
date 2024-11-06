@@ -63,8 +63,6 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
-          <Route path="/filter-search" element={<FilterSearch />} />
-          <Route path="/" element={<Navigate to="/search-id" />} />
         </Routes>
         <FilterComponent
           apiEndpoint="/api/ejendomstype-options/"
@@ -87,12 +85,21 @@ function App() {
           }}
         />
         {/* Add more FilterComponent instances as needed */}{" "}
-        <Button type="submit" onClick={handleSearch}>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "primary.main",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "primary.dark",
+            },
+          }}
+          type="submit"
+          onClick={handleSearch}
+        >
           Søg
         </Button>
-        <div>
-          <p>søgeresultat: {JSON.stringify(response)}</p>
-        </div>
+        <p>søgeresultat: {JSON.stringify(response)}</p>
       </div>
     </Router>
   );
