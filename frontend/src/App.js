@@ -7,6 +7,8 @@ import FilterSearch from './components/NySøgning/FilterSearch';
 import FilterComponent from './components/FilterComponent';
 import SimpleSearch2 from './components/simpleSearch2';
 import './App.css';
+import { MenuItem, Select, Typography, Box } from "@mui/material"; //https://mui.com/x/introduction/
+
 
 
 function App() {
@@ -29,24 +31,26 @@ function App() {
       <div className="App">
         <Navbar />
         <Routes>
-          <Route path="/search-id" element={<SearchSection />} />
           <Route path="/filter-search" element={<FilterSearch />} />
           <Route path="/" element={<Navigate to="/search-id" />} />
+          <Route path="/search-id" element={<SearchSection />} />
         </Routes>
-        <FilterComponent
-          apiEndpoint="/api/ejendomstype-options/"
-          label="Ejendomstype"
-          valueKey="ejendomstype_kode"
-          displayKey="ejendomstype"
-          onChange={handleFilterChange}
-        />
-        <FilterComponent
-          apiEndpoint="/api/landekode-options/"
-          label="Landekode"
-          valueKey="land_id"
-          displayKey="land_navn"
-          onChange={handleFilterChange}
-        />
+        <Box display="flex" alignItems="center" gap={2}>
+          <FilterComponent
+            apiEndpoint="/api/ejendomstype-options/"
+            label="Ejendomstype"
+            valueKey="ejendomstype_kode"
+            displayKey="ejendomstype"
+            onChange={handleFilterChange}
+          />
+          <FilterComponent
+            apiEndpoint="/api/landekode-options/"
+            label="Landekode"
+            valueKey="land_id"
+            displayKey="land_navn"
+            onChange={handleFilterChange}
+          />
+        </Box>
         {/* Add more FilterComponent instances as needed */}
       </div>
     </Router>

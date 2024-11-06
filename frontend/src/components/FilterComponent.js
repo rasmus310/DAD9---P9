@@ -1,6 +1,6 @@
 // FilterComponent.js
 import React, { useEffect, useState } from 'react';
-import { MenuItem, Select, Typography } from "@mui/material"; //https://mui.com/x/introduction/
+import { MenuItem, Select, Typography, Box } from "@mui/material"; //https://mui.com/x/introduction/
 
 
 function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange }) {
@@ -14,7 +14,7 @@ function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange })
   }, [apiEndpoint]);
 
   return (
-    <div>
+    <Box textAlign={'left'}>
       <Typography variant="subtitle1" component="label" htmlFor={valueKey}>
         {label}
       </Typography>
@@ -34,7 +34,7 @@ function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange })
           </MenuItem>
         ))}
       </Select>
-    </div>
+    </Box>
   );
 }
 
