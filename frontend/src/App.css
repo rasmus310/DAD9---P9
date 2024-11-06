@@ -44,3 +44,26 @@
     transform: rotate(360deg);
   }
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.filters {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.results {
+  width: 100%;
+  max-width: 800px;
+}
+
+button {
+  margin-top: 20px;
+}

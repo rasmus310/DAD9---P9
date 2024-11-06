@@ -6,8 +6,7 @@ from .models import Ejendomsdata
 import random
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import Ejendomstype, Landekode
-
+from .models import Ejendomstype, Landekode, Ejendomsdata
 
 # Create your views here.
 
@@ -17,6 +16,10 @@ def ejendomstype_options(request):
 
 def landekode_options(request):
     options = Landekode.objects.values('land_id', 'land_navn').distinct()
+    return JsonResponse(list(options), safe=False)
+
+def ejendomsdata_options(request):
+    options = Ejendomsdata.objects.values('forurenet').distinct()
     return JsonResponse(list(options), safe=False)
 
 # simple_search

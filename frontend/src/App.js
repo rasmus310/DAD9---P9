@@ -66,32 +66,45 @@ function App() {
           <Route path="/filter-search" element={<FilterSearch />} />
           <Route path="/" element={<Navigate to="/search-id" />} />
         </Routes>
+        <div className="container">
+          <div className="filters">
+            <FilterComponent
+              apiEndpoint="/api/ejendomstype-options/"
+              label="Ejendomstype"
+              valueKey="ejendomstype_kode"
+              displayKey="ejendomstype"
+              onChange={(event) => {
+                handleFilterChange(event);
+                handleSelect(event);
+              }}
+            />
         <FilterComponent
-          apiEndpoint="/api/ejendomstype-options/"
-          label="Ejendomstype"
-          valueKey="ejendomstype_kode"
-          displayKey="ejendomstype"
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/landekode-options/"
-          label="Landekode"
-          valueKey="land_id"
-          displayKey="land_navn"
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        {/* Add more FilterComponent instances as needed */}{" "}
-        <Button type="submit" onClick={handleSearch}>
-          Søg
-        </Button>
-        <div>
-          <p>søgeresultat: {JSON.stringify(response)}</p>
+              apiEndpoint="/api/landekode-options/"
+              label="Landekode"
+              valueKey="land_id"
+              displayKey="land_navn"
+              onChange={(event) => {
+                handleFilterChange(event);
+                handleSelect(event);
+              }}
+            />
+            <FilterComponent
+              apiEndpoint="/api/forurening-options/"
+              label="Forurening"
+              valueKey="forurenet"
+              displayKey="forurenet"
+              onChange={(event) => {
+                handleFilterChange(event);
+                handleSelect(event);
+              }}
+            />
+            </div>
+          <Button type="submit" onClick={handleSearch}>
+            Søg
+          </Button>
+          <div className="results">
+            <p>søgeresultat: {JSON.stringify(response)}</p>
+          </div>
         </div>
       </div>
     </Router>

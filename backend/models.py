@@ -122,7 +122,7 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class Ejendomsdata(models.Model):
+'''''class Ejendomsdata(models.Model):
     id = models.BigIntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.
     ejendomstype_kode = models.ForeignKey('Ejendomstype', models.DO_NOTHING, db_column='ejendomstype_kode', blank=True, null=True)
     fk_brand = models.BigIntegerField(db_column='FK_BRAND', blank=True, null=True)  # Field name made lowercase.
@@ -133,11 +133,10 @@ class Ejendomsdata(models.Model):
     bfe_nr = models.BigIntegerField(db_column='BFE_NR', blank=True, null=True)  # Field name made lowercase.
     risikovurdering = models.TextField(blank=True, null=True)
     lokation = models.ForeignKey('Lokation', models.DO_NOTHING, blank=True, null=True)
-
     class Meta:
         managed = False
         db_table = 'ejendomsdata'
-
+'''''
 
 class Ejendomstype(models.Model):
     ejendomstype_kode = models.BigIntegerField(primary_key=True)
@@ -156,6 +155,13 @@ class Landekode(models.Model):
         managed = False
         db_table = 'landekode'
 
+class Forurening(models.Model):
+    forurening_id = models.AutoField(primary_key=True)
+    forureningstype = models.TextField(blank=True, null=True)
+    forureningstype_id = models.BigIntegerField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'forurenet'
 
 class Lokation(models.Model):
     postnummer = models.BigIntegerField(blank=True, null=True)
