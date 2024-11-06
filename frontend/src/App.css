@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+.searchComponent {
+  padding: 20px;
+  width: 750px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

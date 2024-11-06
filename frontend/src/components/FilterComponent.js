@@ -1,9 +1,10 @@
 // FilterComponent.js
 import React, { useEffect, useState } from 'react';
-import { MenuItem, Select, Typography, Box } from "@mui/material"; //https://mui.com/x/introduction/
+import './FilterComponent.css';
+import { MenuItem, Select, Typography, Box, IconButton } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
-
-function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange }) {
+function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange, onClose }) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
@@ -14,8 +15,8 @@ function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange })
   }, [apiEndpoint]);
 
   return (
-    <Box textAlign={'left'}>
-      <Typography variant="subtitle1" component="label" htmlFor={valueKey}>
+    <Box className="text-align-left">
+      <Typography variant="subtitle2" component="label" htmlFor={valueKey}>
         {label}
       </Typography>
       <Select
@@ -34,6 +35,11 @@ function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange })
           </MenuItem>
         ))}
       </Select>
+      <Box className="closeIcon">
+      <IconButton onClick={onClose}>
+        <CloseIcon />
+      </IconButton>
+      </Box>
     </Box>
   );
 }

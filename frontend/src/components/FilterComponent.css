@@ -1,0 +1,7 @@
+.text-align-left {
+    text-align: left;
+  }
+
+  .closeIcon {
+    margin-left: auto; /* Pushes the icon to the right */
+  }
