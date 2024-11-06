@@ -15,7 +15,7 @@ function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange })
 
   return (
     <div>
-      <Typography variant="h6" component="label" htmlFor={valueKey}>
+      <Typography variant="subtitle1" component="label" htmlFor={valueKey}>
         {label}
       </Typography>
       <Select
