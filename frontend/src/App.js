@@ -1,12 +1,27 @@
-import React from 'react';
+// App.js
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/SøgPåGemtID/Navbar';
 import SearchSection from './components/SøgPåGemtID/SearchSection';
 import FilterSearch from './components/NySøgning/FilterSearch';
-import Filter_ejendomstype from './components/Filter_ejendomstype';
+import FilterComponent from './components/FilterComponent';
 import './App.css';
 
 function App() {
+  const [filters, setFilters] = useState({
+    ejendomstype: '',
+    landekode: '',
+    // Add more filters as needed
+  });
+
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [name]: value,
+    }));
+  };
+
   return (
     <Router>
       <div className="App">
@@ -16,7 +31,21 @@ function App() {
           <Route path="/filter-search" element={<FilterSearch />} />
           <Route path="/" element={<Navigate to="/search-id" />} />
         </Routes>
-        <Filter_ejendomstype /> {/* Include the dropdown form here */}
+        <FilterComponent
+          apiEndpoint="/api/ejendomstype-options/"
+          label="Ejendomstype"
+          valueKey="ejendomstype_kode"
+          displayKey="ejendomstype"
+          onChange={handleFilterChange}
+        />
+        <FilterComponent
+          apiEndpoint="/api/landekode-options/"
+          label="Landekode"
+          valueKey="land_id"
+          displayKey="land_navn"
+          onChange={handleFilterChange}
+        />
+        {/* Add more FilterComponent instances as needed */}
       </div>
     </Router>
   );
