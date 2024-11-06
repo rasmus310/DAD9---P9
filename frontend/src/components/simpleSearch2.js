@@ -90,9 +90,20 @@ function SimpleSearch2() {
         placeholder="Search"
         onChange={handleSelect}
       />
-
-      <p>søg</p>
-
+      
+      <p>Antal ønskede resultater</p>
+      <Select
+        name="antal_resultater"
+        value={selected_criteria["antal_resultater"] || ""}
+        onChange={handleSelect}
+      >
+        <MenuItem value="">-</MenuItem>
+        <MenuItem value="1">1</MenuItem>
+        <MenuItem value="2">2</MenuItem>
+        <MenuItem value="5">5</MenuItem>
+        <MenuItem value="10">10</MenuItem>
+      </Select>
+      <p></p>
       <Button type="submit" onClick={handleSearch}>
         søg
       </Button>

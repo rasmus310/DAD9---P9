@@ -37,11 +37,14 @@ def simple_search2_view(request):
     # get filterdata (QueryDict) og lav om til dictionary
     filter_data = request.GET.dict()
 
-    # Test: print modtagne søgekriterier i ter
+    # Test: print modtagne søgekriterier
     print(f"Filters received: {filter_data}")
 
-    # antal ønskede resultater. Skal sendes fra frontend 
-    limit = 20
+    # antal ønskede resultater sendt som andre søgekriterier fra frontend som key:value pair med key "antal_resultater". 
+    #limit = 20
+    limit = int(filter_data.pop('antal_resultater', 10))
+    # Test: print søgekriterirer efter antal_resultater er slettet
+    print(f"Filtre efter pop af antal_rsultater: {filter_data}")
 
     q = Q()
     fields = ['id']
