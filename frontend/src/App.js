@@ -14,12 +14,14 @@ function App() {
     ejendomstype: '',
     landekode: '',
     forurenet: '',
+    //risikovurdering: '',
     // Add more filters as needed
   });
 
   const [showEjendomstype, setShowEjendomstype] = useState(true); // State to manage the visibility of Ejendomstype filter
   const [showLandekode, setShowLandekode] = useState(true); // State to manage the visibility of Landekode filter
   const [showForurening, setShowForurening] = useState(true); // State to manage the visibility of Forurening filter
+
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -54,6 +56,7 @@ function App() {
           <SearchableDropdown 
             toggleEjendomstype={toggleEjendomstype}
             toggleLandekode={toggleLandekode}
+            toggleForurening={toggleForurening}
           /> {/* Include the SearchableDropdown component */}
         </Box>
         <Box display="flex" alignItems="center" gap={2} mt={2}>
@@ -81,7 +84,7 @@ function App() {
           )}
           {showForurening && (
             <FilterComponent
-              apiEndpoint="/api/forurening-options/"
+              apiEndpoint="/api/ejendomsdata-options/"
               label="Forurening"
               valueKey="forurenet"
               displayKey="forurenet"
@@ -89,6 +92,7 @@ function App() {
               onClose={toggleForurening} // Pass the toggle function as onClose
             />
           )}
+           
         </Box>
       </div>
     </Router>
