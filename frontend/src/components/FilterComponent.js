@@ -29,7 +29,7 @@ function FilterComponent({
 
   return (
     <Box position="relative" display="flex" alignItems="center" mb={2}>
-      <Box flexGrow={1}>
+      <Box flexGrow={1} padding={1}>
         <Autocomplete
           options={options}
           getOptionLabel={(option) => option[displayKey]}
@@ -49,9 +49,10 @@ function FilterComponent({
         onClick={onClose}
         sx={{
           position: 'absolute',
-          top: 0,
-          right: 0,
+          top: 12,
+          right: -2,
           transform: 'translate(50%, -50%)',
+          color: '#FF0000',
         }}
       >
         <CloseIcon sx={{ fontSize: 12 }} />
