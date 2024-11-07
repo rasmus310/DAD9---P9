@@ -95,4 +95,11 @@ def simple_search2_view(request):
     return Response({"response" : response_message})
 
 
+# gem søgening
+@api_view(['POST'])
+def save_search(request):
+    
+    return Response({"response" : "jjj"})
+
+
 

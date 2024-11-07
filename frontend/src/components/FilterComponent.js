@@ -29,6 +29,7 @@ function FilterComponent({
         onChange={onChange}
         displayEmpty
         fullWidth
+        
       >
         <MenuItem value="">
           <em>Select {label}</em>

@@ -12,8 +12,14 @@ import FilterSearch from "./components/NySøgning/FilterSearch";
 import FilterComponent from "./components/FilterComponent";
 import SimpleSearch2 from "./components/simpleSearch2";
 import "./App.css";
-import { Button } from "@mui/material";
+import { Button, MenuItem, Select, Typography } from "@mui/material";
 import axios from "axios";
+import Ejendomstype from "./components/search_components/ejendomstype";
+import Risikovurdering from "./components/search_components/risikovurdering";
+import Postnummer from "./components/search_components/postnummer";
+import Antal_resultater from "./components/search_components/antal_resultater";
+import Fkbrand from "./components/search_components/fk_brand";
+
 
 function App() {
   const [filters, setFilters] = useState({
@@ -22,7 +28,7 @@ function App() {
     // Add more filters as needed
   });
 
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState();
   const [selected_criteria, setCriteria] = useState([]);
 
   const handleFilterChange = (event) => {
@@ -41,7 +47,6 @@ function App() {
       setResponse(response.data);
     } catch {
       setResponse({
-        ejendomsID: null,
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler",
       });
     }
@@ -51,10 +56,37 @@ function App() {
     const name = event.target.name;
     const value = event.target.value;
 
-    setCriteria((prevCriteria) => ({
-      ...prevCriteria,
-      [name]: value,
-    }));
+    setCriteria((prevCriteria) => {
+      const new_criteria = { ...prevCriteria };
+  
+      if (value === "") {
+        delete new_criteria[name];
+      } else {
+        new_criteria[name] = value;
+      }
+  
+      return new_criteria;
+    });
+
+  }
+
+  function resetCriteria() {
+    setCriteria({});
+  }
+
+  async function gemFiltre() {
+    try {
+      const response = await axios.post("", {
+        params: selected_criteria,
+      });
+      // OBS setResponse: skal have egen variabel?
+      setResponse(response.data);
+    } catch {
+      setResponse({
+        response: "fejl - søgekriterier ikke gemt",
+      });
+    }
+
   }
 
   return (
@@ -84,7 +116,22 @@ function App() {
             handleSelect(event);
           }}
         />
+        <p>Ejendomstype</p>
+        <Ejendomstype selected_criteria={selected_criteria} handleSelect={handleSelect}></Ejendomstype>
+        
+        <p>Risikovurdering</p>
+        <Risikovurdering selected_criteria={selected_criteria} handleSelect={handleSelect}></Risikovurdering>
+        
+        <p>FK_BRAND</p>
+        <Fkbrand selected_criteria={selected_criteria} handleSelect={handleSelect}></Fkbrand>
+
+        <p>Postnummer</p>
+        <Postnummer selected_criteria={selected_criteria} handleSelect={handleSelect}></Postnummer>
+        
+        <p>Antal ønskede resultater</p>
+        <Antal_resultater selected_criteria={selected_criteria} handleSelect={handleSelect}></Antal_resultater>
         {/* Add more FilterComponent instances as needed */}{" "}
+        
         <Button
           variant="contained"
           sx={{
@@ -99,8 +146,22 @@ function App() {
         >
           Søg
         </Button>
+
+        <Button type="submit" onClick={resetCriteria}>
+        Reset
+        </Button>
+        
+        <Button type="submit" onClick={gemFiltre}>
+        Gem søgefiltre
+        </Button>
+
+
         <p>søgeresultat: {JSON.stringify(response)}</p>
       </div>
+      <div>
+
+      </div>
+      
     </Router>
   );
 }
