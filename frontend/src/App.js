@@ -29,7 +29,8 @@ function App() {
   });
 
   const [response, setResponse] = useState();
-  const [selected_criteria, setCriteria] = useState([]);
+  //const [selected_criteria, setCriteria] = useState([]);
+  const [selected_criteria, setCriteria] = useState({});
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -99,8 +100,9 @@ function App() {
         <FilterComponent
           apiEndpoint="/api/ejendomstype-options/"
           label="Ejendomstype"
-          valueKey="ejendomstype_kode"
+          valueKey="ejendomstype_kode__ejendomstype"
           displayKey="ejendomstype"
+          selected_criteria={selected_criteria}
           onChange={(event) => {
             handleFilterChange(event);
             handleSelect(event);
@@ -109,27 +111,77 @@ function App() {
         <FilterComponent
           apiEndpoint="/api/landekode-options/"
           label="Landekode"
-          valueKey="land_id"
+          valueKey="land_id__land_navn"
           displayKey="land_navn"
+          selected_criteria={selected_criteria}
           onChange={(event) => {
             handleFilterChange(event);
             handleSelect(event);
           }}
         />
-        <p>Ejendomstype</p>
-        <Ejendomstype selected_criteria={selected_criteria} handleSelect={handleSelect}></Ejendomstype>
+        <FilterComponent
+          apiEndpoint="/api/forurenet-options/"
+          label="Forurenet"
+          valueKey="forurenet"
+          displayKey="forurenet"
+          selected_criteria={selected_criteria}
+          onChange={(event) => {
+            handleFilterChange(event);
+            handleSelect(event);
+          }}
+        />
+        <FilterComponent
+          apiEndpoint="/api/fk_brand-options/"
+          label="Fk_brand"
+          valueKey="fk_brand"
+          displayKey="fk_brand"
+          selected_criteria={selected_criteria}
+          onChange={(event) => {
+            handleFilterChange(event);
+            handleSelect(event);
+          }}
+        />
+        <FilterComponent
+          apiEndpoint="/api/risikovurdering-options/"
+          label="Risikovurdering"
+          valueKey="risikovurdering"
+          displayKey="risikovurdering"
+          selected_criteria={selected_criteria}
+          onChange={(event) => {
+            handleFilterChange(event);
+            handleSelect(event);
+          }}
+        />
+        <FilterComponent
+          apiEndpoint="/api/by-options/"
+          label="By"
+          valueKey="lokation_id__by_navn"
+          displayKey="by_navn"
+          selected_criteria={selected_criteria}
+          onChange={(event) => {
+            handleFilterChange(event);
+            handleSelect(event);
+          }}
+        />
+        <FilterComponent
+          apiEndpoint="/api/landekode-options/"
+          label="Landekode"
+          valueKey="land_id__land_navn"
+          displayKey="land_navn"
+          selected_criteria={selected_criteria}
+          onChange={(event) => {
+            handleFilterChange(event);
+            handleSelect(event);
+          }}
+        />
         
-        <p>Risikovurdering</p>
-        <Risikovurdering selected_criteria={selected_criteria} handleSelect={handleSelect}></Risikovurdering>
         
-        <p>FK_BRAND</p>
-        <Fkbrand selected_criteria={selected_criteria} handleSelect={handleSelect}></Fkbrand>
-
         <p>Postnummer</p>
         <Postnummer selected_criteria={selected_criteria} handleSelect={handleSelect}></Postnummer>
         
         <p>Antal ønskede resultater</p>
         <Antal_resultater selected_criteria={selected_criteria} handleSelect={handleSelect}></Antal_resultater>
+        
         {/* Add more FilterComponent instances as needed */}{" "}
         
         <Button

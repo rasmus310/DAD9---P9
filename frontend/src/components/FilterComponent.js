@@ -8,6 +8,7 @@ function FilterComponent({
   valueKey,
   displayKey,
   onChange,
+  selected_criteria,
 }) {
   const [options, setOptions] = useState([]);
 
@@ -29,13 +30,13 @@ function FilterComponent({
         onChange={onChange}
         displayEmpty
         fullWidth
-        
+        value={selected_criteria[valueKey] || ""}
       >
         <MenuItem value="">
           <em>Select {label}</em>
         </MenuItem>
         {options.map((option, index) => (
-          <MenuItem key={index} value={option[valueKey]}>
+          <MenuItem key={index} value={option[displayKey]}>
             {option[displayKey]}
           </MenuItem>
         ))}

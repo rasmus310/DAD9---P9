@@ -6,8 +6,7 @@ from .models import Ejendomsdata
 import random
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import Ejendomstype, Landekode
-
+from .models import Ejendomstype, Landekode, Lokation
 
 # Create your views here.
 
@@ -18,6 +17,26 @@ def ejendomstype_options(request):
 def landekode_options(request):
     options = Landekode.objects.values('land_id', 'land_navn').distinct()
     return JsonResponse(list(options), safe=False)
+
+def forurenet_options(request):
+    options = Ejendomsdata.objects.values('forurenet').distinct()
+    return JsonResponse(list(options), safe=False)
+
+def fk_brand_options(request):
+    options = Ejendomsdata.objects.values('fk_brand').distinct()
+    return JsonResponse(list(options), safe=False)
+
+def risikovurdering_options(request):
+    options = Lokation.objects.values('risikovurdering').distinct()
+    return JsonResponse(list(options), safe=False)
+
+def by_options(request):
+    options = Lokation.objects.values('lokation_id', 'by_navn').distinct()
+    return JsonResponse(list(options), safe=False)
+
+
+
+
 
 # simple_search
 @api_view(['GET'])
@@ -40,7 +59,6 @@ def simple_search_view(request):
     # response hvis filter valgt men ingen ejendomme funder
     response_message = f"GET request successful with filter {filter_value} but no matching data"
     return Response({"response" : response_message})
-
 
 # simple_search2
 @api_view(['GET'])
@@ -78,8 +96,9 @@ def simple_search2_view(request):
         if properties:
             # bed om at returnere alle ejendomme
             #properties = list(matching_properties)
+
             # print til terminal for test 
-            print(properties)
+            #print(properties)
 
             # returner antal valgte søge resultater, hvis ikke der er færre resultater end ønsket 
             if len(properties) >= limit:

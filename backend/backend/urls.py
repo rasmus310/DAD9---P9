@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from nykredit import views
-from nykredit.views import simple_search_view, simple_search2_view, ejendomstype_options, landekode_options, save_search_view
+from nykredit.views import simple_search_view, simple_search2_view, ejendomstype_options, landekode_options, save_search_view, forurenet_options, fk_brand_options, risikovurdering_options, by_options
 
 router = routers.DefaultRouter()
 #router.register(r'nykredit', views.simple_search_view, 'nykredit')
@@ -31,7 +31,10 @@ urlpatterns = [
     path('App/', simple_search2_view, name='simple_search2_view'),
     path('api/ejendomstype-options/', ejendomstype_options, name='ejendomstype_options'),
     path('api/landekode-options/', landekode_options, name='landekode_options'),
+    path('api/forurenet-options/', forurenet_options, name='forurenet_options'),
+    path('api/fk_brand-options/', fk_brand_options, name='fk_brand_options'),
+    path('api/risikovurdering-options/', risikovurdering_options, name='risikovurdering_options'),
+    path('api/by-options/', by_options, name='by_options'),
 
-    
     
 ]
