@@ -19,6 +19,10 @@ def landekode_options(request):
     options = Landekode.objects.values('land_id', 'land_navn').distinct()
     return JsonResponse(list(options), safe=False)
 
+def ejendomsdata_options(request):
+    options = Ejendomsdata.objects.values('forurenet').distinct()
+    return JsonResponse(list(options), safe=False)
+
 # simple_search
 @api_view(['GET'])
 def simple_search_view(request):

@@ -13,11 +13,14 @@ function App() {
   const [filters, setFilters] = useState({
     ejendomstype: '',
     landekode: '',
+    forurenet: '',
+    
     // Add more filters as needed
   });
 
   const [showEjendomstype, setShowEjendomstype] = useState(true); // State to manage the visibility of Ejendomstype filter
   const [showLandekode, setShowLandekode] = useState(true); // State to manage the visibility of Landekode filter
+  const [showForurening, setShowForurening] = useState(true); // State to manage the visibility of Landekode filter
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -33,6 +36,10 @@ function App() {
 
   const toggleLandekode = () => {
     setShowLandekode(prevShow => !prevShow); // Toggle the visibility of Landekode filter
+  };
+
+  const toggleForurening = () => {
+    setShowForurening(prevShow => !prevShow); // Toggle the visibility of Landekode filter
   };
 
   return (
@@ -69,6 +76,16 @@ function App() {
               label="Landekode"
               valueKey="land_id"
               displayKey="land_navn"
+              onChange={handleFilterChange}
+              onClose={toggleLandekode} // Pass the toggle function as onClose
+            />
+          )}
+        {showForurening && (
+            <FilterComponent
+              apiEndpoint="/api/forurening-options/"
+              label="Forurening"
+              valueKey="forurenet"
+              displayKey="forurenet"
               onChange={handleFilterChange}
               onClose={toggleLandekode} // Pass the toggle function as onClose
             />

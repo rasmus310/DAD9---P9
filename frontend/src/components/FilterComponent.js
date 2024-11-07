@@ -1,17 +1,25 @@
 // FilterComponent.js
-import React, { useEffect, useState } from 'react';
-import { MenuItem, Typography, Box, IconButton, Autocomplete, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import './FilterComponent.css'; // Import the CSS file
+import { MenuItem, Select, Typography, Box, Autocomplete, IconButton } from "@mui/material"; //https://mui.com/x/introduction/
 
-function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange, onClose }) {
+function FilterComponent({
+  apiEndpoint,
+  label,
+  valueKey,
+  displayKey,
+  onChange,
+  onClose,
+  TextField,
+}) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
     fetch(apiEndpoint)
-      .then(response => response.json())
-      .then(data => setOptions(data))
-      .catch(error => console.error('Error fetching options:', error));
+      .then((response) => response.json())
+      .then((data) => setOptions(data))
+      .catch((error) => console.error("Error fetching options:", error));
   }, [apiEndpoint]);
 
   const handleChange = (event, newValue) => {
