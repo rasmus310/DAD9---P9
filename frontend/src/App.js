@@ -76,7 +76,7 @@ function App() {
 
   async function gemFiltre() {
     try {
-      const response = await axios.post("", {
+      const response = await axios.post("/save_search/", {
         params: selected_criteria,
       });
       // OBS setResponse: skal have egen variabel?
