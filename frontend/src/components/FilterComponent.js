@@ -1,8 +1,8 @@
 // FilterComponent.js
 import React, { useEffect, useState } from "react";
+import { MenuItem, Select, Typography, Box, IconButton, Autocomplete, TextField } from "@mui/material"; // Import necessary components
 import CloseIcon from '@mui/icons-material/Close';
 import './FilterComponent.css'; // Import the CSS file
-import { MenuItem, Select, Typography, Box, Autocomplete, IconButton } from "@mui/material"; //https://mui.com/x/introduction/
 
 function FilterComponent({
   apiEndpoint,
@@ -10,8 +10,7 @@ function FilterComponent({
   valueKey,
   displayKey,
   onChange,
-  onClose,
-  TextField,
+  onClose
 }) {
   const [options, setOptions] = useState([]);
 
@@ -29,7 +28,7 @@ function FilterComponent({
   };
 
   return (
-    <Box className='placement' mb={2}>
+    <Box position="relative" display="flex" alignItems="center" mb={2}>
       <Box flexGrow={1}>
         <Autocomplete
           options={options}
@@ -46,7 +45,15 @@ function FilterComponent({
           style={{ minWidth: '250px' }}
         />
       </Box>
-      <IconButton onClick={onClose}>
+      <IconButton
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          transform: 'translate(50%, -50%)',
+        }}
+      >
         <CloseIcon sx={{ fontSize: 12 }} />
       </IconButton>
     </Box>
