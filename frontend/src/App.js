@@ -14,14 +14,14 @@ function App() {
     ejendomstype: '',
     landekode: '',
     forurenet: '',
-    //risikovurdering: '',
+    risikovurdering: '',
     // Add more filters as needed
   });
 
   const [showEjendomstype, setShowEjendomstype] = useState(true); // State to manage the visibility of Ejendomstype filter
   const [showLandekode, setShowLandekode] = useState(true); // State to manage the visibility of Landekode filter
-  const [showForurening, setShowForurening] = useState(true); // State to manage the visibility of Forurening filter
-
+  const [showForurening, setShowForurening] = useState(false); // State to manage the visibility of Forurening filter
+  const [showRisikovurdering, setShowRisikovurdering] = useState(false); // State to manage the visibility of Risikovurdering filter
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -43,6 +43,10 @@ function App() {
     setShowForurening(prevShow => !prevShow); // Toggle the visibility of Forurening filter
   };
 
+  const toggleRisikovurdering = () => {
+    setShowRisikovurdering(prevShow => !prevShow); // Toggle the visibility of Risikovurdering filter
+  }
+
   return (
     <Router>
       <div className="App">
@@ -57,6 +61,7 @@ function App() {
             toggleEjendomstype={toggleEjendomstype}
             toggleLandekode={toggleLandekode}
             toggleForurening={toggleForurening}
+            toggleRisikovurdering={toggleRisikovurdering}
           /> {/* Include the SearchableDropdown component */}
         </Box>
         <Box display="flex" alignItems="center" gap={2} mt={2}>
@@ -90,6 +95,16 @@ function App() {
               displayKey="forurenet"
               onChange={handleFilterChange}
               onClose={toggleForurening} // Pass the toggle function as onClose
+            />
+          )}
+          {showRisikovurdering && (
+            <FilterComponent
+              apiEndpoint="/api/ejendomsdata-options/"
+              label="Risikovurdering"
+              valueKey="risikovurdering"
+              displayKey="risikovurdering"
+              onChange={handleFilterChange}
+              onClose={toggleRisikovurdering} // Pass the toggle function as onClose
             />
           )}
            

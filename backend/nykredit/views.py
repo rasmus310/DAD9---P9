@@ -23,9 +23,9 @@ def ejendomsdata_options(request):
     options = Ejendomsdata.objects.values('forurenet').distinct()
     return JsonResponse(list(options), safe=False)
 
-#def ejendomsdata_options(request):
-#    option = Ejendomsdata.objects.values('risikovurdering').distinct()
-#    return JsonResponse(list(option), safe=False)
+def ejendomsdata_options(request):
+    option = Ejendomsdata.objects.values('risikovurdering').distinct()
+    return JsonResponse(list(option), safe=False)
 
 # simple_search
 @api_view(['GET'])

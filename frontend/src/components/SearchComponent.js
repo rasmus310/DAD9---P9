@@ -5,9 +5,10 @@ const options = [
   { label: 'Ejendomstype', value: 'ejendomstype' },
   { label: 'Landekode', value: 'landekode' },
   { label: 'Forurening', value: 'forurenet' },
+  { label: 'Risikovurdering', value: 'risikovurdering' },
 ];
 
-export default function SearchableDropdown({ toggleEjendomstype, toggleLandekode, toggleForurening }) {
+export default function SearchableDropdown({ toggleEjendomstype, toggleLandekode, toggleForurening, toggleRisikovurdering }) {
   const handleChange = (event, newValue) => {
     if (newValue) {
       if (newValue.value === 'ejendomstype') {
@@ -16,8 +17,9 @@ export default function SearchableDropdown({ toggleEjendomstype, toggleLandekode
         toggleLandekode();
       } else if (newValue.value === 'forurenet') {
         toggleForurening();
-      }
-    }
+      } else if (newValue.value === 'risikovurdering') {
+        toggleRisikovurdering();
+    }}
   };
 
   return (
