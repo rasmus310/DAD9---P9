@@ -15,31 +15,31 @@ function FilterComponent({ apiEndpoint, label, valueKey, displayKey, onChange, o
   }, [apiEndpoint]);
 
   return (
-    <Box className="text-align-left">
-      <Typography variant="subtitle2" component="label" htmlFor={valueKey}>
-        {label}
-      </Typography>
-      <Select
-        id={valueKey}
-        name={valueKey}
-        onChange={onChange}
-        displayEmpty
-        fullWidth
-      >
-        <MenuItem value="">
-          <em>Select {label}</em>
-        </MenuItem>
-        {options.map((option, index) => (
-          <MenuItem key={index} value={option[valueKey]}>
-            {option[displayKey]}
+    <Box display="flex" alignItems="center" mb={2}>
+      <Box flexGrow={1} className='text-align-left'>
+        <Typography variant="subtitle2" component="label" htmlFor={valueKey}>
+          {label}
+        </Typography>
+        <Select
+          id={valueKey}
+          name={valueKey}
+          onChange={onChange}
+          displayEmpty
+          fullWidth
+        >
+          <MenuItem value="">
+            <em>Select {label}</em>
           </MenuItem>
-        ))}
-      </Select>
-      <Box className="closeIcon">
-      <IconButton onClick={onClose}>
-        <CloseIcon />
-      </IconButton>
+          {options.map((option, index) => (
+            <MenuItem key={index} value={option[valueKey]}>
+              {option[displayKey]}
+            </MenuItem>
+          ))}
+        </Select>
       </Box>
+      <IconButton onClick={onClose}>
+        <CloseIcon sx={{ fontSize: 12 }} />
+      </IconButton>
     </Box>
   );
 }

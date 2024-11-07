@@ -3,5 +3,6 @@
   }
 
   .closeIcon {
-    margin-left: auto; /* Pushes the icon to the right */
+    margin-left: auto;
+    font-size: 12px;
   }
