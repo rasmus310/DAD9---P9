@@ -1,33 +1,39 @@
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import axios from "axios";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
-import SimpleSearch2 from "./simpleSearch2";
+import { Paper, Typography } from "@mui/material";
 
-function ResultTable() {
+function ResultTable({ response }) {
+  console.log("Response objektet", response);
+
+  if (!response || !Array.isArray(response.response)) {
+    return <Typography>No results</Typography>;
+  }
+  // Extract rows from response
+  const rows = response.response;
+
+  if (rows.length === 0) {
+    return <Typography>No results</Typography>;
+  }
+
+  // Define columns based on the keys in the first data object
+  const columns = Object.keys(rows[0]).map((key) => ({
+    field: key,
+    headerName: key.charAt(0).toUpperCase() + key.slice(1),
+    width: 150,
+  }));
+
+  console.log("rows and columns", rows, columns);
+
   return (
-    <div>
-      <h4>Søgeresultat</h4>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {Object.keys(response[0]).map((key) => (
-                <TableCell key={key}>{key}</TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-        </Table>
-      </TableContainer>
-    </div>
+    <Paper sx={{ height: 400, width: "100%" }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        checkboxSelection
+        getRowId={(row) => row.id}
+        sx={{ border: 0 }}
+      />
+    </Paper>
   );
 }
 
