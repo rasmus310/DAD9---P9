@@ -19,7 +19,7 @@ import Risikovurdering from "./components/search_components/risikovurdering";
 import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
 import Fkbrand from "./components/search_components/fk_brand";
-
+import ResultTable from "./components/ResultTable";
 
 function App() {
   const [filters, setFilters] = useState({
@@ -31,6 +31,8 @@ function App() {
   const [response, setResponse] = useState();
   //const [selected_criteria, setCriteria] = useState([]);
   const [selected_criteria, setCriteria] = useState({});
+
+  const resultForTable = response;
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -45,6 +47,7 @@ function App() {
       const response = await axios.get("App/", {
         params: selected_criteria,
       });
+      console.log("Response", response.data);
       setResponse(response.data);
     } catch {
       setResponse({
@@ -59,16 +62,15 @@ function App() {
 
     setCriteria((prevCriteria) => {
       const new_criteria = { ...prevCriteria };
-  
+
       if (value === "") {
         delete new_criteria[name];
       } else {
         new_criteria[name] = value;
       }
-  
+
       return new_criteria;
     });
-
   }
 
   function resetCriteria() {
@@ -87,7 +89,6 @@ function App() {
         response: "fejl - søgekriterier ikke gemt",
       });
     }
-
   }
 
   return (
@@ -174,16 +175,17 @@ function App() {
             handleSelect(event);
           }}
         />
-        
-        
         <p>Postnummer</p>
-        <Postnummer selected_criteria={selected_criteria} handleSelect={handleSelect}></Postnummer>
-        
+        <Postnummer
+          selected_criteria={selected_criteria}
+          handleSelect={handleSelect}
+        ></Postnummer>
         <p>Antal ønskede resultater</p>
-        <Antal_resultater selected_criteria={selected_criteria} handleSelect={handleSelect}></Antal_resultater>
-        
+        <Antal_resultater
+          selected_criteria={selected_criteria}
+          handleSelect={handleSelect}
+        ></Antal_resultater>
         {/* Add more FilterComponent instances as needed */}{" "}
-        
         <Button
           variant="contained"
           sx={{
@@ -198,22 +200,15 @@ function App() {
         >
           Søg
         </Button>
-
         <Button type="submit" onClick={resetCriteria}>
-        Reset
+          Reset
         </Button>
-        
         <Button type="submit" onClick={gemFiltre}>
-        Gem søgefiltre
+          Gem søgefiltre
         </Button>
-
-
-        <p>søgeresultat: {JSON.stringify(response)}</p>
+        <ResultTable response={response} />
       </div>
-      <div>
-
-      </div>
-      
+      <div></div>
     </Router>
   );
 }
