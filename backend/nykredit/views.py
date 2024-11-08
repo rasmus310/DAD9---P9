@@ -27,7 +27,7 @@ def fk_brand_options(request):
     return JsonResponse(list(options), safe=False)
 
 def risikovurdering_options(request):
-    options = Lokation.objects.values('risikovurdering').distinct()
+    options = Ejendomsdata.objects.values('risikovurdering').distinct()
     return JsonResponse(list(options), safe=False)
 
 def by_options(request):
@@ -118,7 +118,6 @@ def simple_search2_view(request):
 @api_view(['POST'])
 def save_search_view(request):
     search = request.data
-    
     
     return Response({"response" : search})
 

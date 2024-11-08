@@ -29,7 +29,6 @@ function App() {
   });
 
   const [response, setResponse] = useState();
-  //const [selected_criteria, setCriteria] = useState([]);
   const [selected_criteria, setCriteria] = useState({});
 
   const handleFilterChange = (event) => {
@@ -76,9 +75,12 @@ function App() {
   }
 
   async function gemFiltre() {
+    // overvej om det er bedre at håndtere i backend 
+    const criterias_to_save = selected_criteria;
+    delete criterias_to_save.antal_resultater;
     try {
       const response = await axios.post("/save_search/", {
-        params: selected_criteria,
+        params: criterias_to_save,
       });
       // OBS setResponse: skal have egen variabel?
       setResponse(response.data);
@@ -157,17 +159,6 @@ function App() {
           label="By"
           valueKey="lokation_id__by_navn"
           displayKey="by_navn"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/landekode-options/"
-          label="Landekode"
-          valueKey="land_id__land_navn"
-          displayKey="land_navn"
           selected_criteria={selected_criteria}
           onChange={(event) => {
             handleFilterChange(event);
