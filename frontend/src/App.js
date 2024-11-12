@@ -84,9 +84,10 @@ function App() {
       const response = await axios.post("/save_search/", {
         params: criterias_to_save,
       });
-      // OBS setResponse: skal have egen variabel?
+      // OBS gem respons in egen variabel i stedet for at bruge samme som til søgeresultat
       setResponse(response.data);
     } catch {
+      // OBS gem respons in egen variabel i stedet for at bruge samme som til søgeresultat
       setResponse({
         response: "fejl - søgekriterier ikke gemt",
       });
@@ -103,7 +104,7 @@ function App() {
         <FilterComponent
           apiEndpoint="/api/ejendomstype-options/"
           label="Ejendomstype"
-          valueKey="ejendomstype_kode__ejendomstype"
+          valueKey="ejendomstype"
           displayKey="ejendomstype"
           selected_criteria={selected_criteria}
           onChange={(event) => {
@@ -114,7 +115,7 @@ function App() {
         <FilterComponent
           apiEndpoint="/api/landekode-options/"
           label="Landekode"
-          valueKey="land_id__land_navn"
+          valueKey="land"
           displayKey="land_navn"
           selected_criteria={selected_criteria}
           onChange={(event) => {
@@ -158,19 +159,8 @@ function App() {
         <FilterComponent
           apiEndpoint="/api/by-options/"
           label="By"
-          valueKey="lokation_id__by_navn"
+          valueKey="by"
           displayKey="by_navn"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/landekode-options/"
-          label="Landekode"
-          valueKey="land_id__land_navn"
-          displayKey="land_navn"
           selected_criteria={selected_criteria}
           onChange={(event) => {
             handleFilterChange(event);
@@ -215,12 +205,5 @@ function App() {
   );
 }
 
-/*function App() {
-  return (
-    <div>
-      <SimpleSearch2></SimpleSearch2>
-    </div>
-  );
-}*/
 
 export default App;

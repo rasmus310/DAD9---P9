@@ -6,8 +6,8 @@ function Postnummer({selected_criteria, handleSelect}) {
     return (
         <div>
             <input
-                name="lokation__postnummer"
-                value={selected_criteria["lokation__postnummer"] || ""}
+                name="postnummer"
+                value={selected_criteria["postnummer"] || ""}
                 type="text"
                 placeholder="postnummer"
                 onChange={handleSelect}
