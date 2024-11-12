@@ -1,5 +1,5 @@
 // App.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -27,11 +27,25 @@ function App() {
     landekode: "",
     // Add more filters as needed
   });
-
   const [response, setResponse] = useState();
   const [selected_criteria, setCriteria] = useState({});
+  const [search_criteria_configuration, setConfiguration] = useState([]);
 
   const resultForTable = response;
+
+  useEffect(() => {
+    fetchSearchCriteriaConfigurations();
+  }, []);
+
+  async function fetchSearchCriteriaConfigurations(){
+    try {
+      const response = await axios.get("get_search_criteria/");
+      setConfiguration(response.data);
+      console.log("Config-Response", response.data);
+    } catch (error) {
+      console.error("Error fetching search criteria configuration:", error);
+    }
+  } 
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -43,7 +57,7 @@ function App() {
 
   async function handleSearch() {
     try {
-      const response = await axios.get("App/", {
+      const response = await axios.get("search/", {
         params: selected_criteria,
       });
       console.log("Response", response.data);
@@ -75,7 +89,7 @@ function App() {
   function resetCriteria() {
     setCriteria({});
   }
-
+ 
   async function gemFiltre() {
     // overvej om det er bedre at håndtere i backend 
     const criterias_to_save = selected_criteria;
@@ -101,6 +115,61 @@ function App() {
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
         </Routes>
+
+        {search_criteria_configuration.map((criteria) => (
+          <FilterComponent
+            key={criteria.valueKey}
+            apiEndpoint={criteria.optionsEndpoint}
+            label={criteria.label}
+            valueKey={criteria.valueKey}
+            displayKey={criteria.displayKey}
+            selected_criteria={selected_criteria}
+            onChange={(event) => {
+            handleFilterChange(event);
+            handleSelect(event);
+            }}
+          />
+        ))}
+        <p>Postnummer</p>
+        <Postnummer
+          selected_criteria={selected_criteria}
+          handleSelect={handleSelect}
+        ></Postnummer>
+        <p>Antal ønskede resultater</p>
+        <Antal_resultater
+          selected_criteria={selected_criteria}
+          handleSelect={handleSelect}
+        ></Antal_resultater>
+        {/* Add more FilterComponent instances as needed */}{" "}
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "primary.main",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "primary.dark",
+            },
+          }}
+          type="submit"
+          onClick={handleSearch}
+        >
+          Søg
+        </Button>
+        <Button type="submit" onClick={resetCriteria}>
+          Reset
+        </Button>
+        <Button type="submit" onClick={gemFiltre}>
+          Gem søgefiltre
+        </Button>
+        <ResultTable response={response} />
+      </div>
+      <div></div>
+    </Router>
+  );
+}
+
+
+{/*}
         <FilterComponent
           apiEndpoint="/api/ejendomstype-options/"
           label="Ejendomstype"
@@ -167,43 +236,7 @@ function App() {
             handleSelect(event);
           }}
         />
-        <p>Postnummer</p>
-        <Postnummer
-          selected_criteria={selected_criteria}
-          handleSelect={handleSelect}
-        ></Postnummer>
-        <p>Antal ønskede resultater</p>
-        <Antal_resultater
-          selected_criteria={selected_criteria}
-          handleSelect={handleSelect}
-        ></Antal_resultater>
-        {/* Add more FilterComponent instances as needed */}{" "}
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "primary.main",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "primary.dark",
-            },
-          }}
-          type="submit"
-          onClick={handleSearch}
-        >
-          Søg
-        </Button>
-        <Button type="submit" onClick={resetCriteria}>
-          Reset
-        </Button>
-        <Button type="submit" onClick={gemFiltre}>
-          Gem søgefiltre
-        </Button>
-        <ResultTable response={response} />
-      </div>
-      <div></div>
-    </Router>
-  );
-}
+        {*/}
 
 
 export default App;
