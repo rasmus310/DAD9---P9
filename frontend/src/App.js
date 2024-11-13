@@ -193,6 +193,10 @@ function App() {
           )}
         </Box>
       </div>
+      <Button type="submit" onClick={gemFiltre}>
+        Søg
+      </Button>
+      <ResultTable response={response} />
     </Router>
   );
 }
