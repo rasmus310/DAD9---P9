@@ -20,7 +20,8 @@ function FilterComponent({ apiEndpoint, label, valueKey, displayKey, selected_cr
   }, [apiEndpoint]);
 
   return (
-    <Box className='container'>
+    <Box position="relative" display="flex" alignItems="center" mb={2}>
+      <Box flexGrow={1} padding={1}>
       <Autocomplete 
         className='boxstyle'
         options={options}
@@ -38,6 +39,7 @@ function FilterComponent({ apiEndpoint, label, valueKey, displayKey, selected_cr
           />
         )}
       />
+    </Box>
     </Box>
   );
 }
