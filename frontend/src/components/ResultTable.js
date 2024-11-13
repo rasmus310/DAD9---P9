@@ -25,7 +25,7 @@ function ResultTable({ response }) {
   console.log("rows and columns", rows, columns);
 
   return (
-    <Paper sx={{ height: 400, width: "100%" }}>
+    <Paper sx={{ height: 400, width: "50%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
