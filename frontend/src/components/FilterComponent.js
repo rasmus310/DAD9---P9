@@ -1,6 +1,8 @@
 // FilterComponent.js
 import React, { useEffect, useState } from "react";
-import { MenuItem, Select, Typography } from "@mui/material"; //https://mui.com/x/introduction/
+import { MenuItem, Select, Typography, Box, IconButton, Autocomplete, TextField } from "@mui/material"; // Import necessary components
+import CloseIcon from '@mui/icons-material/Close';
+import './FilterComponent.css'; // Import the CSS file
 
 function FilterComponent({
   apiEndpoint,
@@ -8,7 +10,7 @@ function FilterComponent({
   valueKey,
   displayKey,
   onChange,
-  selected_criteria,
+  onClose
 }) {
   const [options, setOptions] = useState([]);
 
@@ -19,29 +21,43 @@ function FilterComponent({
       .catch((error) => console.error("Error fetching options:", error));
   }, [apiEndpoint]);
 
+  const handleChange = (event, newValue) => {
+    if (newValue) {
+      onChange({ target: { name: valueKey, value: newValue[valueKey] } });
+    }
+  };
+
   return (
-    <div>
-      <Typography variant="subtitle1" component="label" htmlFor={valueKey}>
-        {label}
-      </Typography>
-      <Select
-        id={valueKey}
-        name={valueKey}
-        onChange={onChange}
-        displayEmpty
-        fullWidth
-        value={selected_criteria[valueKey] || ""}
+    <Box position="relative" display="flex" alignItems="center" mb={2}>
+      <Box flexGrow={1} padding={1}>
+        <Autocomplete
+          options={options}
+          getOptionLabel={(option) => option[displayKey]}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={`${label}`}
+              variant="outlined"
+              fullWidth
+            />
+          )}
+          onChange={handleChange}
+          style={{ minWidth: '250px' }}
+        />
+      </Box>
+      <IconButton
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          top: 12,
+          right: -2,
+          transform: 'translate(50%, -50%)',
+          color: '#FF0000',
+        }}
       >
-        <MenuItem value="">
-          <em>Select {label}</em>
-        </MenuItem>
-        {options.map((option, index) => (
-          <MenuItem key={index} value={option[displayKey]}>
-            {option[displayKey]}
-          </MenuItem>
-        ))}
-      </Select>
-    </div>
+        <CloseIcon sx={{ fontSize: 12 }} />
+      </IconButton>
+    </Box>
   );
 }
 
