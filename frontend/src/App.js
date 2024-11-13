@@ -20,6 +20,8 @@ import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
 import Fkbrand from "./components/search_components/fk_brand";
 import ResultTable from "./components/ResultTable";
+import { Box } from "@mui/material";
+import SearchableDropdown from "./components/SearchComponent";
 
 function App() {
   const [filters, setFilters] = useState({
@@ -135,128 +137,64 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
+          <Route path="/filter-search" element={<FilterSearch />} />
+          <Route path="/" element={<Navigate to="/search-id" />} />
         </Routes>
-        {search_criteria_configuration.map((criteria) => (
-          <FilterComponent
-            key={criteria.valueKey}
-            apiEndpoint={criteria.optionsEndpoint}
-            label={criteria.label}
-            valueKey={criteria.valueKey}
-            displayKey={criteria.displayKey}
-            selected_criteria={selected_criteria}
-            onChange={(event) => {
-              handleFilterChange(event);
-              handleSelect(event);
-            }}
-          />
-        ))}
-        <p>Postnummer</p>
-        <Postnummer
-          selected_criteria={selected_criteria}
-          handleSelect={handleSelect}
-        ></Postnummer>
-        <p>Antal ønskede resultater</p>
-        <Antal_resultater
-          selected_criteria={selected_criteria}
-          handleSelect={handleSelect}
-        ></Antal_resultater>
-        {/* Add more FilterComponent instances as needed */}{" "}
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "primary.main",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "primary.dark",
-            },
-          }}
-          type="submit"
-          onClick={handleSearch}
-        >
-          Søg
-        </Button>
-        <Button type="submit" onClick={resetCriteria}>
-          Reset
-        </Button>
-        <Button type="submit" onClick={gemFiltre}>
-          Gem søgefiltre
-        </Button>
-        <ResultTable response={response} />
+        <Box className="searchComponent">
+          <SearchableDropdown
+            toggleEjendomstype={toggleEjendomstype}
+            toggleLandekode={toggleLandekode}
+            toggleForurening={toggleForurening}
+            toggleRisikovurdering={toggleRisikovurdering}
+          />{" "}
+          {/* Include the SearchableDropdown component */}
+        </Box>
+        <Box display="flex" alignItems="center" gap={2} mt={2}></Box>
+        <Box display="flex" alignItems="center" gap={2} mt={2}>
+          {showEjendomstype && (
+            <FilterComponent
+              apiEndpoint="/api/ejendomstype-options/"
+              label="Ejendomstype"
+              valueKey="ejendomstype_kode"
+              displayKey="ejendomstype"
+              onChange={handleFilterChange}
+              onClose={toggleEjendomstype} // Pass the toggle function as onClose
+            />
+          )}
+          {showLandekode && (
+            <FilterComponent
+              apiEndpoint="/api/landekode-options/"
+              label="Landekode"
+              valueKey="land_id"
+              displayKey="land_navn"
+              onChange={handleFilterChange}
+              onClose={toggleLandekode} // Pass the toggle function as onClose
+            />
+          )}
+          {showForurening && (
+            <FilterComponent
+              apiEndpoint="/api/ejendomsdata-options/"
+              label="Forurening"
+              valueKey="forurenet"
+              displayKey="forurenet"
+              onChange={handleFilterChange}
+              onClose={toggleForurening} // Pass the toggle function as onClose
+            />
+          )}
+          {showRisikovurdering && (
+            <FilterComponent
+              apiEndpoint="/api/ejendomsdata-options/"
+              label="Risikovurdering"
+              valueKey="risikovurdering"
+              displayKey="risikovurdering"
+              onChange={handleFilterChange}
+              onClose={toggleRisikovurdering} // Pass the toggle function as onClose
+            />
+          )}
+        </Box>
       </div>
-      <div></div>
     </Router>
   );
-}
-
-{
-  /*}
-        <FilterComponent
-          apiEndpoint="/api/ejendomstype-options/"
-          label="Ejendomstype"
-          valueKey="ejendomstype"
-          displayKey="ejendomstype"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/landekode-options/"
-          label="Landekode"
-          valueKey="land"
-          displayKey="land_navn"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/forurenet-options/"
-          label="Forurenet"
-          valueKey="forurenet"
-          displayKey="forurenet"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/fk_brand-options/"
-          label="Fk_brand"
-          valueKey="fk_brand"
-          displayKey="fk_brand"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/risikovurdering-options/"
-          label="Risikovurdering"
-          valueKey="risikovurdering"
-          displayKey="risikovurdering"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/by-options/"
-          label="By"
-          valueKey="by"
-          displayKey="by_navn"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        {*/
 }
 
 export default App;
