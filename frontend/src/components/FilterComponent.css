@@ -1,0 +1,14 @@
+.text-align-left {
+  text-align: left;
+  flex-grow: 1;
+}
+
+.closeIcon {
+  margin-left: auto;
+  /*font-size: 12px;*/
+}
+
+.placement {
+  display: flex; 
+  align-items: center;
+}
