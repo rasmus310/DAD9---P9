@@ -1,47 +1,44 @@
-// FilterComponent.js
-import React, { useEffect, useState } from "react";
-import { MenuItem, Select, Typography } from "@mui/material"; //https://mui.com/x/introduction/
+import React, { useEffect, useState } from 'react';
+import { Autocomplete, Box, TextField } from '@mui/material';
+import axios from 'axios';
+import './FilterComponent.css';
+ 
 
-function FilterComponent({
-  apiEndpoint,
-  label,
-  valueKey,
-  displayKey,
-  onChange,
-  selected_criteria,
-}) {
+function FilterComponent({ apiEndpoint, label, valueKey, displayKey, selected_criteria, onChange }) {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    fetch(apiEndpoint)
-      .then((response) => response.json())
-      .then((data) => setOptions(data))
-      .catch((error) => console.error("Error fetching options:", error));
+    async function fetchOptions() {
+      try {
+        const response = await axios.get(apiEndpoint);
+        setOptions(response.data);
+      } catch (error) {
+        console.error(`Error fetching options from ${apiEndpoint}:`, error);
+      }
+    }
+    fetchOptions();
   }, [apiEndpoint]);
 
   return (
-    <div>
-      <Typography variant="subtitle1" component="label" htmlFor={valueKey}>
-        {label}
-      </Typography>
-      <Select
-        id={valueKey}
-        name={valueKey}
-        onChange={onChange}
-        displayEmpty
-        fullWidth
-        value={selected_criteria[valueKey] || ""}
-      >
-        <MenuItem value="">
-          <em>Select {label}</em>
-        </MenuItem>
-        {options.map((option, index) => (
-          <MenuItem key={index} value={option[displayKey]}>
-            {option[displayKey]}
-          </MenuItem>
-        ))}
-      </Select>
-    </div>
+    <Box className='container'>
+      <Autocomplete 
+        className='boxstyle'
+        options={options}
+        getOptionLabel={(option) => option[displayKey]}
+        value={options.find(option => option[valueKey] === selected_criteria[valueKey]) || null}
+        onChange={(event, newValue) => {
+          onChange({ target: { name: valueKey, value: newValue ? newValue[valueKey] : '' } });
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={label}
+            variant="outlined"
+            fullWidth
+          />
+        )}
+      />
+    </Box>
   );
 }
 

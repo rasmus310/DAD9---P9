@@ -1,0 +1,10 @@
+/* FilterComponent.css */
+.container {
+    display: inline;
+    gap: 10px; /* Optional: Adds space between the items */
+}
+
+.boxstyle {
+    min-width: 180px; /* Ensures a minimum width for each item */
+    max-width: 400px;
+}
