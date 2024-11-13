@@ -23,13 +23,33 @@ import ResultTable from "./components/ResultTable";
 
 function App() {
   const [filters, setFilters] = useState({
-    ejendomstype: "",
-    landekode: "",
+    ejendomstype: '',
+    landekode: '',
+    forurenet: '',
+    risikovurdering: '',
     // Add more filters as needed
   });
-  const [response, setResponse] = useState();
-  const [selected_criteria, setCriteria] = useState({});
-  const [search_criteria_configuration, setConfiguration] = useState([]);
+
+  const [showEjendomstype, setShowEjendomstype] = useState(true); // State to manage the visibility of Ejendomstype filter
+  const [showLandekode, setShowLandekode] = useState(true); // State to manage the visibility of Landekode filter
+  const [showForurening, setShowForurening] = useState(false); // State to manage the visibility of Forurening filter
+  const [showRisikovurdering, setShowRisikovurdering] = useState(false); // State to manage the visibility of Risikovurdering filter
+
+  const toggleEjendomstype = () => {
+    setShowEjendomstype(prevShow => !prevShow); // Toggle the visibility of Ejendomstype filter
+  };
+
+  const toggleLandekode = () => {
+    setShowLandekode(prevShow => !prevShow); // Toggle the visibility of Landekode filter
+  };
+
+  const toggleForurening = () => {
+    setShowForurening(prevShow => !prevShow); // Toggle the visibility of Forurening filter
+  };
+
+  const toggleRisikovurdering = () => {
+    setShowRisikovurdering(prevShow => !prevShow); // Toggle the visibility of Risikovurdering filter
+  }
 
   const resultForTable = response;
 
