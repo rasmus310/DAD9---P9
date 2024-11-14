@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete, TextField, Typography } from "@mui/material"; //https://mui.com/material-ui/react-autocomplete/
+import { Autocomplete, TextField, Typography, Box } from "@mui/material"; //https://mui.com/material-ui/react-autocomplete/
 
 function FilterComponent({
   apiEndpoint,
@@ -20,7 +20,7 @@ function FilterComponent({
   }, [apiEndpoint]);
 
   return (
-    <Box textAlign={'left'}>
+    <Box textAlign={"left"}>
       <Typography variant="subtitle1" component="label" htmlFor={valueKey}>
         {label}
       </Typography>
@@ -56,9 +56,8 @@ function FilterComponent({
           option[displayKey] === value[displayKey]
         }
       />
-    </div>
+    </Box>
   );
 }
 
 export default FilterComponent;
-

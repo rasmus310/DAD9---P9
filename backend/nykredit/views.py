@@ -76,7 +76,7 @@ def simple_search2_view(request):
     limit = int(filter_data.pop('antal_resultater', 10))
 
     q = Q()
-    fields = ['id']
+    fields = ['id', 'bfe_nr']
 
     """" BRUGES MED MAPPING FIL
     # Test: print søgekriterier efter mapping
