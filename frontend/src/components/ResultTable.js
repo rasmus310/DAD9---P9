@@ -29,7 +29,6 @@ function ResultTable({ response }) {
       <DataGrid
         rows={rows}
         columns={columns}
-        checkboxSelection
         getRowId={(row) => row.id}
         sx={{ border: 0 }}
       />
