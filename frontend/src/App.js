@@ -115,20 +115,30 @@ function App() {
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
         </Routes>
-        {search_criteria_configuration.map((criteria) => (
-          <FilterComponent
-            key={criteria.valueKey}
-            apiEndpoint={criteria.optionsEndpoint}
-            label={criteria.label}
-            valueKey={criteria.valueKey}
-            displayKey={criteria.displayKey}
-            selected_criteria={selected_criteria}
-            onChange={(event) => {
-              handleFilterChange(event);
-              handleSelect(event);
-            }}
-          />
-        ))}
+        <div
+  style={{
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "16px",
+    alignItems: "center",
+    width: "50%",
+  }}
+>
+  {search_criteria_configuration.map((criteria) => (
+    <FilterComponent
+      key={criteria.valueKey}
+      apiEndpoint={criteria.optionsEndpoint}
+      label={criteria.label}
+      valueKey={criteria.valueKey}
+      displayKey={criteria.displayKey}
+      selected_criteria={selected_criteria}
+      onChange={(event) => {
+        handleFilterChange(event);
+        handleSelect(event);
+      }}
+    />
+  ))}
+</div>
         <p>Postnummer</p>
         <Postnummer
           selected_criteria={selected_criteria}

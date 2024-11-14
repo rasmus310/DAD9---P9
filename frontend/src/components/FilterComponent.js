@@ -20,11 +20,9 @@ function FilterComponent({
   }, [apiEndpoint]);
 
   return (
-    <Box textAlign={"left"}>
-      <Typography variant="subtitle1" component="label" htmlFor={valueKey}>
-        {label}
-      </Typography>
+    <Box>
       <Autocomplete
+        style={{ width: '230px' }}
         id={valueKey}
         options={options}
         getOptionLabel={(option) => option[displayKey] || ""}
