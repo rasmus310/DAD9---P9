@@ -20,7 +20,7 @@ function FilterComponent({
   }, [apiEndpoint]);
 
   return (
-    <div>
+    <Box textAlign={'left'}>
       <Typography variant="subtitle1" component="label" htmlFor={valueKey}>
         {label}
       </Typography>

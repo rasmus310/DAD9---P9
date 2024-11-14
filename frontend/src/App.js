@@ -37,7 +37,7 @@ function App() {
     fetchSearchCriteriaConfigurations();
   }, []);
 
-  async function fetchSearchCriteriaConfigurations(){
+  async function fetchSearchCriteriaConfigurations() {
     try {
       const response = await axios.get("get_search_criteria/");
       setConfiguration(response.data);
@@ -45,7 +45,7 @@ function App() {
     } catch (error) {
       console.error("Error fetching search criteria configuration:", error);
     }
-  } 
+  }
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
@@ -89,9 +89,9 @@ function App() {
   function resetCriteria() {
     setCriteria({});
   }
- 
+
   async function gemFiltre() {
-    // overvej om det er bedre at håndtere i backend 
+    // overvej om det er bedre at håndtere i backend
     const criterias_to_save = selected_criteria;
     delete criterias_to_save.antal_resultater;
     try {
@@ -115,7 +115,6 @@ function App() {
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
         </Routes>
-
         {search_criteria_configuration.map((criteria) => (
           <FilterComponent
             key={criteria.valueKey}
@@ -125,8 +124,8 @@ function App() {
             displayKey={criteria.displayKey}
             selected_criteria={selected_criteria}
             onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
+              handleFilterChange(event);
+              handleSelect(event);
             }}
           />
         ))}
@@ -168,8 +167,8 @@ function App() {
   );
 }
 
-
-{/*}
+{
+  /*}
         <FilterComponent
           apiEndpoint="/api/ejendomstype-options/"
           label="Ejendomstype"
@@ -236,7 +235,7 @@ function App() {
             handleSelect(event);
           }}
         />
-        {*/}
-
+        {*/
+}
 
 export default App;
