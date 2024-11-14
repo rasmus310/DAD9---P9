@@ -1,0 +1,39 @@
+search_criteria = [
+    {
+        'optionsEndpoint':'/api/ejendomstype-options/',
+        'label':'Ejendomstype',
+        'valueKey':'ejendomstype_kode__ejendomstype',
+        'displayKey':'ejendomstype'
+    },
+    {
+        'optionsEndpoint':'/api/landekode-options/',
+        'label':'Landekode',
+        'valueKey':'land__land_navn',
+        'displayKey':'land_navn'
+    },
+    {
+        'optionsEndpoint':'/api/forurenet-options/',
+        'label':"Forurenet",
+        'valueKey':'forurenet',
+        'displayKey':'forurenet',
+    },
+    {
+        'optionsEndpoint':'/api/fk_brand-options/',
+        'label':"Fk_brand",
+        'valueKey':'fk_brand',
+        'displayKey':'fk_brand',
+    },
+    {
+        'optionsEndpoint':'/api/risikovurdering-options/',
+        'label':"Risikovurdering",
+        'valueKey':'risikovurdering',
+        'displayKey':'risikovurdering',
+    },
+    {
+        'optionsEndpoint':'/api/by-options/',
+        'label':'By',
+        'valueKey':'lokation__by_navn',
+        'displayKey':'by_navn',
+    },
+]
+
