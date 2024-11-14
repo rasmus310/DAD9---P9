@@ -1,6 +1,5 @@
-// FilterComponent.js
 import React, { useEffect, useState } from "react";
-import { MenuItem, Select, Typography } from "@mui/material"; //https://mui.com/x/introduction/
+import { Autocomplete, TextField, Typography } from "@mui/material"; //https://mui.com/material-ui/react-autocomplete/
 
 function FilterComponent({
   apiEndpoint,
@@ -11,6 +10,7 @@ function FilterComponent({
   selected_criteria,
 }) {
   const [options, setOptions] = useState([]);
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     fetch(apiEndpoint)
@@ -24,25 +24,41 @@ function FilterComponent({
       <Typography variant="subtitle1" component="label" htmlFor={valueKey}>
         {label}
       </Typography>
-      <Select
+      <Autocomplete
         id={valueKey}
-        name={valueKey}
-        onChange={onChange}
-        displayEmpty
-        fullWidth
-        value={selected_criteria[valueKey] || ""}
-      >
-        <MenuItem value="">
-          <em>Select {label}</em>
-        </MenuItem>
-        {options.map((option, index) => (
-          <MenuItem key={index} value={option[displayKey]}>
-            {option[displayKey]}
-          </MenuItem>
-        ))}
-      </Select>
+        options={options}
+        getOptionLabel={(option) => option[displayKey] || ""}
+        value={
+          options.find(
+            (option) => option[displayKey] === selected_criteria[valueKey]
+          ) || null
+        }
+        onChange={(event, newValue) => {
+          // Update the selected value
+          onChange({
+            target: {
+              name: valueKey,
+              value: newValue ? newValue[displayKey] : "",
+            },
+          });
+        }}
+        inputValue={inputValue}
+        onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={`Select ${label}`}
+            variant="outlined"
+            fullWidth
+          />
+        )}
+        isOptionEqualToValue={(option, value) =>
+          option[displayKey] === value[displayKey]
+        }
+      />
     </div>
   );
 }
 
 export default FilterComponent;
+
