@@ -2,11 +2,10 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Ejendomsdata
+from .models import Ejendomsdata, Ejendomstype, Landekode, Lokation, searchSaved
 import random
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import Ejendomstype, Landekode, Lokation
 from .fieldmapping import search_criteria_mapping, direct_search_criteria
 from .search_criteria_configurations import search_criteria
 
@@ -133,10 +132,13 @@ def simple_search2_view(request):
 @api_view(['POST'])
 def save_search_view(request):
     search = request.data
-
+    saved_search = searchSaved.create_saved_search(search)
     print(f"søgning der skal gemmes: {request.data}")
-    
-    return Response({"response" : search})
-
+    print(f"saved search object: {saved_search}")
+    params = saved_search.criteria.get('params', {})
+    saved_param = list(params.keys())[0] if params else "No params found"
+    # Return only the 'saved_param' in the response
+    response_data = {"search_id": saved_search.search_id}
+    return Response(response_data)
 
 

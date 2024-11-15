@@ -8,14 +8,22 @@
 from django.db import models
 from django.db.models import JSONField
 
-class SavedSeach(models.Model):
+class searchSaved(models.Model):
     search_id = models.AutoField(primary_key=True)
     criteria = models.JSONField()
     date_created = models.DateTimeField(auto_now_add=True)
-
     class Meta: 
-        db_table = 'saved_searches'
-
+        db_table = 'search_saved'
+    def __str__(self):
+        return f"SavedSearch(search_id={self.search_id}, criteria={self.criteria}, date_created={self.date_created})"
+    
+    @classmethod
+    def create_saved_search(cls, search_data):
+        search_to_save = cls(criteria = search_data)
+        
+        search_to_save.save()
+        
+        return search_to_save 
 
 class Ejendomsdata(models.Model):
     id = models.BigIntegerField(db_column='ID', primary_key=True)  # Field name made lowercase.

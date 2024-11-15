@@ -30,6 +30,7 @@ function App() {
   const [response, setResponse] = useState();
   const [selected_criteria, setCriteria] = useState({});
   const [search_criteria_configuration, setConfiguration] = useState([]);
+  const [saved_searchID, setSavedSearch] = useState(null);
 
   const resultForTable = response;
 
@@ -98,11 +99,11 @@ function App() {
       const response = await axios.post("/save_search/", {
         params: criterias_to_save,
       });
-      // OBS gem respons in egen variabel i stedet for at bruge samme som til søgeresultat
-      setResponse(response.data);
+      
+      const savedSearchID = response.data.search_id; 
+      setSavedSearch(savedSearchID);  
     } catch {
-      // OBS gem respons in egen variabel i stedet for at bruge samme som til søgeresultat
-      setResponse({
+      setSavedSearch({
         response: "fejl - søgekriterier ikke gemt",
       });
     }
@@ -160,6 +161,13 @@ function App() {
         <Button type="submit" onClick={gemFiltre}>
           Gem søgefiltre
         </Button>
+        <div>
+          {saved_searchID && (
+            <div>
+              Søgning gemt med ID: {saved_searchID}
+            </div>
+          )}
+        </div>
         <ResultTable response={response} />
       </div>
       <div></div>
