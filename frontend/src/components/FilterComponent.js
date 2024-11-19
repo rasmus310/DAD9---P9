@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete, TextField, Typography, Box } from "@mui/material"; //https://mui.com/material-ui/react-autocomplete/
+import { Autocomplete, TextField, Typography, Box, Button } from "@mui/material"; //https://mui.com/material-ui/react-autocomplete/
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 function FilterComponent({
@@ -10,6 +12,7 @@ function FilterComponent({
   onChange,
   selected_criteria,
   active,
+  deactivateFilter,
 }) {
   const [options, setOptions] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -64,6 +67,17 @@ function FilterComponent({
           option[displayKey] === value[displayKey]
         }
       />
+      <IconButton
+  aria-label="delete"
+  size="small"
+  sx={{ color: '#d1dded' }}
+>
+  <DeleteIcon
+    sx={{ fontSize: '20px' }}  // Adjust the icon size here
+    onClick={deactivateFilter}
+  />
+</IconButton>
+
     </Box>
   );
 }

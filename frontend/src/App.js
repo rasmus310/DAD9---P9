@@ -108,6 +108,12 @@ function App() {
     );
   };
 
+  const deactivateFilter = (filter) => {
+    setActiveFilters((prevActiveFilters) =>
+      prevActiveFilters.filter((f) => f !== filter)
+    );
+  };
+
   return (
     <Router>
       <div className="App">
@@ -119,14 +125,14 @@ function App() {
         </Routes>
 
         <div
+        // Styling til visning af filter-komponenter
           style={{
             display: "flex",
-        //flexDirection: "column", // Sørger for vertikal stacking, hvis nødvendigt
-        justifyContent: "center", // Centrerer horisontalt
-        alignItems: "center", // Centrerer vertikalt
-        flexWrap: "wrap", // Gør det muligt at bryde linjer
-        gap: "16px",
-            width: "50%",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            width: "60%",
           }}
         >
           {search_criteria_configuration.map((criteria) => (
@@ -143,6 +149,7 @@ function App() {
                 handleSelect(event);
               }}
               active={activeFilters.includes(criteria.valueKey)} // Pass active state
+              deactivateFilter={() => deactivateFilter(criteria.valueKey)} // Pass deactivate function
             />
           ))}
         </div>
