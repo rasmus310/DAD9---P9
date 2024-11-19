@@ -8,6 +8,7 @@ function FilterComponent({
   displayKey,
   onChange,
   selected_criteria,
+  active,
 }) {
   const [options, setOptions] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -18,6 +19,10 @@ function FilterComponent({
       .then((data) => setOptions(data))
       .catch((error) => console.error("Error fetching options:", error));
   }, [apiEndpoint]);
+
+  if (!active) {
+    return null; // Do not render if not active
+  }
 
   return (
     <Box>
@@ -45,7 +50,7 @@ function FilterComponent({
         renderInput={(params) => (
           <TextField
             {...params}
-            label={`Select ${label}`}
+            label={`${label}`}
             variant="outlined"
             fullWidth
           />

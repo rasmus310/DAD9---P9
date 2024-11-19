@@ -1,29 +1,32 @@
 import React, { useState } from "react";
 import { Autocomplete, TextField, Box, Typography } from "@mui/material";
 
-function SearchFilter() {
-    const options = [
-        { label: "Ejendomstype", value: "Ejendomstype" },
-        { label: "Landekode", value: "Landekode" },
-        { label: "Forurenet", value: "Forurenet" },
-        { label: "Brand", value: "Brand" },
-        { label: "Risikovurdering", value: "Risikovurdering" },
-        { label: "By", value: "By" },
-        { label: "Postnummer", value: "Postnummer" },
-    ];
+function SearchFilter({ onFilterToggle }) {
+  const options = [
+    { label: "Ejendomstype", value: "ejendomstype_kode__ejendomstype" },
+    { label: "Landekode", value: "land__land_navn" },
+    { label: "Forurenet", value: "forurenet" },
+    { label: "Brand", value: "fk_brand" },
+    { label: "Risikovurdering", value: "risikovurdering" },
+    { label: "By", value: "lokation__by_navn" },
+    { label: "Postnummer", value: "postnummer" },
+  ];
 
-    const [inputValue, setInputValue] = React.useState("");
-    const [selectedValue, setSelectedValue] = useState(null);
+  const [inputValue, setInputValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState(null);
 
-    return (
-        <Box p={8}>
-            <Autocomplete
+  return (
+    <Box p={8}>
+      <Autocomplete
         id="autocomplete"
         options={options}
         getOptionLabel={(option) => option.label}
         value={selectedValue}
         onChange={(event, newValue) => {
           setSelectedValue(newValue);
+          if (newValue) {
+            onFilterToggle(newValue.value); // Call the handler with the selected value
+          }
         }}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
@@ -39,8 +42,8 @@ function SearchFilter() {
         )}
         style={{ width: 600, display: 'inline-block' }}
       />
-        </Box>
-    )
+    </Box>
+  );
 }
 
 export default SearchFilter;
