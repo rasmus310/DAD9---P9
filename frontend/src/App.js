@@ -121,9 +121,11 @@ function App() {
         <div
           style={{
             display: "flex",
-            flexWrap: "wrap",
-            gap: "16px",
-            alignItems: "center",
+        //flexDirection: "column", // Sørger for vertikal stacking, hvis nødvendigt
+        justifyContent: "center", // Centrerer horisontalt
+        alignItems: "center", // Centrerer vertikalt
+        flexWrap: "wrap", // Gør det muligt at bryde linjer
+        gap: "16px",
             width: "50%",
           }}
         >

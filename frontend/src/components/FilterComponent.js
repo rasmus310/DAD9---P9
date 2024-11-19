@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Autocomplete, TextField, Typography, Box } from "@mui/material"; //https://mui.com/material-ui/react-autocomplete/
 
+
 function FilterComponent({
   apiEndpoint,
   label,
@@ -25,7 +26,11 @@ function FilterComponent({
   }
 
   return (
-    <Box>
+    <Box sx={{
+      display: 'flex',       // Flexbox layout
+      justifyContent: 'center', // Centrerer horisontalt
+      alignItems: 'center',  // Centrerer vertikalt
+    }}>
       <Autocomplete
         style={{ width: '230px' }}
         id={valueKey}
