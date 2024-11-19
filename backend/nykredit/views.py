@@ -44,6 +44,7 @@ def get_search_criteria(request):
 @api_view(['GET'])
 def simple_search_view(request):
     filter_value = request.GET.get('filter')
+    randomize = request.GET.get('randomize', 'false').lower() == 'true'
 
     # check om filter er valgt
     if filter_value == "":
@@ -55,6 +56,9 @@ def simple_search_view(request):
 
     # hvis ejendomme er fundet / eksisterer
     if matching_properties.exists():
+        if randomize:
+            matching_properties = list(matching_properties)
+            random.shuffle(matching_properties)
         property = random.choice(matching_properties)
         return Response({"response" : property.id})
 
@@ -75,11 +79,18 @@ def simple_search2_view(request):
     # default value
     limit = int(filter_data.pop('antal_resultater', 50))
 
+    randomize = filter_data.pop('randomize', 'false').lower() == 'true'
+
     # find ejendomme i databasen ved at kalde classmethod search fra Ejendomsdata class
     properties = Ejendomsdata.search(filter_data, limit)
 
     if properties:
-        return Response({"response" : properties})
+        #The randomize logic here currently shuffles the list after querying the database.
+        #Jeg shuffler det altså rundt lige pt EFTER vi har queryet databasen om resultatet, derfor den ikke giver et "random" resultat hvis du tager fx en limit på 1.
+        if randomize:
+            properties = list(properties)
+            random.shuffle(properties)
+        return Response({"response": properties})
 
     # response hvis filter valgt men ingen ejendomme fundet
     response_message = f"GET request successful with filter {filter_data.values()} but no matching data"

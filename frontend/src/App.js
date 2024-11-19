@@ -32,12 +32,20 @@ function App() {
   const [search_criteria_configuration, setConfiguration] = useState([]);
   const [saved_searchID, setSavedSearch] = useState(null);
   const [searchID, setSearchID] = useState();
+  // tilføjet den her constant
+  const [randomize, setRandomize] = useState(false);
+
 
   const resultForTable = response;
 
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
   }, []);
+
+  const handleRandomizeToggle = () => {
+    setRandomize(!randomize);
+  };
+  
 
   async function fetchSearchCriteriaConfigurations() {
     try {
@@ -61,7 +69,11 @@ function App() {
     setSavedSearch(null)
     try {
       const response = await axios.get("search/", {
-        params: selected_criteria,
+        params: {
+          ...selected_criteria,
+          randomize: randomize.toString(), // tilføjet randomize til search
+        }
+        
       });
       console.log("Response", response.data);
       setResponse(response.data);
@@ -186,6 +198,16 @@ function App() {
           <Button onClick={handleIdSearch}>
             Søg på gemte filtre
           </Button>
+          <div>
+          <label>
+            <input
+              type="checkbox"
+              checked={randomize}
+              onChange={handleRandomizeToggle}
+            />
+            Randomiser resultater
+          </label>
+        </div>
         </div>
         <Button onClick={resetCriteria}>
           Reset
