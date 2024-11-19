@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Autocomplete, TextField, Box, Typography } from "@mui/material";
 
-function SearchFilter({ onFilterToggle }) {
+function SearchFilter({ activeFilters, onFilterToggle }) {
   const options = [
     { label: "Ejendomstype", value: "ejendomstype_kode__ejendomstype" },
     { label: "Landekode", value: "land__land_navn" },
@@ -15,11 +15,14 @@ function SearchFilter({ onFilterToggle }) {
   const [inputValue, setInputValue] = useState("");
   const [selectedValue, setSelectedValue] = useState(null);
 
+  // Filter options based on activeFilters
+  const filteredOptions = options.filter(option => !activeFilters.includes(option.value));
+
   return (
     <Box p={8}>
       <Autocomplete
         id="autocomplete"
-        options={options}
+        options={filteredOptions}
         getOptionLabel={(option) => option.label}
         value={selectedValue}
         onChange={(event, newValue) => {

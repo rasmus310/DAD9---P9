@@ -19,8 +19,7 @@ import Logo from "./components/Logo";
 
 function App() {
   const [filters, setFilters] = useState({
-    ejendomstype: "",
-    landekode: "",
+    
     // Add more filters as needed
   });
   const [response, setResponse] = useState();
@@ -166,8 +165,9 @@ function App() {
         {/* Add more FilterComponent instances as needed */}{" "}
         <Button
           variant="contained"
+          size="large"
           sx={{
-            backgroundColor: "primary.main",
+            backgroundColor: '#0f1e82',
             color: "white",
             "&:hover": {
               backgroundColor: "primary.dark",

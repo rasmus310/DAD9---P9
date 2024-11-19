@@ -26,7 +26,7 @@ function ResultTable({ response }) {
 
   return (
     <Box>
-      <Typography variant="h6" textAlign={"left"} sx={{ fontWeight: 'bold' }}>
+      <Typography variant="h6" textAlign={"left"} sx={{ fontWeight: 'bold', color: '#0f1e82' }}>
         Ejendomme som matcher dine søgekriterier
       </Typography>
       <Typography variant="subtitle1" textAlign={"left"} sx={{ marginBottom: 2 }}>
