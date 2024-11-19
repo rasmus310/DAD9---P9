@@ -9,7 +9,7 @@ import Navbar from "./components/SøgPåGemtID/Navbar";
 import SearchSection from "./components/SøgPåGemtID/SearchSection";
 import FilterComponent from "./components/FilterComponent";
 import "./App.css";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
@@ -184,7 +184,9 @@ function App() {
         <Button type="submit" onClick={gemFiltre}>
           Gem søgefiltre
         </Button>
-        <ResultTable response={response} style={{ width: "50%" }} />
+        <Box padding={10}>
+        <ResultTable response={response} style={{ padding: 10 }} />
+        </Box>
       </div>
     </Router>
   );
