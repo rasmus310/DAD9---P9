@@ -95,8 +95,8 @@ function App() {
   }
 
   async function saveSearchFilters() {
-    // overvej om det er bedre at håndtere i backend
     const criterias_to_save = selected_criteria;
+    // number of results is not saved 
     delete criterias_to_save.antal_resultater;
     try {
       const response = await axios.post("/save_search/", {

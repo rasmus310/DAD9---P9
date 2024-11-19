@@ -72,33 +72,14 @@ def simple_search2_view(request):
     print(f"Filters received: {filter_data}")
 
     # limit = antal ønskede resultater sendt frontend som key:value pair med key "antal_resultater" 
-    limit = int(filter_data.pop('antal_resultater', 10))
+    # default value
+    limit = int(filter_data.pop('antal_resultater', 50))
 
-    q = Q()
-    fields = ['id', 'bfe_nr']
+    # find ejendomme i databasen ved at kalde classmethod search fra Ejendomsdata class
+    properties = Ejendomsdata.search(filter_data, limit)
 
-    if filter_data:
-        # loop både key + value med items() method 
-        for key, value in filter_data.items():
-            fields.append(key)
-            # tilføj kriterie til eksisterende Q objekt ved at AND dem sammen
-            # **{key: value} "udpakker" dictionary 
-            # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilføjes Q objektet som kriterie for søgning
-            q &= Q(**{key: value})
-
-        # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
-        properties = list(Ejendomsdata.objects.filter(q).values(*fields)[:limit])
-
-        # hvis ejendomme er fundet / eksisterer
-        if properties:
-            # returner antal valgte (random) søge resultater, hvis ikke der er færre resultater end ønsket 
-            if len(properties) >= limit:
-                # vælg antal random resultater
-                random_selection = random.sample(properties, limit)
-                return Response({"response" : random_selection})
-            # hvis færre resultater end ønsket, returner alle fundne resultater
-            else:
-                return Response({"response" : properties})
+    if properties:
+        return Response({"response" : properties})
 
     # response hvis filter valgt men ingen ejendomme fundet
     response_message = f"GET request successful with filter {filter_data.values()} but no matching data"

@@ -43,7 +43,8 @@ class Ejendomsdata(models.Model):
         db_table = 'ejendomsdata'
     
     @classmethod
-    def search(cls, filter_data, limit=50): # default value for limit (if not given by the user)
+    # default value for limit (if limit parameter not given)
+    def search(cls, filter_data, limit=50): 
 
         q = Q()
         fields = ['id', 'bfe_nr']
@@ -62,7 +63,6 @@ class Ejendomsdata(models.Model):
 
             return properties
         
-
 
 # For ejendomstype dropdown
 class Ejendomstype(models.Model):
