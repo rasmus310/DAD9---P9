@@ -20,6 +20,8 @@ import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
 import Fkbrand from "./components/search_components/fk_brand";
 import ResultTable from "./components/ResultTable";
+import SearchFilter from "./components/SearchFilter";
+import Logo from "./components/Logo";
 
 function App() {
   const [filters, setFilters] = useState({
@@ -112,6 +114,8 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
+        <Logo />
+        <SearchFilter />
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
         </Routes>
