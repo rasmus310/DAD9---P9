@@ -77,30 +77,6 @@ def simple_search2_view(request):
     q = Q()
     fields = ['id', 'bfe_nr']
 
-    """" BRUGES MED MAPPING FIL
-    # Test: print søgekriterier efter mapping
-    for key, value in filter_data.items():
-        if key in search_criteria_mapping: 
-            print(f"filter efter mapping: {search_criteria_mapping[key]} : {value}")
-    
-    if filter_data:
-        # loop både key + value med items() method 
-        # (fungerer nu kun med enkelt value for hvert kriterie - fx kun én valgt/sendt værdi for ejendomstype)
-        for key, value in filter_data.items():
-            #fields.append(key)
-            # tilføj kriterie til eksisterende Q objekt ved at AND dem sammen
-            # **{key: value} "udpakker" dictionary 
-            # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilføjes Q objektet som kriterie for søgning
-            if key in search_criteria_mapping:
-               fields.append(search_criteria_mapping[key])
-               q &= Q(**{search_criteria_mapping[key]: value})
-            elif key in direct_search_criteria:
-                fields.append(key)
-                q &= Q(**{key: value})
-            else:
-                return Response({"response" : "Ugyldigt søgekriterie"})
-    """
-
     if filter_data:
         # loop både key + value med items() method 
         for key, value in filter_data.items():
@@ -111,11 +87,11 @@ def simple_search2_view(request):
             q &= Q(**{key: value})
 
         # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
-        properties = list(Ejendomsdata.objects.filter(q).values(*fields))
+        properties = list(Ejendomsdata.objects.filter(q).values(*fields)[:limit])
 
         # hvis ejendomme er fundet / eksisterer
         if properties:
-            # returner antal valgte søge resultater, hvis ikke der er færre resultater end ønsket 
+            # returner antal valgte (random) søge resultater, hvis ikke der er færre resultater end ønsket 
             if len(properties) >= limit:
                 # vælg antal random resultater
                 random_selection = random.sample(properties, limit)
@@ -131,14 +107,49 @@ def simple_search2_view(request):
 # gem søgening
 @api_view(['POST'])
 def save_search_view(request):
-    search = request.data
-    saved_search = searchSaved.create_saved_search(search)
-    print(f"søgning der skal gemmes: {request.data}")
+    request_data = request.data
+    
+    filters = request_data.get('params')
+
+    if not filters:  
+        return Response({"response": "No filters provided, search not saved"})
+    
+    #test
+    print(f"søgning der skal gemmes: {filters}")
+
+    saved_search = searchSaved.create_saved_search(filters)
+    #test
     print(f"saved search object: {saved_search}")
-    params = saved_search.criteria.get('params', {})
-    saved_param = list(params.keys())[0] if params else "No params found"
-    # Return only the 'saved_param' in the response
+    
+    # return id på den gemte søgning
     response_data = {"search_id": saved_search.search_id}
     return Response(response_data)
+
+
+# søgning på gemt filtrering 
+@api_view(['GET'])
+def search_saved_filters_view(request):
+    
+    search_id = request.GET.get('search_id')
+
+    if not search_id:
+        return Response({"response":"ID parameter required"})
+    
+    saved_search_object = searchSaved.objects.filter(search_id=search_id).first()
+
+    if not saved_search_object:
+        return Response({"response": f"No saved filters found for search ID {search_id}"})
+
+    saved_filters = saved_search_object.criteria
+
+    if not saved_filters:
+        return Response({"response": "Saved filters for row with ID {search_id} are empty or invalid"})
+    
+    properties = Ejendomsdata.search(saved_filters)
+
+    if properties:
+        return Response({"response" : properties})
+    else:            
+        return Response({"response" : "no properties matching search criteria"})
 
 

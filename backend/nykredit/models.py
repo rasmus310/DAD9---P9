@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.db.models import JSONField
+from django.db.models import Q
 
 class searchSaved(models.Model):
     search_id = models.AutoField(primary_key=True)
@@ -40,6 +41,28 @@ class Ejendomsdata(models.Model):
     class Meta:
         managed = False
         db_table = 'ejendomsdata'
+    
+    @classmethod
+    def search(cls, filter_data, limit=50): # default value for limit (if not given by the user)
+
+        q = Q()
+        fields = ['id', 'bfe_nr']
+
+        if filter_data:
+            # loop både key + value med items() method 
+            for key, value in filter_data.items():
+                fields.append(key)
+                # tilføj kriterie til eksisterende Q objekt ved at AND dem sammen
+                # **{key: value} "udpakker" dictionary 
+                # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilføjes Q objektet som kriterie for søgning
+                q &= Q(**{key: value})
+
+            # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
+            properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
+
+            return properties
+        
+
 
 # For ejendomstype dropdown
 class Ejendomstype(models.Model):

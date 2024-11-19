@@ -31,6 +31,7 @@ function App() {
   const [selected_criteria, setCriteria] = useState({});
   const [search_criteria_configuration, setConfiguration] = useState([]);
   const [saved_searchID, setSavedSearch] = useState(null);
+  const [searchID, setSearchID] = useState();
 
   const resultForTable = response;
 
@@ -57,6 +58,7 @@ function App() {
   };
 
   async function handleSearch() {
+    setSavedSearch(null)
     try {
       const response = await axios.get("search/", {
         params: selected_criteria,
@@ -89,9 +91,10 @@ function App() {
 
   function resetCriteria() {
     setCriteria({});
+    setSearchID();
   }
 
-  async function gemFiltre() {
+  async function saveSearchFilters() {
     // overvej om det er bedre at håndtere i backend
     const criterias_to_save = selected_criteria;
     delete criterias_to_save.antal_resultater;
@@ -107,6 +110,24 @@ function App() {
         response: "fejl - søgekriterier ikke gemt",
       });
     }
+  }
+
+  async function handleIdSearch() {
+    try {
+      const response = await axios.get("search_id/", {
+        params: {search_id: searchID},
+      });
+      console.log("Response", response.data);
+      setResponse(response.data);
+    } catch {
+      setResponse({
+        antal_matches: "request fejlet.. tag dig sammen amatør-udvikler",
+      });
+    }
+  }
+
+  function handleIdselect(event) {
+    setSearchID(event.target.value)
   }
 
   return (
@@ -155,10 +176,21 @@ function App() {
         >
           Søg
         </Button>
-        <Button type="submit" onClick={resetCriteria}>
+        <div>
+          <input
+            type="text"
+            placeholder="indtast ID for gemt søgning"
+            onChange={handleIdselect}
+            value={searchID || ""}
+          />
+          <Button onClick={handleIdSearch}>
+            Søg på gemte filtre
+          </Button>
+        </div>
+        <Button onClick={resetCriteria}>
           Reset
         </Button>
-        <Button type="submit" onClick={gemFiltre}>
+        <Button onClick={saveSearchFilters}>
           Gem søgefiltre
         </Button>
         <div>
@@ -173,77 +205,6 @@ function App() {
       <div></div>
     </Router>
   );
-}
-
-{
-  /*}
-        <FilterComponent
-          apiEndpoint="/api/ejendomstype-options/"
-          label="Ejendomstype"
-          valueKey="ejendomstype"
-          displayKey="ejendomstype"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/landekode-options/"
-          label="Landekode"
-          valueKey="land"
-          displayKey="land_navn"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/forurenet-options/"
-          label="Forurenet"
-          valueKey="forurenet"
-          displayKey="forurenet"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/fk_brand-options/"
-          label="Fk_brand"
-          valueKey="fk_brand"
-          displayKey="fk_brand"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/risikovurdering-options/"
-          label="Risikovurdering"
-          valueKey="risikovurdering"
-          displayKey="risikovurdering"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/by-options/"
-          label="By"
-          valueKey="by"
-          displayKey="by_navn"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        {*/
 }
 
 export default App;
