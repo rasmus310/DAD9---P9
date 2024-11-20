@@ -36,6 +36,10 @@ def by_options(request):
     options = Lokation.objects.values('lokation_id', 'by_navn').distinct()
     return JsonResponse(list(options), safe=False)
 
+def postnummer_options(request):
+    options = Lokation.objects.values('postnummer').distinct()
+    return JsonResponse(list(options), safe=False)
+
 # get all search criteria 
 @api_view(['GET'])
 def get_search_criteria(request):

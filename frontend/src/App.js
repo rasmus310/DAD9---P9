@@ -152,21 +152,25 @@ function App() {
             />
           ))}
         </div>
-        <p>Postnummer</p>
-        <Postnummer
-          selected_criteria={selected_criteria}
-          handleSelect={handleSelect}
-        ></Postnummer>
-        <p>Antal ønskede resultater</p>
+        <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            width: "60%",
+            paddingTop: 40,
+          }}>
         <Antal_resultater
           selected_criteria={selected_criteria}
           handleSelect={handleSelect}
         ></Antal_resultater>
-        {/* Add more FilterComponent instances as needed */}{" "}
         <Button
           variant="contained"
-          size="large"
           sx={{
+            height: '56px', // Match the default height of TextField
+            padding: '0 16px', // Optional: Ensure padding matches
+            paddingInline: '40px', // Optional: Ensure padding matches
             backgroundColor: '#0f1e82',
             color: "white",
             "&:hover": {
@@ -178,16 +182,27 @@ function App() {
         >
           Søg
         </Button>
+        </div>
+        <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            width: "60%",
+            paddingTop: 15,
+          }}>
         <Button type="submit" onClick={resetCriteria}>
           Reset
         </Button>
         <Button type="submit" onClick={gemFiltre}>
           Gem søgefiltre
         </Button>
+        </div>
+        </div>
         <Box padding={10}>
         <ResultTable response={response} style={{ padding: 10 }} />
         </Box>
-      </div>
     </Router>
   );
 }

@@ -9,7 +9,7 @@ function SearchFilter({ activeFilters, onFilterToggle }) {
     { label: "Brand", value: "fk_brand" },
     { label: "Risikovurdering", value: "risikovurdering" },
     { label: "By", value: "lokation__by_navn" },
-    { label: "Postnummer", value: "postnummer" },
+    { label: "Postnummer", value: "lokation__postnummer" },
   ];
 
   const [inputValue, setInputValue] = useState("");
