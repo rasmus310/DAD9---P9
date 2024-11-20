@@ -6,7 +6,11 @@ function ResultTable({ response }) {
   console.log("Response objektet", response);
 
   if (!response || !Array.isArray(response.response)) {
-    return <Typography>Ingen resultater</Typography>;
+    return  <Box display="flex" justifyContent="center" alignItems="center">
+    <Typography variant="subtitle1" textAlign="center" sx={{ marginBottom: 2 }}>
+      Ingen resultater
+    </Typography>
+  </Box>;
   }
   // Extract rows from response
   const rows = response.response;
