@@ -81,16 +81,20 @@ def simple_search2_view(request):
 
     randomize = filter_data.pop('randomize', 'false').lower() == 'true'
 
-    # find ejendomme i databasen ved at kalde classmethod search fra Ejendomsdata class
-    properties = Ejendomsdata.search(filter_data, limit)
+    # find ejendomme i databasen
+    properties = Ejendomsdata.objects.filter(**filter_data)
+
+    # Randomisering af orderen på resultater (Det her er database level randomisering for at få TRULY random)
+    if randomize:
+        properties = properties.order_by('?')
+
+    # Tilføj limit efter randomisering
+    properties = properties[:limit]  
 
     if properties:
-        #The randomize logic here currently shuffles the list after querying the database.
-        #Jeg shuffler det altså rundt lige pt EFTER vi har queryet databasen om resultatet, derfor den ikke giver et "random" resultat hvis du tager fx en limit på 1.
-        if randomize:
-            properties = list(properties)
-            random.shuffle(properties)
-        return Response({"response": properties})
+        # konverter properties til list
+        response_data = list(properties.values()) 
+        return Response({"response": response_data})
 
     # response hvis filter valgt men ingen ejendomme fundet
     response_message = f"GET request successful with filter {filter_data.values()} but no matching data"
