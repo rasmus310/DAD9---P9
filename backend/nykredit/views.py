@@ -2,11 +2,10 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Ejendomsdata
+from .models import Ejendomsdata, Ejendomstype, Landekode, Lokation, searchSaved
 import random
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import Ejendomstype, Landekode, Lokation
 from .fieldmapping import search_criteria_mapping, direct_search_criteria
 from .search_criteria_configurations import search_criteria
 
@@ -77,57 +76,14 @@ def simple_search2_view(request):
     print(f"Filters received: {filter_data}")
 
     # limit = antal ønskede resultater sendt frontend som key:value pair med key "antal_resultater" 
-    limit = int(filter_data.pop('antal_resultater', 10))
+    # default value
+    limit = int(filter_data.pop('antal_resultater', 50))
 
-    q = Q()
-    fields = ['id', 'bfe_nr']
+    # find ejendomme i databasen ved at kalde classmethod search fra Ejendomsdata class
+    properties = Ejendomsdata.search(filter_data, limit)
 
-    """" BRUGES MED MAPPING FIL
-    # Test: print søgekriterier efter mapping
-    for key, value in filter_data.items():
-        if key in search_criteria_mapping: 
-            print(f"filter efter mapping: {search_criteria_mapping[key]} : {value}")
-    
-    if filter_data:
-        # loop både key + value med items() method 
-        # (fungerer nu kun med enkelt value for hvert kriterie - fx kun én valgt/sendt værdi for ejendomstype)
-        for key, value in filter_data.items():
-            #fields.append(key)
-            # tilføj kriterie til eksisterende Q objekt ved at AND dem sammen
-            # **{key: value} "udpakker" dictionary 
-            # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilføjes Q objektet som kriterie for søgning
-            if key in search_criteria_mapping:
-               fields.append(search_criteria_mapping[key])
-               q &= Q(**{search_criteria_mapping[key]: value})
-            elif key in direct_search_criteria:
-                fields.append(key)
-                q &= Q(**{key: value})
-            else:
-                return Response({"response" : "Ugyldigt søgekriterie"})
-    """
-
-    if filter_data:
-        # loop både key + value med items() method 
-        for key, value in filter_data.items():
-            fields.append(key)
-            # tilføj kriterie til eksisterende Q objekt ved at AND dem sammen
-            # **{key: value} "udpakker" dictionary 
-            # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilføjes Q objektet som kriterie for søgning
-            q &= Q(**{key: value})
-
-        # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
-        properties = list(Ejendomsdata.objects.filter(q).values(*fields))
-
-        # hvis ejendomme er fundet / eksisterer
-        if properties:
-            # returner antal valgte søge resultater, hvis ikke der er færre resultater end ønsket 
-            if len(properties) >= limit:
-                # vælg antal random resultater
-                random_selection = random.sample(properties, limit)
-                return Response({"response" : random_selection})
-            # hvis færre resultater end ønsket, returner alle fundne resultater
-            else:
-                return Response({"response" : properties})
+    if properties:
+        return Response({"response" : properties})
 
     # response hvis filter valgt men ingen ejendomme fundet
     response_message = f"GET request successful with filter {filter_data.values()} but no matching data"
@@ -136,11 +92,51 @@ def simple_search2_view(request):
 # gem søgening
 @api_view(['POST'])
 def save_search_view(request):
-    search = request.data
-
-    print(f"søgning der skal gemmes: {request.data}")
+    request_data = request.data
     
-    return Response({"response" : search})
+    # get method retrieves the value associated with the 'params' key 
+    search_criteria = request_data.get('params')
 
+    if not search_criteria:  
+        return Response({"response": "No filters provided, search not saved"})
+    
+    #test
+    print(f"søgning der skal gemmes: {search_criteria}")
+
+    saved_search_object = searchSaved.create_saved_search(search_criteria)
+    #test
+    print(f"saved search object: {saved_search_object}")
+    
+    # return id på den gemte søgning
+    response_data = {"search_id": saved_search_object.search_id}
+    return Response(response_data)
+
+
+# søgning på gemt filtrering 
+@api_view(['GET'])
+def search_saved_filters_view(request):
+    
+    search_id = request.GET.get('search_id')
+
+    if not search_id:
+        return Response({"response":"ID parameter required"})
+    
+    saved_search_object = searchSaved.objects.filter(search_id=search_id).first()
+
+    if not saved_search_object:
+        return Response({"response": f"No saved filters found for search ID {search_id}"})
+
+    search_criteria = saved_search_object.criteria
+
+    if not search_criteria:
+        return Response({"response": "Saved filters for row with ID {search_id} are empty or invalid"})
+    
+    # OBS: Skal kalde method for random search 
+    properties = Ejendomsdata.search(search_criteria)
+
+    if properties:
+        return Response({"response" : properties})
+    else:            
+        return Response({"response" : "no properties matching search criteria"})
 
 

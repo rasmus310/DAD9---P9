@@ -25,6 +25,9 @@ function App() {
   const [response, setResponse] = useState();
   const [selected_criteria, setCriteria] = useState({});
   const [search_criteria_configuration, setConfiguration] = useState([]);
+  const [saved_searchID, setSavedSearch] = useState(null);
+  const [searchID, setSearchID] = useState();
+  //const resultForTable = response; BLIVER IKKE BRUGT?
   const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
 
   useEffect(() => {
@@ -50,6 +53,7 @@ function App() {
   };
 
   async function handleSearch() {
+    setSavedSearch(null)
     try {
       const response = await axios.get("search/", {
         params: selected_criteria,
@@ -82,21 +86,42 @@ function App() {
 
   function resetCriteria() {
     setCriteria({});
+    setSearchID();
   }
 
-  async function gemFiltre() {
+  async function saveSearchFilters() {
     const criterias_to_save = selected_criteria;
+    // number of results is not saved 
     delete criterias_to_save.antal_resultater;
     try {
       const response = await axios.post("/save_search/", {
         params: criterias_to_save,
       });
-      setResponse(response.data);
+      const savedSearchID = response.data.search_id; 
+      setSavedSearch(savedSearchID);  
     } catch {
-      setResponse({
+      setSavedSearch({
         response: "fejl - søgekriterier ikke gemt",
       });
     }
+  }
+
+  async function handleIdSearch() {
+    try {
+      const response = await axios.get("search_id/", {
+        params: {search_id: searchID},
+      });
+      console.log("Response", response.data);
+      setResponse(response.data);
+    } catch {
+      setResponse({
+        antal_matches: "request fejlet.. tag dig sammen amatør-udvikler!!",
+      });
+    }
+  }
+
+  function handleIdselect(event) {
+    setSearchID(event.target.value)
   }
 
   const handleFilterToggle = (filter) => {
@@ -182,7 +207,19 @@ function App() {
         >
           Søg
         </Button>
+
+        <div>
+          <input
+            type="text"
+            placeholder="indtast ID for gemt søgning"
+            onChange={handleIdselect}
+            value={searchID || ""}
+          />
+          <Button onClick={handleIdSearch}>
+            Søg på gemte filtre
+          </Button>
         </div>
+      
         <div style={{
             display: "flex",
             justifyContent: "center",
@@ -195,9 +232,20 @@ function App() {
         <Button type="submit" onClick={resetCriteria}>
           Reset
         </Button>
-        <Button type="submit" onClick={gemFiltre}>
+        <Button onClick={saveSearchFilters}>
           Gem søgefiltre
         </Button>
+
+        <div>
+          {saved_searchID && (
+            <div>
+              Søgning gemt med ID: {saved_searchID}
+            </div>
+          )}
+        </div>
+        <ResultTable response={response} />
+      </div>
+      <div></div>
         </div>
         </div>
         <Box padding={10}>
