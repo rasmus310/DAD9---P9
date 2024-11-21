@@ -90,20 +90,21 @@ def simple_search2_view(request):
 def save_search_view(request):
     request_data = request.data
     
-    filters = request_data.get('params')
+    # get method retrieves the value associated with the 'params' key 
+    search_criteria = request_data.get('params')
 
-    if not filters:  
+    if not search_criteria:  
         return Response({"response": "No filters provided, search not saved"})
     
     #test
-    print(f"søgning der skal gemmes: {filters}")
+    print(f"søgning der skal gemmes: {search_criteria}")
 
-    saved_search = searchSaved.create_saved_search(filters)
+    saved_search_object = searchSaved.create_saved_search(search_criteria)
     #test
-    print(f"saved search object: {saved_search}")
+    print(f"saved search object: {saved_search_object}")
     
     # return id på den gemte søgning
-    response_data = {"search_id": saved_search.search_id}
+    response_data = {"search_id": saved_search_object.search_id}
     return Response(response_data)
 
 
@@ -121,12 +122,13 @@ def search_saved_filters_view(request):
     if not saved_search_object:
         return Response({"response": f"No saved filters found for search ID {search_id}"})
 
-    saved_filters = saved_search_object.criteria
+    search_criteria = saved_search_object.criteria
 
-    if not saved_filters:
+    if not search_criteria:
         return Response({"response": "Saved filters for row with ID {search_id} are empty or invalid"})
     
-    properties = Ejendomsdata.search(saved_filters)
+    # OBS: Skal kalde method for random search 
+    properties = Ejendomsdata.search(search_criteria)
 
     if properties:
         return Response({"response" : properties})
