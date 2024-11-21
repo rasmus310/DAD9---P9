@@ -76,11 +76,13 @@ def simple_search2_view(request):
     print(f"Filters received: {filter_data}")
 
     # limit = antal ønskede resultater sendt frontend som key:value pair med key "antal_resultater" 
-    # default value
     limit = int(filter_data.pop('antal_resultater', 50))
+    randomize = filter_data.pop('randomize', 'false').lower() == 'true'
 
-    # find ejendomme i databasen ved at kalde classmethod search fra Ejendomsdata class
-    properties = Ejendomsdata.search(filter_data, limit)
+    if randomize: 
+        properties = Ejendomsdata.searchRandom(filter_data, limit)
+    else:
+        properties = Ejendomsdata.search(filter_data, limit)
 
     if properties:
         return Response({"response" : properties})
@@ -132,7 +134,7 @@ def search_saved_filters_view(request):
         return Response({"response": "Saved filters for row with ID {search_id} are empty or invalid"})
     
     # OBS: Skal kalde method for random search 
-    properties = Ejendomsdata.search(search_criteria)
+    properties = Ejendomsdata.searchRandom(search_criteria)
 
     if properties:
         return Response({"response" : properties})
