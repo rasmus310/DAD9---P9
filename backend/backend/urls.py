@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from nykredit import views
-from nykredit.views import simple_search_view, simple_search2_view, ejendomstype_options, landekode_options, save_search_view, postnummer_options, search_saved_filters_view, forurenet_options, fk_brand_options, risikovurdering_options, by_options, get_search_criteria
+from nykredit.views import simple_search2_view, ejendomstype_options, landekode_options, save_search_view, postnummer_options, search_saved_filters_view, forurenet_options, fk_brand_options, risikovurdering_options, by_options, get_search_criteria
 
 router = routers.DefaultRouter()
 #router.register(r'nykredit', views.simple_search_view, 'nykredit')
@@ -26,7 +26,6 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('simple_search/', simple_search_view, name='simple_search_view'),
     path('save_search/', save_search_view, name='save_search_view'),
     path('search/', simple_search2_view, name='simple_search2_view'),
     path('search_id/', search_saved_filters_view, name='search_saved_filters_view'),
