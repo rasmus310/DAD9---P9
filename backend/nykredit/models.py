@@ -43,7 +43,6 @@ class Ejendomsdata(models.Model):
         db_table = 'ejendomsdata'
     
     @classmethod
-    # default value for limit (if limit parameter not given)
     def search(cls, filter_data, limit=50): 
 
         q = Q()
@@ -65,7 +64,6 @@ class Ejendomsdata(models.Model):
     
 
     @classmethod
-    # search with random rows 
     def searchRandom(cls, filter_data, limit=10): 
 
         q = Q()

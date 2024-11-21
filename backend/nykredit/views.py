@@ -44,28 +44,6 @@ def postnummer_options(request):
 def get_search_criteria(request):
     return JsonResponse(search_criteria, safe=False)
 
-# simple_search
-@api_view(['GET'])
-def simple_search_view(request):
-    filter_value = request.GET.get('filter')
-
-    # check om filter er valgt
-    if filter_value == "":
-        response_message = "GET request successful with no filter."
-        return Response({"response" : response_message})
-
-    # find ejendomme i databasen
-    matching_properties = Ejendomsdata.objects.filter(ejendomstype_kode = filter_value)
-
-    # hvis ejendomme er fundet / eksisterer
-    if matching_properties.exists():
-        property = random.choice(matching_properties)
-        return Response({"response" : property.id})
-
-    # response hvis filter valgt men ingen ejendomme funder
-    response_message = f"GET request successful with filter {filter_value} but no matching data"
-    return Response({"response" : response_message})
-
 # simple_search2
 @api_view(['GET'])
 def simple_search2_view(request):
@@ -123,17 +101,18 @@ def search_saved_filters_view(request):
     if not search_id:
         return Response({"response":"ID parameter required"})
     
+    # first() returns None if not match is found (or the first match found)
     saved_search_object = searchSaved.objects.filter(search_id=search_id).first()
 
     if not saved_search_object:
         return Response({"response": f"No saved filters found for search ID {search_id}"})
 
+    # extract serach criteria from the record
     search_criteria = saved_search_object.criteria
 
     if not search_criteria:
         return Response({"response": "Saved filters for row with ID {search_id} are empty or invalid"})
     
-    # OBS: Skal kalde method for random search 
     properties = Ejendomsdata.searchRandom(search_criteria)
 
     if properties:
