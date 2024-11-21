@@ -19,7 +19,7 @@ search_criteria = [
     },
     {
         'optionsEndpoint':'/api/fk_brand-options/',
-        'label':"Fk_brand",
+        'label':"Brandkode",
         'valueKey':'fk_brand',
         'displayKey':'fk_brand',
     },
@@ -34,6 +34,12 @@ search_criteria = [
         'label':'By',
         'valueKey':'lokation__by_navn',
         'displayKey':'by_navn',
+    },
+     {
+        'optionsEndpoint':'/api/postnummer-options/',
+        'label':'Postnummer',
+        'valueKey':'lokation__postnummer',
+        'displayKey':'postnummer',
     },
 ]
 

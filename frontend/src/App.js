@@ -4,34 +4,28 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
 import Navbar from "./components/SøgPåGemtID/Navbar";
 import SearchSection from "./components/SøgPåGemtID/SearchSection";
-import FilterSearch from "./components/NySøgning/FilterSearch";
 import FilterComponent from "./components/FilterComponent";
-import SimpleSearch2 from "./components/simpleSearch2";
 import "./App.css";
-import { Button, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
-import Ejendomstype from "./components/search_components/ejendomstype";
-import Risikovurdering from "./components/search_components/risikovurdering";
 import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
-import Fkbrand from "./components/search_components/fk_brand";
 import ResultTable from "./components/ResultTable";
+import SearchFilter from "./components/SearchFilter";
+import Logo from "./components/Logo";
 
 function App() {
   const [filters, setFilters] = useState({
-    ejendomstype: "",
-    landekode: "",
+    
     // Add more filters as needed
   });
   const [response, setResponse] = useState();
   const [selected_criteria, setCriteria] = useState({});
   const [search_criteria_configuration, setConfiguration] = useState([]);
-
-  const resultForTable = response;
+  const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
 
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
@@ -91,69 +85,93 @@ function App() {
   }
 
   async function gemFiltre() {
-    // overvej om det er bedre at håndtere i backend
     const criterias_to_save = selected_criteria;
     delete criterias_to_save.antal_resultater;
     try {
       const response = await axios.post("/save_search/", {
         params: criterias_to_save,
       });
-      // OBS gem respons in egen variabel i stedet for at bruge samme som til søgeresultat
       setResponse(response.data);
     } catch {
-      // OBS gem respons in egen variabel i stedet for at bruge samme som til søgeresultat
       setResponse({
         response: "fejl - søgekriterier ikke gemt",
       });
     }
   }
 
+  const handleFilterToggle = (filter) => {
+    setActiveFilters((prevActiveFilters) =>
+      prevActiveFilters.includes(filter)
+        ? prevActiveFilters.filter((f) => f !== filter)
+        : [...prevActiveFilters, filter]
+    );
+  };
+
+  const deactivateFilter = (filter) => {
+    setActiveFilters((prevActiveFilters) =>
+      prevActiveFilters.filter((f) => f !== filter)
+    );
+  };
+
   return (
     <Router>
       <div className="App">
         <Navbar />
+        <Logo />
+        <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
         </Routes>
+
         <div
-  style={{
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "16px",
-    alignItems: "center",
-    width: "50%",
-  }}
->
-  {search_criteria_configuration.map((criteria) => (
-    <FilterComponent
-      key={criteria.valueKey}
-      apiEndpoint={criteria.optionsEndpoint}
-      label={criteria.label}
-      valueKey={criteria.valueKey}
-      displayKey={criteria.displayKey}
-      selected_criteria={selected_criteria}
-      onChange={(event) => {
-        handleFilterChange(event);
-        handleSelect(event);
-      }}
-    />
-  ))}
-</div>
-        <p>Postnummer</p>
-        <Postnummer
-          selected_criteria={selected_criteria}
-          handleSelect={handleSelect}
-        ></Postnummer>
-        <p>Antal ønskede resultater</p>
+        // Styling til visning af filter-komponenter
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            width: "60%",
+          }}
+        >
+          {search_criteria_configuration.map((criteria) => (
+            <FilterComponent
+              key={criteria.valueKey}
+              apiEndpoint={criteria.optionsEndpoint}
+              label={criteria.label}
+              valueKey={criteria.valueKey}
+              displayKey={criteria.displayKey}
+              selected_criteria={selected_criteria}
+              handleSelect={handleSelect}
+              onChange={(event) => {
+                handleFilterChange(event);
+                handleSelect(event);
+              }}
+              active={activeFilters.includes(criteria.valueKey)} // Pass active state
+              deactivateFilter={() => deactivateFilter(criteria.valueKey)} // Pass deactivate function
+            />
+          ))}
+        </div>
+        <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            width: "60%",
+            paddingTop: 40,
+          }}>
         <Antal_resultater
           selected_criteria={selected_criteria}
           handleSelect={handleSelect}
         ></Antal_resultater>
-        {/* Add more FilterComponent instances as needed */}{" "}
         <Button
           variant="contained"
           sx={{
-            backgroundColor: "primary.main",
+            height: '56px', // Match the default height of TextField
+            padding: '0 16px', // Optional: Ensure padding matches
+            paddingInline: '40px', // Optional: Ensure padding matches
+            backgroundColor: '#0f1e82',
             color: "white",
             "&:hover": {
               backgroundColor: "primary.dark",
@@ -164,88 +182,29 @@ function App() {
         >
           Søg
         </Button>
+        </div>
+        <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            width: "60%",
+            paddingTop: 15,
+          }}>
         <Button type="submit" onClick={resetCriteria}>
           Reset
         </Button>
         <Button type="submit" onClick={gemFiltre}>
           Gem søgefiltre
         </Button>
-        <ResultTable response={response} />
-      </div>
-      <div></div>
+        </div>
+        </div>
+        <Box padding={10}>
+        <ResultTable response={response} style={{ padding: 10 }} />
+        </Box>
     </Router>
   );
-}
-
-{
-  /*}
-        <FilterComponent
-          apiEndpoint="/api/ejendomstype-options/"
-          label="Ejendomstype"
-          valueKey="ejendomstype"
-          displayKey="ejendomstype"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/landekode-options/"
-          label="Landekode"
-          valueKey="land"
-          displayKey="land_navn"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/forurenet-options/"
-          label="Forurenet"
-          valueKey="forurenet"
-          displayKey="forurenet"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/fk_brand-options/"
-          label="Fk_brand"
-          valueKey="fk_brand"
-          displayKey="fk_brand"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/risikovurdering-options/"
-          label="Risikovurdering"
-          valueKey="risikovurdering"
-          displayKey="risikovurdering"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        <FilterComponent
-          apiEndpoint="/api/by-options/"
-          label="By"
-          valueKey="by"
-          displayKey="by_navn"
-          selected_criteria={selected_criteria}
-          onChange={(event) => {
-            handleFilterChange(event);
-            handleSelect(event);
-          }}
-        />
-        {*/
 }
 
 export default App;
