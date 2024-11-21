@@ -3,8 +3,9 @@
   justify-content: flex-start; /* Align items to the start (left) */
   align-items: center; /* Center items vertically in the navbar*/
   width: 100%;
-  background-color: #d3d3d3;
-  padding: 20px; /* Add some space to the text so its not so UGLAY */
+  background-color: #ffffff;
+  padding: 25px; /* Add some space to the text so its not so UGLAY */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Add a shadow to the navbar */
 }
 
 .nav-logo {
@@ -18,9 +19,10 @@
 }
 
   .nav-item {
-    font-size: 1.2em;
-    color: black;
-    margin-right: 50px; /* Add some space between items */
+    font-size: 18px;
+    color: #0f1e82;
+    margin-right: 55px; /* Add some space between items */
+    text-decoration: none;
   }
   
   .nav-item.active {

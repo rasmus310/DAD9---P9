@@ -4,27 +4,22 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
 import Navbar from "./components/SøgPåGemtID/Navbar";
 import SearchSection from "./components/SøgPåGemtID/SearchSection";
-import FilterSearch from "./components/NySøgning/FilterSearch";
 import FilterComponent from "./components/FilterComponent";
-import SimpleSearch2 from "./components/simpleSearch2";
 import "./App.css";
-import { Button, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
-import Ejendomstype from "./components/search_components/ejendomstype";
-import Risikovurdering from "./components/search_components/risikovurdering";
 import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
-import Fkbrand from "./components/search_components/fk_brand";
 import ResultTable from "./components/ResultTable";
+import SearchFilter from "./components/SearchFilter";
+import Logo from "./components/Logo";
 
 function App() {
   const [filters, setFilters] = useState({
-    ejendomstype: "",
-    landekode: "",
+    
     // Add more filters as needed
   });
   const [response, setResponse] = useState();
@@ -32,8 +27,8 @@ function App() {
   const [search_criteria_configuration, setConfiguration] = useState([]);
   const [saved_searchID, setSavedSearch] = useState(null);
   const [searchID, setSearchID] = useState();
-
-  const resultForTable = response;
+  //const resultForTable = response; BLIVER IKKE BRUGT?
+  const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
 
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
@@ -102,7 +97,6 @@ function App() {
       const response = await axios.post("/save_search/", {
         params: criterias_to_save,
       });
-      
       const savedSearchID = response.data.search_id; 
       setSavedSearch(savedSearchID);  
     } catch {
@@ -121,7 +115,7 @@ function App() {
       setResponse(response.data);
     } catch {
       setResponse({
-        antal_matches: "request fejlet.. tag dig sammen amatør-udvikler",
+        antal_matches: "request fejlet.. tag dig sammen amatør-udvikler!!",
       });
     }
   }
@@ -130,42 +124,79 @@ function App() {
     setSearchID(event.target.value)
   }
 
+  const handleFilterToggle = (filter) => {
+    setActiveFilters((prevActiveFilters) =>
+      prevActiveFilters.includes(filter)
+        ? prevActiveFilters.filter((f) => f !== filter)
+        : [...prevActiveFilters, filter]
+    );
+  };
+
+  const deactivateFilter = (filter) => {
+    setActiveFilters((prevActiveFilters) =>
+      prevActiveFilters.filter((f) => f !== filter)
+    );
+  };
+
   return (
     <Router>
       <div className="App">
         <Navbar />
+        <Logo />
+        <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
         </Routes>
-        {search_criteria_configuration.map((criteria) => (
-          <FilterComponent
-            key={criteria.valueKey}
-            apiEndpoint={criteria.optionsEndpoint}
-            label={criteria.label}
-            valueKey={criteria.valueKey}
-            displayKey={criteria.displayKey}
-            selected_criteria={selected_criteria}
-            onChange={(event) => {
-              handleFilterChange(event);
-              handleSelect(event);
-            }}
-          />
-        ))}
-        <p>Postnummer</p>
-        <Postnummer
-          selected_criteria={selected_criteria}
-          handleSelect={handleSelect}
-        ></Postnummer>
-        <p>Antal ønskede resultater</p>
+
+        <div
+        // Styling til visning af filter-komponenter
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            width: "60%",
+          }}
+        >
+          {search_criteria_configuration.map((criteria) => (
+            <FilterComponent
+              key={criteria.valueKey}
+              apiEndpoint={criteria.optionsEndpoint}
+              label={criteria.label}
+              valueKey={criteria.valueKey}
+              displayKey={criteria.displayKey}
+              selected_criteria={selected_criteria}
+              handleSelect={handleSelect}
+              onChange={(event) => {
+                handleFilterChange(event);
+                handleSelect(event);
+              }}
+              active={activeFilters.includes(criteria.valueKey)} // Pass active state
+              deactivateFilter={() => deactivateFilter(criteria.valueKey)} // Pass deactivate function
+            />
+          ))}
+        </div>
+        <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            width: "60%",
+            paddingTop: 40,
+          }}>
         <Antal_resultater
           selected_criteria={selected_criteria}
           handleSelect={handleSelect}
         ></Antal_resultater>
-        {/* Add more FilterComponent instances as needed */}{" "}
         <Button
           variant="contained"
           sx={{
-            backgroundColor: "primary.main",
+            height: '56px', // Match the default height of TextField
+            padding: '0 16px', // Optional: Ensure padding matches
+            paddingInline: '40px', // Optional: Ensure padding matches
+            backgroundColor: '#0f1e82',
             color: "white",
             "&:hover": {
               backgroundColor: "primary.dark",
@@ -176,6 +207,7 @@ function App() {
         >
           Søg
         </Button>
+
         <div>
           <input
             type="text"
@@ -187,12 +219,23 @@ function App() {
             Søg på gemte filtre
           </Button>
         </div>
-        <Button onClick={resetCriteria}>
+      
+        <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "16px",
+            width: "60%",
+            paddingTop: 15,
+          }}>
+        <Button type="submit" onClick={resetCriteria}>
           Reset
         </Button>
         <Button onClick={saveSearchFilters}>
           Gem søgefiltre
         </Button>
+
         <div>
           {saved_searchID && (
             <div>
@@ -203,6 +246,11 @@ function App() {
         <ResultTable response={response} />
       </div>
       <div></div>
+        </div>
+        </div>
+        <Box padding={10}>
+        <ResultTable response={response} style={{ padding: 10 }} />
+        </Box>
     </Router>
   );
 }

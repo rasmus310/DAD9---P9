@@ -1,0 +1,52 @@
+import React, { useState } from "react";
+import { Autocomplete, TextField, Box, Typography } from "@mui/material";
+
+function SearchFilter({ activeFilters, onFilterToggle }) {
+  const options = [
+    { label: "Ejendomstype", value: "ejendomstype_kode__ejendomstype" },
+    { label: "Landekode", value: "land__land_navn" },
+    { label: "Forurenet", value: "forurenet" },
+    { label: "Brand", value: "fk_brand" },
+    { label: "Risikovurdering", value: "risikovurdering" },
+    { label: "By", value: "lokation__by_navn" },
+    { label: "Postnummer", value: "lokation__postnummer" },
+  ];
+
+  const [inputValue, setInputValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState(null);
+
+  // Filter options based on activeFilters
+  const filteredOptions = options.filter(option => !activeFilters.includes(option.value));
+
+  return (
+    <Box p={8}>
+      <Autocomplete
+        id="autocomplete"
+        options={filteredOptions}
+        getOptionLabel={(option) => option.label}
+        value={selectedValue}
+        onChange={(event, newValue) => {
+          setSelectedValue(newValue);
+          if (newValue) {
+            onFilterToggle(newValue.value); // Call the handler with the selected value
+          }
+        }}
+        inputValue={inputValue}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Søg på filter"
+            variant="outlined"
+            fullWidth
+          />
+        )}
+        style={{ width: 600, display: 'inline-block' }}
+      />
+    </Box>
+  );
+}
+
+export default SearchFilter;
