@@ -62,6 +62,28 @@ class Ejendomsdata(models.Model):
             properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
 
             return properties
+    
+
+    @classmethod
+    # search with random rows 
+    def searchRandom(cls, filter_data, limit=50): 
+
+        q = Q()
+        fields = ['id', 'bfe_nr']
+
+        if filter_data:
+            # loop både key + value med items() method 
+            for key, value in filter_data.items():
+                fields.append(key)
+                # tilføj kriterie til eksisterende Q objekt ved at AND dem sammen
+                # **{key: value} "udpakker" dictionary 
+                # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilføjes Q objektet som kriterie for søgning
+                q &= Q(**{key: value})
+
+            # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
+            properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
+
+            return properties
         
 
 # For ejendomstype dropdown
