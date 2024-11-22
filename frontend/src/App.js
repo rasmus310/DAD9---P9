@@ -7,9 +7,10 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/SøgPåGemtID/Navbar";
 import SearchSection from "./components/SøgPåGemtID/SearchSection";
+import test from "./components/SøgPåGemtID/test";
 import FilterComponent from "./components/FilterComponent";
 import "./App.css";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, TextField } from "@mui/material";
 import axios from "axios";
 import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
@@ -146,6 +147,7 @@ function App() {
         <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
+          <Route path="/test" element={<test />} />
         </Routes>
 
         <div
@@ -207,19 +209,7 @@ function App() {
         >
           Søg
         </Button>
-
-        <div>
-          <input
-            type="text"
-            placeholder="indtast ID for gemt søgning"
-            onChange={handleIdselect}
-            value={searchID || ""}
-          />
-          <Button onClick={handleIdSearch}>
-            Søg på gemte filtre
-          </Button>
-        </div>
-      
+      </div>
         <div style={{
             display: "flex",
             justifyContent: "center",
@@ -233,18 +223,38 @@ function App() {
           Reset
         </Button>
         <Button onClick={saveSearchFilters}>
-          Gem søgefiltre
+          Gem søgning
         </Button>
-
+        <TextField
+            type="text"
+            variant="outlined"
+            placeholder="Search ID"
+            onChange={handleIdselect}
+            value={searchID || ""}
+          />
+          <Button 
+          variant="contained"
+          sx={{
+            height: '56px', // Match the default height of TextField
+            padding: '0 16px', // Optional: Ensure padding matches
+            paddingInline: '40px', // Optional: Ensure padding matches
+            backgroundColor: '#0f1e82',
+            color: "white",
+            "&:hover": {
+              backgroundColor: "primary.dark",
+            },
+          }} 
+          onClick={handleIdSearch}>
+            Søg på search ID
+          </Button>
         <div>
           {saved_searchID && (
             <div>
               Søgning gemt med ID: {saved_searchID}
             </div>
+            
           )}
         </div>
-        <ResultTable response={response} />
-      </div>
       <div></div>
         </div>
         </div>
