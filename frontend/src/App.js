@@ -1,5 +1,5 @@
 // App.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -30,6 +30,11 @@ function App() {
   const [searchID, setSearchID] = useState();
   //const resultForTable = response; BLIVER IKKE BRUGT?
   const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
+  const sectionOneRef = useRef(null);
+
+const scrollToSection = (sectionRef) => {
+  sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+};
 
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
@@ -142,7 +147,12 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar />
+      <Navbar
+        searchID={searchID}
+        handleIdselect={handleIdselect}
+        handleIdSearch={handleIdSearch}
+        scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
+        />
         <Logo />
         <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
         <Routes>
@@ -205,7 +215,10 @@ function App() {
             },
           }}
           type="submit"
-          onClick={handleSearch}
+          onClick={() => {
+            handleSearch();
+            scrollToSection(sectionOneRef);
+          }}
         >
           Søg
         </Button>
@@ -225,7 +238,7 @@ function App() {
         <Button onClick={saveSearchFilters}>
           Gem søgning
         </Button>
-        <TextField
+        {/* <TextField
             type="text"
             variant="outlined"
             placeholder="Search ID"
@@ -246,7 +259,7 @@ function App() {
           }} 
           onClick={handleIdSearch}>
             Søg på search ID
-          </Button>
+          </Button>*/}
         <div>
           {saved_searchID && (
             <div>
@@ -259,7 +272,7 @@ function App() {
         </div>
         </div>
         <Box padding={10}>
-        <ResultTable response={response} style={{ padding: 10 }} />
+        <ResultTable ref={sectionOneRef} response={response} style={{ padding: 10 }} />        
         </Box>
     </Router>
   );

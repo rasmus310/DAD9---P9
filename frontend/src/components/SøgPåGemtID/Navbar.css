@@ -1,33 +1,43 @@
 .navbar {
   display: flex;
-  justify-content: flex-start; /* Align items to the start (left) */
-  align-items: center; /* Center items vertically in the navbar*/
+  justify-content: space-between; /* Distribute items: left (logo + links) and right (search) */
+  align-items: center; /* Vertically center items */
   width: 100%;
   background-color: #ffffff;
-  padding: 25px; /* Add some space to the text so its not so UGLAY */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Add a shadow to the navbar */
+  padding: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .nav-logo {
   font-size: 1.5em;
   font-weight: bold;
-  margin-right: 50px; /* Add some space between the logo and the nav items */
-  background-color: white; /* White background */
-  color: #004285; /* Blue characters */
-  padding: 5px 10px; /* Add some padding */
-  border-radius: 5px; /* Optional: Add some border radius for rounded corners */
+  margin-right: 50px;
+  background-color: white;
+  color: #004285;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 
-  .nav-item {
-    font-size: 18px;
-    color: #0f1e82;
-    margin-right: 55px; /* Add some space between items */
-    text-decoration: none;
-  }
-  
-  .nav-item.active {
-    color: #004285; /* Purple color to highlight the active tab */
-    font-weight: bold;
-    border-bottom: 3px solid #004285; /* Thicker underline than just using the "text-decoration: underline;"*/
-  }
-  
+.nav-links {
+  display: flex; /* Group the links together */
+  align-items: center;
+  gap: 55px; /* Space between links */
+}
+
+.nav-item {
+  font-size: 18px;
+  color: #0f1e82;
+  text-decoration: none;
+}
+
+.nav-item.active {
+  color: #004285;
+  font-weight: bold;
+  border-bottom: 3px solid #004285;
+}
+
+.searchSection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
