@@ -31,10 +31,21 @@ function App() {
   //const resultForTable = response; BLIVER IKKE BRUGT?
   const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
   const sectionOneRef = useRef(null);
+  const [isTableVisible, setTableVisible] = useState(false);
+
 
 const scrollToSection = (sectionRef) => {
   sectionRef.current?.scrollIntoView({ behavior: "smooth" });
 };
+
+useEffect(() => {
+  if (isTableVisible) {
+    const scrollTimeout = setTimeout(() => {
+      scrollToSection(sectionOneRef);
+    }, 100); // Wait 100ms to ensure rendering is complete
+    return () => clearTimeout(scrollTimeout); // Cleanup timeout
+  }
+}, [isTableVisible]);
 
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
@@ -60,12 +71,15 @@ const scrollToSection = (sectionRef) => {
 
   async function handleSearch() {
     setSavedSearch(null)
+    //setTableVisible(false); // Hide table before search
     try {
       const response = await axios.get("search/", {
         params: selected_criteria,
       });
       console.log("Response", response.data);
       setResponse(response.data);
+      setTableVisible(true); // Show table after receiving data
+
     } catch {
       setResponse({
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler",
@@ -272,7 +286,9 @@ const scrollToSection = (sectionRef) => {
         </div>
         </div>
         <Box padding={10}>
-        <ResultTable ref={sectionOneRef} response={response} style={{ padding: 10 }} />        
+          {isTableVisible && (
+        <ResultTable ref={sectionOneRef} response={response} style={{ padding: 10 }} />    
+          )}    
         </Box>
     </Router>
   );
