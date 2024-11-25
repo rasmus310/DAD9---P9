@@ -1,5 +1,5 @@
 // App.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/SøgPåGemtID/Navbar";
 import SearchSection from "./components/SøgPåGemtID/SearchSection";
+import test from "./components/SøgPåGemtID/test";
 import FilterComponent from "./components/FilterComponent";
 import "./App.css";
 import { Box, Button, Checkbox, Typography, FormControlLabel } from "@mui/material";
@@ -30,6 +31,22 @@ function App() {
   //const resultForTable = response; BLIVER IKKE BRUGT?
   const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
   const [randomize, setRandomize] = useState(true)
+  const sectionOneRef = useRef(null);
+  const [isTableVisible, setTableVisible] = useState(false);
+
+
+const scrollToSection = (sectionRef) => {
+  sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+};
+
+useEffect(() => {
+  if (isTableVisible) {
+    const scrollTimeout = setTimeout(() => {
+      scrollToSection(sectionOneRef);
+    }, 100); // Wait 100ms to ensure rendering is complete
+    return () => clearTimeout(scrollTimeout); // Cleanup timeout
+  }
+}, [isTableVisible]);
 
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
@@ -69,6 +86,8 @@ function App() {
       });
       console.log("Response", response.data);
       setResponse(response.data);
+      setTableVisible(true); // Show table after receiving data
+
     } catch {
       setResponse({
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler",
@@ -132,6 +151,7 @@ function App() {
       });
       console.log("Response", response.data);
       setResponse(response.data);
+      setTableVisible(true); // Show table after receiving data
     } catch {
       setResponse({
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler!!",
@@ -160,11 +180,17 @@ function App() {
   return (  
     <Router>
       <div className="App">
-        <Navbar />
+      <Navbar
+        searchID={searchID}
+        handleIdselect={handleIdselect}
+        handleIdSearch={handleIdSearch}
+        scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
+        />
         <Logo />
         <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
+          <Route path="/test" element={<test />} />
         </Routes>
 
         <div
@@ -225,10 +251,14 @@ function App() {
             },
           }}
           type="submit"
-          onClick={handleSearch}
+          onClick={() => {
+            handleSearch();
+            scrollToSection(sectionOneRef);
+          }}
         >
           Søg
         </Button>
+
 
         <FormControlLabel
       control={
@@ -241,20 +271,8 @@ function App() {
       }
       label="Randomiser resultater"
     />
-        
+      </div>
 
-        <div>
-          <input
-            type="text"
-            placeholder="indtast ID for gemt søgning"
-            onChange={handleIdselect}
-            value={searchID || ""}
-          />
-          <Button onClick={handleIdSearch}>
-            Søg på gemte filtre
-          </Button>
-        </div>
-      
         <div style={{
             display: "flex",
             justifyContent: "center",
@@ -268,23 +286,45 @@ function App() {
           Reset
         </Button>
         <Button onClick={saveSearchFilters}>
-          Gem søgefiltre
+          Gem søgning
         </Button>
-
+        {/* <TextField
+            type="text"
+            variant="outlined"
+            placeholder="Search ID"
+            onChange={handleIdselect}
+            value={searchID || ""}
+          />
+          <Button 
+          variant="contained"
+          sx={{
+            height: '56px', // Match the default height of TextField
+            padding: '0 16px', // Optional: Ensure padding matches
+            paddingInline: '40px', // Optional: Ensure padding matches
+            backgroundColor: '#0f1e82',
+            color: "white",
+            "&:hover": {
+              backgroundColor: "primary.dark",
+            },
+          }} 
+          onClick={handleIdSearch}>
+            Søg på search ID
+          </Button>*/}
         <div>
           {saved_searchID && (
             <div>
               Søgning gemt med ID: {saved_searchID}
             </div>
+            
           )}
         </div>
-        <ResultTable response={response} />
-      </div>
       <div></div>
         </div>
         </div>
         <Box padding={10}>
-        <ResultTable response={response} style={{ padding: 10 }} />
+          {isTableVisible && (
+        <ResultTable ref={sectionOneRef} response={response} style={{ padding: 10 }} />    
+          )}    
         </Box>
     </Router>
   );
