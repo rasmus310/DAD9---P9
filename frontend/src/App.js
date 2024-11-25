@@ -151,6 +151,7 @@ useEffect(() => {
       });
       console.log("Response", response.data);
       setResponse(response.data);
+      //setCriteria(response.data.search_criteria)
       setTableVisible(true); // Show table after receiving data
     } catch {
       setResponse({

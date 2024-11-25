@@ -111,6 +111,9 @@ def search_saved_filters_view(request):
     # extract search criteria from the record
     search_criteria = saved_search_object.criteria
 
+    print(f"search_id LOL: {search_criteria}")
+
+
     if not search_criteria:
         return Response({"response": "Saved filters for row with ID {search_id} are empty or invalid"})
     
