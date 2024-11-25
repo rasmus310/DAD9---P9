@@ -9,7 +9,7 @@ import Navbar from "./components/SøgPåGemtID/Navbar";
 import SearchSection from "./components/SøgPåGemtID/SearchSection";
 import FilterComponent from "./components/FilterComponent";
 import "./App.css";
-import { Box, Button, Checkbox, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Typography, FormControlLabel } from "@mui/material";
 import axios from "axios";
 import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
@@ -217,14 +217,17 @@ function App() {
           Søg
         </Button>
 
-        <label>
-          <input 
-            type="checkbox" 
-            checked={randomize} 
-            onChange = {handleRandomizeToggle}
-          />
-          Randomiser resultater
-        </label>
+        <FormControlLabel
+      control={
+        <Checkbox
+          checked={randomize}
+          onChange={handleRandomizeToggle}
+          name="randomize"
+          color="primary"
+        />
+      }
+      label="Randomiser resultater"
+    />
         
 
         <div>
