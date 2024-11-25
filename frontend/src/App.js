@@ -10,7 +10,7 @@ import SearchSection from "./components/SøgPåGemtID/SearchSection";
 import test from "./components/SøgPåGemtID/test";
 import FilterComponent from "./components/FilterComponent";
 import "./App.css";
-import { Box, Button, Typography, TextField } from "@mui/material";
+import { Box, Button, Checkbox, Typography, FormControlLabel } from "@mui/material";
 import axios from "axios";
 import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
@@ -30,6 +30,7 @@ function App() {
   const [searchID, setSearchID] = useState();
   //const resultForTable = response; BLIVER IKKE BRUGT?
   const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
+  const [randomize, setRandomize] = useState(true)
   const sectionOneRef = useRef(null);
   const [isTableVisible, setTableVisible] = useState(false);
 
@@ -50,6 +51,10 @@ useEffect(() => {
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
   }, []);
+
+  const handleRandomizeToggle = () => {
+    setRandomize(!randomize);
+  }
 
   async function fetchSearchCriteriaConfigurations() {
     try {
@@ -73,7 +78,11 @@ useEffect(() => {
     setSavedSearch(null)
     try {
       const response = await axios.get("search/", {
-        params: selected_criteria,
+        params: {
+          // spread operator takes all key-value pairs in selected_criteria and includes them in the params object 
+          ...selected_criteria, 
+          // add the new key: value pair (bool randomized is converted to string)
+          randomize: randomize.toString()}
       });
       console.log("Response", response.data);
       setResponse(response.data);
@@ -158,7 +167,7 @@ useEffect(() => {
     );
   };
 
-  return (
+  return (  
     <Router>
       <div className="App">
       <Navbar
@@ -236,7 +245,21 @@ useEffect(() => {
         >
           Søg
         </Button>
+
+
+        <FormControlLabel
+      control={
+        <Checkbox
+          checked={randomize}
+          onChange={handleRandomizeToggle}
+          name="randomize"
+          color="primary"
+        />
+      }
+      label="Randomiser resultater"
+    />
       </div>
+
         <div style={{
             display: "flex",
             justifyContent: "center",

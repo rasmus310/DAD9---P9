@@ -43,7 +43,6 @@ class Ejendomsdata(models.Model):
         db_table = 'ejendomsdata'
     
     @classmethod
-    # default value for limit (if limit parameter not given)
     def search(cls, filter_data, limit=50): 
 
         q = Q()
@@ -65,8 +64,7 @@ class Ejendomsdata(models.Model):
     
 
     @classmethod
-    # search with random rows 
-    def searchRandom(cls, filter_data, limit=50): 
+    def searchRandom(cls, filter_data, limit=10): 
 
         q = Q()
         fields = ['id', 'bfe_nr']
@@ -81,7 +79,7 @@ class Ejendomsdata(models.Model):
                 q &= Q(**{key: value})
 
             # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
-            properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
+            properties = Ejendomsdata.objects.filter(q).values(*fields).order_by('?')[:limit]
 
             return properties
         
