@@ -97,6 +97,7 @@ def save_search_view(request):
 def search_saved_filters_view(request):
     
     search_id = request.GET.get('search_id')
+    print(f"search_id LOL: {search_id}")
 
     if not search_id:
         return Response({"response":"ID parameter required"})
