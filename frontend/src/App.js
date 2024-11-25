@@ -29,12 +29,11 @@ function App() {
   const [searchID, setSearchID] = useState();
   //const resultForTable = response; BLIVER IKKE BRUGT?
   const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
-  const [randomize, setRandomize] = useState(false)
+  const [randomize, setRandomize] = useState(true)
 
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
   }, []);
-
 
   const handleRandomizeToggle = () => {
     setRandomize(!randomize);
@@ -142,14 +141,13 @@ function App() {
     );
   };
 
-
   const deactivateFilter = (filter) => {
     setActiveFilters((prevActiveFilters) =>
       prevActiveFilters.filter((f) => f !== filter)
     );
   };
 
-  return (
+  return (  
     <Router>
       <div className="App">
         <Navbar />

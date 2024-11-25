@@ -69,7 +69,7 @@ def simple_search2_view(request):
     response_message = f"GET request successful with filter {filter_data.values()} but no matching data"
     return Response({"response" : response_message})
 
-# gem søgening
+# gem søgning
 @api_view(['POST'])
 def save_search_view(request):
     request_data = request.data
@@ -87,7 +87,7 @@ def save_search_view(request):
     #test
     print(f"saved search object: {saved_search_object}")
     
-    # return id på den gemte søgning
+    # return id from saved search
     response_data = {"search_id": saved_search_object.search_id}
     return Response(response_data)
 
@@ -101,13 +101,13 @@ def search_saved_filters_view(request):
     if not search_id:
         return Response({"response":"ID parameter required"})
     
-    # first() returns None if not match is found (or the first match found)
+    # first() returns None if no match is found (or the first match found)
     saved_search_object = searchSaved.objects.filter(search_id=search_id).first()
 
     if not saved_search_object:
         return Response({"response": f"No saved filters found for search ID {search_id}"})
 
-    # extract serach criteria from the record
+    # extract search criteria from the record
     search_criteria = saved_search_object.criteria
 
     if not search_criteria:
