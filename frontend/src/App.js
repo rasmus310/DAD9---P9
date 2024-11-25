@@ -71,7 +71,6 @@ useEffect(() => {
 
   async function handleSearch() {
     setSavedSearch(null)
-    //setTableVisible(false); // Hide table before search
     try {
       const response = await axios.get("search/", {
         params: selected_criteria,
@@ -133,6 +132,7 @@ useEffect(() => {
       });
       console.log("Response", response.data);
       setResponse(response.data);
+      setTableVisible(true); // Show table after receiving data
     } catch {
       setResponse({
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler!!",
