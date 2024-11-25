@@ -76,6 +76,16 @@ function App() {
     }
   }
 
+  function resetFilter(valueKey) {
+    setCriteria((prevCriteria) => {
+      const new_criteria = { ...prevCriteria };
+
+      delete new_criteria[valueKey]
+
+      return new_criteria;
+    });
+  }
+
   function handleSelect(event) {
     const name = event.target.name;
     const value = event.target.value;
@@ -93,7 +103,7 @@ function App() {
     });
   }
 
-  function resetCriteria() {
+  function resetCriteria(event) {
     setCriteria({});
     setSearchID();
   }
@@ -182,7 +192,10 @@ function App() {
                 handleSelect(event);
               }}
               active={activeFilters.includes(criteria.valueKey)} // Pass active state
-              deactivateFilter={() => deactivateFilter(criteria.valueKey)} // Pass deactivate function
+              deactivateFilter={() => {
+                deactivateFilter(criteria.valueKey);
+                resetFilter(criteria.valueKey);
+              }} // Pass deactivate function
             />
           ))}
         </div>
