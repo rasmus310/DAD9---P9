@@ -256,7 +256,7 @@ useEffect(() => {
           color="primary"
         />
       }
-      label="Randomiser resultater"
+      label="Tilfældige resultater"
     />
       </div>
 

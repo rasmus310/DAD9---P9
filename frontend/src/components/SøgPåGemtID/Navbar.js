@@ -22,7 +22,7 @@ function Navbar({ searchID, handleIdselect, handleIdSearch, scrollToSection }) {
           type="text"
           variant="outlined"
           size="small"
-          placeholder="Search ID"
+          placeholder="Søgenummer"
           onChange={handleIdselect}
           value={searchID || ""}
         />
