@@ -130,7 +130,7 @@ useEffect(() => {
   async function saveSearchFilters() {
     const criterias_to_save = selected_criteria;
     // number of results is not saved 
-    delete criterias_to_save.antal_resultater;
+    //delete criterias_to_save.antal_resultater;
     try {
       const response = await axios.post("/save_search/", {
         params: criterias_to_save,
@@ -313,7 +313,7 @@ useEffect(() => {
         <div>
           {saved_searchID && (
             <div>
-              Søgning gemt med ID: {saved_searchID}
+              Gemt med søgenummer: {saved_searchID}
             </div>
             
           )}
