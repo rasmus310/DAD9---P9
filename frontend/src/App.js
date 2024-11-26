@@ -90,6 +90,7 @@ useEffect(() => {
 
     } catch {
       setResponse({
+        //OBS lav om. Overvej hvordan resulttable læser data, og sæt response til noget der giver mening ud fra det
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler",
       });
     }
@@ -122,7 +123,7 @@ useEffect(() => {
     });
   }
 
-  function resetCriteria(event) {
+  function resetCriteria() {
     setCriteria({});
     setSearchID();
   }
@@ -145,16 +146,24 @@ useEffect(() => {
   }
 
   async function handleIdSearch() {
+    // only make request if searchID has a value
+    if (!searchID) {
+      return; 
+    }
+
     try {
       const response = await axios.get("search_id/", {
         params: {search_id: searchID},
       });
+
       console.log("Response", response.data);
+  
       setResponse(response.data);
-      //setCriteria(response.data.search_criteria)
+      setCriteria(response.data.search_criteria || {})
       setTableVisible(true); // Show table after receiving data
     } catch {
       setResponse({
+        //OBS lav om. Overvej hvordan resulttable læser data, og sæt response til noget der giver mening ud fra det
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler!!",
       });
     }

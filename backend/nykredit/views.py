@@ -97,7 +97,6 @@ def save_search_view(request):
 def search_saved_filters_view(request):
     
     search_id = request.GET.get('search_id')
-    print(f"search_id LOL: {search_id}")
 
     if not search_id:
         return Response({"response":"ID parameter required"})
@@ -111,17 +110,14 @@ def search_saved_filters_view(request):
     # extract search criteria from the record
     search_criteria = saved_search_object.criteria
 
-    print(f"search_id LOL: {search_criteria}")
-
-
     if not search_criteria:
         return Response({"response": "Saved filters for row with ID {search_id} are empty or invalid"})
     
     properties = Ejendomsdata.searchRandom(search_criteria)
 
     if properties:
-        return Response({"response" : properties})
+        return Response({"response" : properties, "search_criteria" : search_criteria})
     else:            
-        return Response({"response" : "no properties matching search criteria"})
+        return Response({"response" : properties, "search_criteria" : search_criteria})
 
 
