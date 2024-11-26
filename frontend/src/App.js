@@ -155,11 +155,12 @@ useEffect(() => {
       const response = await axios.get("search_id/", {
         params: {search_id: searchID},
       });
-
-      console.log("Response", response.data);
   
       setResponse(response.data);
-      setCriteria(response.data.search_criteria || {})
+      const search_criteria = response.data.search_criteria; // extract search criteria
+      setCriteria(search_criteria || {}); // set criteria usestate 
+      const newActiveFilters = Object.keys(search_criteria); // extract keys from search criteria used to set activeFilters usestate
+      setActiveFilters(newActiveFilters); // set activeFilters 
       setTableVisible(true); // Show table after receiving data
     } catch {
       setResponse({
@@ -196,7 +197,6 @@ useEffect(() => {
         handleIdSearch={handleIdSearch}
         scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
         />
-        <Logo />
         <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
