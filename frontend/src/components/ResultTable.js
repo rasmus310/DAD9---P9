@@ -14,7 +14,8 @@ const ResultTable = forwardRef(({ response }, ref) => {
           textAlign="center"
           sx={{ marginBottom: 2 }}
         >
-          Ingen resultater
+          Ingen resultater: Vil du lave en lave en ejendom med valgte
+          kriterier??????
         </Typography>
       </Box>
     );
@@ -25,10 +26,22 @@ const ResultTable = forwardRef(({ response }, ref) => {
   if (rows.length === 0) {
     return <Typography>Ingen resultater</Typography>;
   }
+  // Denne varibel ændre navnene i kolonerne i tabellen
+  const displayName = {
+    id: "ID",
+    ejendomstype_kode__ejendomstype: "Ejendomstype",
+    land__land_navn: "Land",
+    fk_brand: "Brandkode",
+    forurenet: "Forurenet",
+    bfe_nr: "BFE Nr",
+    risikovurdering: "Risikovurdering",
+    lokation__by_navn: "By",
+    lokation__postnummer: "Postnummer",
+  };
 
   const columns = Object.keys(rows[0]).map((key) => ({
     field: key,
-    headerName: key.charAt(0).toUpperCase() + key.slice(1),
+    headerName: displayName[key] || key.charAt(0).toUpperCase() + key.slice(1), // Brug displaynavn eller det orignale navn fra model
     width: 150,
   }));
 
