@@ -19,6 +19,8 @@ import Antal_resultater from "./components/search_components/antal_resultater";
 import ResultTable from "./components/ResultTable";
 import SearchFilter from "./components/SearchFilter";
 import Logo from "./components/Logo";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function App() {
   const [filters, setFilters] = useState({
@@ -167,6 +169,11 @@ function App() {
     );
   };
 
+  function deactivateAllFilters() {
+    setActiveFilters([]);
+    resetCriteria();
+  }
+
   return (
     <Router>
       <div className="App">
@@ -214,6 +221,16 @@ function App() {
               deactivateFilter={() => deactivateFilter(criteria.valueKey)} // Pass deactivate function
             />
           ))}
+          <IconButton
+            aria-label="delete"
+            size="small"
+            sx={{ color: "#d1dded" }}
+          >
+            <DeleteIcon
+              sx={{ fontSize: "100px" }} // Adjust the icon size here
+              onClick={deactivateAllFilters}
+            />
+          </IconButton>
         </div>
         <div
           style={{
