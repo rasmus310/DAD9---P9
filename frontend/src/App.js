@@ -1,16 +1,18 @@
 // App.js
 import React, { useEffect, useState, useRef } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/SøgPåGemtID/Navbar";
 import SearchSection from "./components/SøgPåGemtID/SearchSection";
 import test from "./components/SøgPåGemtID/test";
 import FilterComponent from "./components/FilterComponent";
 import "./App.css";
-import { Box, Button, Checkbox, Typography, FormControlLabel } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Typography,
+  FormControlLabel,
+} from "@mui/material";
 import axios from "axios";
 import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
@@ -20,7 +22,6 @@ import Logo from "./components/Logo";
 
 function App() {
   const [filters, setFilters] = useState({
-    
     // Add more filters as needed
   });
   const [response, setResponse] = useState();
@@ -30,23 +31,22 @@ function App() {
   const [searchID, setSearchID] = useState();
   //const resultForTable = response; BLIVER IKKE BRUGT?
   const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
-  const [randomize, setRandomize] = useState(true)
+  const [randomize, setRandomize] = useState(true);
   const sectionOneRef = useRef(null);
   const [isTableVisible, setTableVisible] = useState(false);
 
+  const scrollToSection = (sectionRef) => {
+    sectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
-const scrollToSection = (sectionRef) => {
-  sectionRef.current?.scrollIntoView({ behavior: "smooth" });
-};
-
-useEffect(() => {
-  if (isTableVisible) {
-    const scrollTimeout = setTimeout(() => {
-      scrollToSection(sectionOneRef);
-    }, 100); // Wait 100ms to ensure rendering is complete
-    return () => clearTimeout(scrollTimeout); // Cleanup timeout
-  }
-}, [isTableVisible]);
+  useEffect(() => {
+    if (isTableVisible) {
+      const scrollTimeout = setTimeout(() => {
+        scrollToSection(sectionOneRef);
+      }, 100); // Wait 100ms to ensure rendering is complete
+      return () => clearTimeout(scrollTimeout); // Cleanup timeout
+    }
+  }, [isTableVisible]);
 
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
@@ -54,7 +54,7 @@ useEffect(() => {
 
   const handleRandomizeToggle = () => {
     setRandomize(!randomize);
-  }
+  };
 
   async function fetchSearchCriteriaConfigurations() {
     try {
@@ -75,19 +75,19 @@ useEffect(() => {
   };
 
   async function handleSearch() {
-    setSavedSearch(null)
+    setSavedSearch(null);
     try {
       const response = await axios.get("search/", {
         params: {
-          // spread operator takes all key-value pairs in selected_criteria and includes them in the params object 
-          ...selected_criteria, 
+          // spread operator takes all key-value pairs in selected_criteria and includes them in the params object
+          ...selected_criteria,
           // add the new key: value pair (bool randomized is converted to string)
-          randomize: randomize.toString()}
+          randomize: randomize.toString(),
+        },
       });
       console.log("Response", response.data);
       setResponse(response.data);
       setTableVisible(true); // Show table after receiving data
-
     } catch {
       setResponse({
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler",
@@ -119,14 +119,14 @@ useEffect(() => {
 
   async function saveSearchFilters() {
     const criterias_to_save = selected_criteria;
-    // number of results is not saved 
+    // number of results is not saved
     delete criterias_to_save.antal_resultater;
     try {
       const response = await axios.post("/save_search/", {
         params: criterias_to_save,
       });
-      const savedSearchID = response.data.search_id; 
-      setSavedSearch(savedSearchID);  
+      const savedSearchID = response.data.search_id;
+      setSavedSearch(savedSearchID);
     } catch {
       setSavedSearch({
         response: "fejl - søgekriterier ikke gemt",
@@ -137,7 +137,7 @@ useEffect(() => {
   async function handleIdSearch() {
     try {
       const response = await axios.get("search_id/", {
-        params: {search_id: searchID},
+        params: { search_id: searchID },
       });
       console.log("Response", response.data);
       setResponse(response.data);
@@ -150,7 +150,7 @@ useEffect(() => {
   }
 
   function handleIdselect(event) {
-    setSearchID(event.target.value)
+    setSearchID(event.target.value);
   }
 
   const handleFilterToggle = (filter) => {
@@ -167,24 +167,27 @@ useEffect(() => {
     );
   };
 
-  return (  
+  return (
     <Router>
       <div className="App">
-      <Navbar
-        searchID={searchID}
-        handleIdselect={handleIdselect}
-        handleIdSearch={handleIdSearch}
-        scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
+        <Navbar
+          searchID={searchID}
+          handleIdselect={handleIdselect}
+          handleIdSearch={handleIdSearch}
+          scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
         />
         <Logo />
-        <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
+        <SearchFilter
+          activeFilters={activeFilters}
+          onFilterToggle={handleFilterToggle}
+        />{" "}
+        {/* Pass state and handler */}
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
           <Route path="/test" element={<test />} />
         </Routes>
-
         <div
-        // Styling til visning af filter-komponenter
+          // Styling til visning af filter-komponenter
           style={{
             display: "flex",
             justifyContent: "center",
@@ -212,7 +215,8 @@ useEffect(() => {
             />
           ))}
         </div>
-        <div style={{
+        <div
+          style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -220,47 +224,47 @@ useEffect(() => {
             gap: "16px",
             width: "60%",
             paddingTop: 40,
-          }}>
-        <Antal_resultater
-          selected_criteria={selected_criteria}
-          handleSelect={handleSelect}
-        ></Antal_resultater>
-        <Button
-          variant="contained"
-          sx={{
-            height: '56px', // Match the default height of TextField
-            padding: '0 16px', // Optional: Ensure padding matches
-            paddingInline: '40px', // Optional: Ensure padding matches
-            backgroundColor: '#0f1e82',
-            color: "white",
-            "&:hover": {
-              backgroundColor: "primary.dark",
-            },
-          }}
-          type="submit"
-          onClick={() => {
-            handleSearch();
-            scrollToSection(sectionOneRef);
           }}
         >
-          Søg
-        </Button>
+          <Antal_resultater
+            selected_criteria={selected_criteria}
+            handleSelect={handleSelect}
+          ></Antal_resultater>
+          <Button
+            variant="contained"
+            sx={{
+              height: "56px", // Match the default height of TextField
+              padding: "0 16px", // Optional: Ensure padding matches
+              paddingInline: "40px", // Optional: Ensure padding matches
+              backgroundColor: "#0f1e82",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "primary.dark",
+              },
+            }}
+            type="submit"
+            onClick={() => {
+              handleSearch();
+              scrollToSection(sectionOneRef);
+            }}
+          >
+            Søg
+          </Button>
 
-
-        <FormControlLabel
-      control={
-        <Checkbox
-          checked={randomize}
-          onChange={handleRandomizeToggle}
-          name="randomize"
-          color="primary"
-        />
-      }
-      label="Tilfældige resultater"
-    />
-      </div>
-
-        <div style={{
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={randomize}
+                onChange={handleRandomizeToggle}
+                name="randomize"
+                color="primary"
+              />
+            }
+            label="Tilfældige resultater"
+          />
+        </div>
+        <div
+          style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -268,14 +272,13 @@ useEffect(() => {
             gap: "16px",
             width: "60%",
             paddingTop: 15,
-          }}>
-        <Button type="submit" onClick={resetCriteria}>
-          Reset
-        </Button>
-        <Button onClick={saveSearchFilters}>
-          Gem søgning
-        </Button>
-        {/* <TextField
+          }}
+        >
+          <Button type="submit" onClick={resetCriteria}>
+            Reset
+          </Button>
+          <Button onClick={saveSearchFilters}>Gem søgning</Button>
+          {/* <TextField
             type="text"
             variant="outlined"
             placeholder="Search ID"
@@ -297,22 +300,21 @@ useEffect(() => {
           onClick={handleIdSearch}>
             Søg på search ID
           </Button>*/}
-        <div>
-          {saved_searchID && (
-            <div>
-              Søgning gemt med ID: {saved_searchID}
-            </div>
-            
-          )}
+          <div>
+            {saved_searchID && <div>Søgning gemt med ID: {saved_searchID}</div>}
+          </div>
+          <div></div>
         </div>
-      <div></div>
-        </div>
-        </div>
-        <Box padding={10}>
-          {isTableVisible && (
-        <ResultTable ref={sectionOneRef} response={response} style={{ padding: 10 }} />    
-          )}    
-        </Box>
+      </div>
+      <Box padding={10}>
+        {isTableVisible && (
+          <ResultTable
+            ref={sectionOneRef}
+            response={response}
+            style={{ padding: 10 }}
+          />
+        )}
+      </Box>
     </Router>
   );
 }

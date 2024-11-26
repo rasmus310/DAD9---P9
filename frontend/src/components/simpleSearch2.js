@@ -89,7 +89,7 @@ function SimpleSearch2() {
         placeholder="Search"
         onChange={handleSelect}
       />
-      
+
       <p>Antal ønskede resultater</p>
       <Select
         name="antal_resultater"

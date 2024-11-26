@@ -16,7 +16,9 @@ function SearchFilter({ activeFilters, onFilterToggle }) {
   const [selectedValue, setSelectedValue] = useState(null);
 
   // Filter options based on activeFilters
-  const filteredOptions = options.filter(option => !activeFilters.includes(option.value));
+  const filteredOptions = options.filter(
+    (option) => !activeFilters.includes(option.value)
+  );
 
   return (
     <Box p={8}>
@@ -43,7 +45,7 @@ function SearchFilter({ activeFilters, onFilterToggle }) {
             fullWidth
           />
         )}
-        style={{ width: 600, display: 'inline-block' }}
+        style={{ width: 600, display: "inline-block" }}
       />
     </Box>
   );
