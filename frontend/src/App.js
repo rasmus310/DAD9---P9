@@ -293,10 +293,10 @@ useEffect(() => {
             paddingTop: 15,
           }}>
         <Button type="submit" onClick={resetCriteria}>
-          Reset
+          nulstil søgekriterier
         </Button>
         <Button onClick={saveSearchFilters}>
-          Gem søgning
+          Gem søgekriterier
         </Button>
         {/* <TextField
             type="text"
@@ -323,7 +323,7 @@ useEffect(() => {
         <div>
           {saved_searchID && (
             <div>
-              Søgning gemt med ID: {saved_searchID}
+              søgekriterier gemt med ID: {saved_searchID}
             </div>
             
           )}
