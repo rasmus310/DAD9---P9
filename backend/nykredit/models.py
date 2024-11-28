@@ -9,21 +9,23 @@ from django.db import models
 from django.db.models import JSONField
 from django.db.models import Q
 
+# model to save search criteria
 class searchSaved(models.Model):
     search_id = models.AutoField(primary_key=True)
     criteria = models.JSONField()
     date_created = models.DateTimeField(auto_now_add=True)
+
     class Meta: 
         db_table = 'search_saved'
     def __str__(self):
         return f"SavedSearch(search_id={self.search_id}, criteria={self.criteria}, date_created={self.date_created})"
     
+    # class method to create and save a new instance of the class
     @classmethod
-    def create_saved_search(cls, search_data):
-        search_to_save = cls(criteria = search_data)
-        
-        search_to_save.save()
-        
+    def create_saved_search(cls, search_criteria): 
+        # cls refers to the class itslef (not an instance of the class). Enabling the creation of a new object
+        search_to_save = cls(criteria = search_criteria) 
+        search_to_save.save() 
         return search_to_save 
 
 class Ejendomsdata(models.Model):
@@ -42,46 +44,55 @@ class Ejendomsdata(models.Model):
         managed = False
         db_table = 'ejendomsdata'
     
+    # classmethod to filter and retrieve properties based on the given criteria 
     @classmethod
     def search(cls, filter_data, limit=50): 
+        # create filtering criteria based on filter_data
+        q, fields = cls.createFilterCriteria(filter_data)
 
-        q = Q()
-        fields = ['id', 'bfe_nr']
+        # return empty array if q object is empty (to avoid querying the database for all rows)
+        if not q:
+            return []
 
-        if filter_data:
-            # loop både key + value med items() method 
-            for key, value in filter_data.items():
-                fields.append(key)
-                # tilføj kriterie til eksisterende Q objekt ved at AND dem sammen
-                # **{key: value} "udpakker" dictionary 
-                # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilføjes Q objektet som kriterie for søgning
-                q &= Q(**{key: value})
+        # query the database for properties matching the criteria 
+        # .value(*fields) specifies the returned fileds. 
+        # [:limit] limits the number of returned rows            
+        properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
 
-            # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
-            properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
-
-            return properties
+        return properties
     
-
+    # classmethod to filter and retrieve a random selection of properties based on the given criteria 
     @classmethod
     def searchRandom(cls, filter_data, limit=10): 
+        # create filtering criteria based on filter_data
+        q, fields = cls.createFilterCriteria(filter_data)
 
-        q = Q()
-        fields = ['id', 'bfe_nr']
+        # return empty array if q object is empty (to avoid querying the database for all rows)
+        if not q:
+            return []
+        
+        # query the database for properties matching the criteria and randomize the result using order_by(?)
+        properties = Ejendomsdata.objects.filter(q).values(*fields).order_by('?')[:limit]
+
+        return properties
+    
+    # class method to create filtering criteria based on the given filter data. 
+    # Returns the search criteria as a Q object and a list of fields
+    @classmethod
+    def createFilterCriteria(cls, filter_data):
+        q = Q() # initialize Q object for filtering
+        fields = ['id', 'bfe_nr'] # default fields/columns to be retrieved 
 
         if filter_data:
-            # loop både key + value med items() method 
+            # iterate through both keys and values in the filter_data using the items() method
             for key, value in filter_data.items():
-                fields.append(key)
-                # tilføj kriterie til eksisterende Q objekt ved at AND dem sammen
-                # **{key: value} "udpakker" dictionary 
-                # Hvis key er ejendomstype og value er parcelhus svarer **{key: value} til {ejendomstype = parcelhus}, som tilføjes Q objektet som kriterie for søgning
+                fields.append(key) # add key to the list of fields to retrieve 
+                # add criteria to the Q object by combining them with AND operation
+                # **{key: value} unpacks dictionary into key-value arguments 
+                # Example: If key="ejendomstype" and value ="parcelhus", **{key: value} becomes {ejendomstype = parcelhus}
                 q &= Q(**{key: value})
 
-            # find ejendomme i databasen: omdan matching_properties til list for at muliggøre random.sample()
-            properties = Ejendomsdata.objects.filter(q).values(*fields).order_by('?')[:limit]
-
-            return properties
+        return q, fields  # return the Q object and the list of fields
         
 
 # For ejendomstype dropdown

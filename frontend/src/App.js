@@ -90,6 +90,7 @@ useEffect(() => {
 
     } catch {
       setResponse({
+        //OBS lav om. Overvej hvordan resulttable læser data, og sæt response til noget der giver mening ud fra det
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler",
       });
     }
@@ -122,7 +123,7 @@ useEffect(() => {
     });
   }
 
-  function resetCriteria(event) {
+  function resetCriteria() {
     setCriteria({});
     setSearchID();
   }
@@ -145,15 +146,25 @@ useEffect(() => {
   }
 
   async function handleIdSearch() {
+    // only make request if searchID has a value
+    if (!searchID) {
+      return; 
+    }
+
     try {
       const response = await axios.get("search_id/", {
         params: {search_id: searchID},
       });
-      console.log("Response", response.data);
+  
       setResponse(response.data);
+      const search_criteria = response.data.search_criteria; // extract search criteria
+      setCriteria(search_criteria || {}); // set criteria usestate 
+      const newActiveFilters = Object.keys(search_criteria); // extract keys from search criteria used to set activeFilters usestate
+      setActiveFilters(newActiveFilters); // set activeFilters 
       setTableVisible(true); // Show table after receiving data
     } catch {
       setResponse({
+        //OBS lav om. Overvej hvordan resulttable læser data, og sæt response til noget der giver mening ud fra det
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler!!",
       });
     }
@@ -186,7 +197,6 @@ useEffect(() => {
         handleIdSearch={handleIdSearch}
         scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
         />
-        <Logo />
         <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
@@ -283,10 +293,10 @@ useEffect(() => {
             paddingTop: 15,
           }}>
         <Button type="submit" onClick={resetCriteria}>
-          Reset
+          nulstil søgekriterier
         </Button>
         <Button onClick={saveSearchFilters}>
-          Gem søgning
+          Gem søgekriterier
         </Button>
         {/* <TextField
             type="text"
@@ -313,7 +323,7 @@ useEffect(() => {
         <div>
           {saved_searchID && (
             <div>
-              Gemt med søgenummer: {saved_searchID}
+              søgekriterier gemt med ID: {saved_searchID}
             </div>
             
           )}
