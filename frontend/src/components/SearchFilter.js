@@ -38,12 +38,12 @@ function SearchFilter({ activeFilters, onFilterToggle }) {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="vælg søgekriterier"
+            label="Vælg søgekriterier"
             variant="outlined"
             fullWidth
           />
         )}
-        style={{ width: 600, display: 'inline-block' }}
+        style={{ width: 660, display: 'inline-block' }}
       />
     </Box>
   );

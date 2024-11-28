@@ -197,7 +197,7 @@ useEffect(() => {
         handleIdSearch={handleIdSearch}
         scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
         />
-        <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
+<h1 style={{ textAlign: "center", paddingTop: 120, fontWeight: "bolder", fontSize: 50, color: "#0f1e82", fontFamily: "Arial Black, sans-serif" }}>Hvad leder du efter?</h1>        <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
         <Routes>
           <Route path="/search-id" element={<SearchSection />} />
           <Route path="/test" element={<test />} />
@@ -323,7 +323,7 @@ useEffect(() => {
         <div>
           {saved_searchID && (
             <div>
-              søgekriterier gemt med ID: {saved_searchID}
+              Gemt med søgenummer: {saved_searchID}
             </div>
             
           )}
