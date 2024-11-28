@@ -38,7 +38,7 @@ function SearchFilter({ activeFilters, onFilterToggle }) {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="vælg søgekriterier"
+            label="tilføj søgekriterie"
             variant="outlined"
             fullWidth
           />
