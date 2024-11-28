@@ -195,7 +195,7 @@ useEffect(() => {
         handleIdSearch={handleIdSearch}
         scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
         />
-<h1 style={{ textAlign: "center", paddingTop: 120, fontWeight: "bolder", fontSize: 50, color: "#0f1e82", fontFamily: "Arial Black, sans-serif" }}>Hvad leder du efter?</h1>        <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
+<h1 style={{ textAlign: "center", paddingTop: 120, fontWeight: "bolder", fontSize: 60, color: "#0f1e82", fontFamily: "Arial Black, sans-serif" }}>Find ejendomme</h1>        <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
 
         <div
         // Styling til visning af filter-komponenter
