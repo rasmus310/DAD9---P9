@@ -9,7 +9,11 @@ const ResultTable = forwardRef(({ response }, ref) => {
   if (!response || !Array.isArray(response.response)) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
-        <Typography variant="subtitle1" textAlign="center" sx={{ marginBottom: 2 }}>
+        <Typography
+          variant="subtitle1"
+          textAlign="center"
+          sx={{ marginBottom: 2 }}
+        >
           Ingen resultater
         </Typography>
       </Box>
@@ -22,9 +26,22 @@ const ResultTable = forwardRef(({ response }, ref) => {
     return <Typography>Ingen resultater</Typography>;
   }
 
+  // Denne varibel ændre navnene i kolonerne i tabellen
+  const displayName = {
+    id: "ID",
+    ejendomstype_kode__ejendomstype: "Ejendomstype",
+    land__land_navn: "Land",
+    fk_brand: "Brandkode",
+    forurenet: "Forurenet",
+    bfe_nr: "BFE Nr",
+    risikovurdering: "Risikovurdering",
+    lokation__by_navn: "By",
+    lokation__postnummer: "Postnummer",
+  };
+
   const columns = Object.keys(rows[0]).map((key) => ({
     field: key,
-    headerName: key.charAt(0).toUpperCase() + key.slice(1),
+    headerName: displayName[key] || key.charAt(0).toUpperCase() + key.slice(1),
     width: 150,
   }));
 
@@ -37,7 +54,10 @@ const ResultTable = forwardRef(({ response }, ref) => {
       flexDirection="column"
     >
       <Box width="80%" sx={{ textAlign: "left" }}>
-        <Typography variant="h6" sx={{ fontWeight: "bold", color: "#0f1e82", paddingTop: 2 }}>
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: "bold", color: "#0f1e82", paddingTop: 2 }}
+        >
           Ejendomme som matcher dine søgekriterier
         </Typography>
         <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
@@ -57,4 +77,3 @@ const ResultTable = forwardRef(({ response }, ref) => {
 });
 
 export default ResultTable;
-
