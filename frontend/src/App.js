@@ -260,11 +260,9 @@ function App() {
               color: "#000",
               position: "flex",
             }}
+            onClick={deactivateAllFilters}
           >
-            <DeleteIcon
-              sx={{ fontSize: "50px" }}
-              onClick={deactivateAllFilters}
-            />
+            <DeleteIcon sx={{ fontSize: "50px" }} />
             Ryd filtre
           </IconButton>
         </div>
