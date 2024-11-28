@@ -198,6 +198,7 @@ function App() {
           style={{
             display: "flex",
             justifyContent: "center",
+            flexWrap: "wrap",
             alignItems: "center",
             flexWrap: "wrap",
             gap: "16px",
@@ -221,16 +222,25 @@ function App() {
               deactivateFilter={() => deactivateFilter(criteria.valueKey)} // Pass deactivate function
             />
           ))}
+          {/* Skralde spands ikon for at lave rydde filtrene fra siden 
+          lavede den for sjov så slet hvis ikke vil have den*
           <IconButton
             aria-label="delete"
             size="small"
-            sx={{ color: "#d1dded" }}
+            sx={{
+              color: "#000",
+              position: "fixed",
+              top: "375px",
+              right: "400px",
+            }}
           >
             <DeleteIcon
-              sx={{ fontSize: "100px" }} // Adjust the icon size here
+              sx={{ fontSize: "50px" }}
               onClick={deactivateAllFilters}
             />
+            Ryd filtre
           </IconButton>
+          */}
         </div>
         <div
           style={{
