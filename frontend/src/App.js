@@ -222,16 +222,14 @@ function App() {
               deactivateFilter={() => deactivateFilter(criteria.valueKey)} // Pass deactivate function
             />
           ))}
-          {/* Skralde spands ikon for at lave rydde filtrene fra siden 
-          lavede den for sjov så slet hvis ikke vil have den*
+          {/*Skralde spands ikon for at lave rydde filtrene fra siden 
+          lavede den for sjov så slet hvis ikke vil have den*/}
           <IconButton
             aria-label="delete"
             size="small"
             sx={{
               color: "#000",
-              position: "fixed",
-              top: "375px",
-              right: "400px",
+              position: "flex",
             }}
           >
             <DeleteIcon
@@ -240,7 +238,6 @@ function App() {
             />
             Ryd filtre
           </IconButton>
-          */}
         </div>
         <div
           style={{
