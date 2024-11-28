@@ -47,47 +47,37 @@ class Ejendomsdata(models.Model):
     # classmethod to filter and retrieve properties based on the given criteria 
     @classmethod
     def search(cls, filter_data, limit=50): 
+        # create filtering criteria based on filter_data
+        q, fields = cls.createFilterCriteria(filter_data)
 
-        q = Q() # initialize Q object for filtering
-        fields = ['id', 'bfe_nr'] # default fields/columns to be retrieved 
+        # query the database for properties matching the criteria 
+        # .value(*fields) specifies the returned fileds. 
+        # [:limit] limits the number of returned rows            
+        properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
 
-        if filter_data:
-            # iterate both keys and values int the filter_data using the items() method
-            for key, value in filter_data.items():
-                fields.append(key) # add key to the list of fields to retrieve 
-                # add criteria to the Q object by combining them with AND operation
-                # **{key: value} unpacks dictionary into key-value arguments 
-                # Example: If key="ejendomstype" and value ="parcelhus", **{key: value} becomes {ejendomstype = parcelhus}
-                q &= Q(**{key: value})
+        if not q:
+            return []
 
-            # query the database for properties matching the criteria 
-            # .value(*fields) specifies the returned fileds. 
-            # [:limit] limits the number of returned rows
-            properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
-
-            return properties
+        return properties
     
     # classmethod to filter and retrieve a random selection of properties based on the given criteria 
     @classmethod
     def searchRandom(cls, filter_data, limit=10): 
+        # create filtering criteria based on filter_data
+        q, fields = cls.createFilterCriteria(filter_data)
+        
+        # query the database for properties matching the criteria and randomize the result using order_by(?)
+        properties = Ejendomsdata.objects.filter(q).values(*fields).order_by('?')[:limit]
 
-        q = Q()
-        fields = ['id', 'bfe_nr']
+        if not q:
+            return []
 
-        if filter_data:
-            for key, value in filter_data.items():
-                fields.append(key)
-                q &= Q(**{key: value})
-
-            # query the database for properties matching the criteria and randomize the result using order_by(?)
-            properties = Ejendomsdata.objects.filter(q).values(*fields).order_by('?')[:limit]
-
-            return properties
+        return properties
     
-    # class method to create query based on given the criteria. 
-    # Returns the search criteria as a Q object and a list fields
+    # class method to create filtering criteria based on the given filter data. 
+    # Returns the search criteria as a Q object and a list of fields
     @classmethod
-    def create_query(cls, filter_data):
+    def createFilterCriteria(cls, filter_data):
         q = Q() # initialize Q object for filtering
         fields = ['id', 'bfe_nr'] # default fields/columns to be retrieved 
 
