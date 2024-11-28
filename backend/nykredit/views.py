@@ -76,6 +76,7 @@ def save_search_view(request):
     
     # get method retrieves the value associated with the 'params' key 
     search_criteria = request_data.get('params')
+    search_criteria.pop('antal_resultater')
 
     if not search_criteria:  
         return Response({"response": "No filters provided, search not saved"})
