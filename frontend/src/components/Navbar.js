@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import './Navbar.css';
-import Nykredit_logo from '../../Nykredit_logo.png'; // Adjust the path to your image file
+import Nykredit_logo from '../Nykredit_logo.png'; 
 import { Link } from 'react-router-dom';
 import { TextField, Button } from '@mui/material';
 
