@@ -5,9 +5,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import Navbar from "./components/SøgPåGemtID/Navbar";
-import SearchSection from "./components/SøgPåGemtID/SearchSection";
-import test from "./components/SøgPåGemtID/test";
+import Navbar from "./components/Navbar";
 import FilterComponent from "./components/FilterComponent";
 import "./App.css";
 import { Box, Button, Checkbox, Typography, FormControlLabel } from "@mui/material";
@@ -188,10 +186,6 @@ useEffect(() => {
         />
         <Logo />
         <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
-        <Routes>
-          <Route path="/search-id" element={<SearchSection />} />
-          <Route path="/test" element={<test />} />
-        </Routes>
 
         <div
         // Styling til visning af filter-komponenter
