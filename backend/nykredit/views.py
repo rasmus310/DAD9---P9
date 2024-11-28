@@ -47,7 +47,7 @@ def get_search_criteria(request):
 # simple_search2
 @api_view(['GET'])
 def simple_search2_view(request):
-    # get filterdata (QueryDict) og lav om til dictionary
+    # get search data from request(QueryDict) and save as dict.
     filter_data = request.GET.dict()
 
     # Test: print modtagne søgekriterier
@@ -69,7 +69,7 @@ def simple_search2_view(request):
     response_message = f"GET request successful with filter {filter_data.values()} but no matching data"
     return Response({"response" : response_message})
 
-# gem søgning
+# save search criteria
 @api_view(['POST'])
 def save_search_view(request):
     request_data = request.data
@@ -92,7 +92,7 @@ def save_search_view(request):
     return Response(response_data)
 
 
-# søgning på gemt filtrering 
+# search using saved criteria  
 @api_view(['GET'])
 def search_saved_filters_view(request):
     
@@ -105,13 +105,13 @@ def search_saved_filters_view(request):
     saved_search_object = searchSaved.objects.filter(search_id=search_id).first()
 
     if not saved_search_object:
-        return Response({"response": f"No saved filters found for search ID {search_id}"})
+        return Response({"response": f"No saved criteria found for search ID {search_id}"})
 
     # extract search criteria from the record
     search_criteria = saved_search_object.criteria
 
     if not search_criteria:
-        return Response({"response": "Saved filters for row with ID {search_id} are empty or invalid"})
+        return Response({"response": "Saved criteria for ID {search_id} are empty or invalid"})
     
     properties = Ejendomsdata.searchRandom(search_criteria)
 
