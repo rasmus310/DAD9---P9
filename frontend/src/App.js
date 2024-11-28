@@ -5,9 +5,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import Navbar from "./components/SøgPåGemtID/Navbar";
-import SearchSection from "./components/SøgPåGemtID/SearchSection";
-import test from "./components/SøgPåGemtID/test";
+import Navbar from "./components/Navbar";
 import FilterComponent from "./components/FilterComponent";
 import "./App.css";
 import { Box, Button, Checkbox, Typography, FormControlLabel } from "@mui/material";
@@ -197,11 +195,7 @@ useEffect(() => {
         handleIdSearch={handleIdSearch}
         scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
         />
-        <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
-        <Routes>
-          <Route path="/search-id" element={<SearchSection />} />
-          <Route path="/test" element={<test />} />
-        </Routes>
+<h1 style={{ textAlign: "center", paddingTop: 120, fontWeight: "bolder", fontSize: 50, color: "#0f1e82", fontFamily: "Arial Black, sans-serif" }}>Hvad leder du efter?</h1>        <SearchFilter activeFilters={activeFilters} onFilterToggle={handleFilterToggle} /> {/* Pass state and handler */}
 
         <div
         // Styling til visning af filter-komponenter
@@ -323,7 +317,7 @@ useEffect(() => {
         <div>
           {saved_searchID && (
             <div>
-              søgekriterier gemt med ID: {saved_searchID}
+              Gemt med søgenummer: {saved_searchID}
             </div>
             
           )}
