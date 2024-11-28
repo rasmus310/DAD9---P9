@@ -50,13 +50,14 @@ class Ejendomsdata(models.Model):
         # create filtering criteria based on filter_data
         q, fields = cls.createFilterCriteria(filter_data)
 
+        # return empty array if q object is empty (to avoid querying the database for all rows)
+        if not q:
+            return []
+
         # query the database for properties matching the criteria 
         # .value(*fields) specifies the returned fileds. 
         # [:limit] limits the number of returned rows            
         properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
-
-        if not q:
-            return []
 
         return properties
     
@@ -65,12 +66,13 @@ class Ejendomsdata(models.Model):
     def searchRandom(cls, filter_data, limit=10): 
         # create filtering criteria based on filter_data
         q, fields = cls.createFilterCriteria(filter_data)
+
+        # return empty array if q object is empty (to avoid querying the database for all rows)
+        if not q:
+            return []
         
         # query the database for properties matching the criteria and randomize the result using order_by(?)
         properties = Ejendomsdata.objects.filter(q).values(*fields).order_by('?')[:limit]
-
-        if not q:
-            return []
 
         return properties
     
