@@ -44,7 +44,7 @@ def postnummer_options(request):
 def get_search_criteria(request):
     return JsonResponse(search_criteria, safe=False)
 
-# simple_search2
+# simple search
 @api_view(['GET'])
 def simple_search2_view(request):
     # get search data from request(QueryDict) and save as dict.
