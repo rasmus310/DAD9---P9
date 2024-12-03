@@ -207,7 +207,7 @@ function App() {
           style={{
             textAlign: "center",
             paddingTop: 120,
-            fontWeight: "bolder",
+            fontWeight: "ExtraBold",
             fontSize: 60,
             color: "#0f1e82",
             fontFamily: "Arial Black, sans-serif",
@@ -262,9 +262,9 @@ function App() {
             }}
             onClick={deactivateAllFilters}
           >
-            <DeleteIcon sx={{ fontSize: "50px" }} />
-            Ryd filtre
-          </IconButton>
+            <DeleteIcon sx={{ fontSize: "20px" }} />
+            <span style={{ fontSize: "14px" }}>Ryd alle filtre</span>
+            </IconButton>
         </div>
         <div
           style={{
