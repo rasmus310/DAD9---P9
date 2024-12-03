@@ -264,7 +264,7 @@ function App() {
             onClick={deactivateAllFilters}
           >
             <DeleteIcon sx={{ fontSize: "25px" }} />
-            Ryd filtre
+            Fjern alle filtre
           </IconButton>
           )}
         </div>
