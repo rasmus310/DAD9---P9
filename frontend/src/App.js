@@ -253,6 +253,7 @@ function App() {
           ))}
           {/*Skralde spands ikon for at lave rydde filtrene fra siden 
           lavede den for sjov så slet hvis ikke vil have den*/}
+          { activeFilters.length > 0 && (
           <IconButton
             aria-label="delete"
             size="small"
@@ -262,9 +263,10 @@ function App() {
             }}
             onClick={deactivateAllFilters}
           >
-            <DeleteIcon sx={{ fontSize: "50px" }} />
+            <DeleteIcon sx={{ fontSize: "25px" }} />
             Ryd filtre
           </IconButton>
+          )}
         </div>
         <div
           style={{
