@@ -264,8 +264,7 @@ function App() {
               onClick={deactivateAllFilters}
             >
               <DeleteIcon sx={{ fontSize: "25px" }} />
-              Ryd søgekriterier
-            </IconButton>
+              <span style={{ fontSize: "16px", padding: "5px" }}> Ryd søgekriterier</span>            </IconButton>
           )}
         </div>
         <div
