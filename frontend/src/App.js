@@ -264,7 +264,7 @@ function App() {
             onClick={deactivateAllFilters}
           >
             <DeleteIcon sx={{ fontSize: "25px" }} />
-            Fjern alle filtre
+            Fjern alle søgekriterier
           </IconButton>
           )}
         </div>
