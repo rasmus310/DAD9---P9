@@ -260,6 +260,8 @@ function App() {
               sx={{
                 color: "#0f1e82",
                 position: "flex",
+                padding: "5px", // Add padding to ensure clickable area around content
+                borderRadius: "5px", // Make it rounded
               }}
               onClick={deactivateAllFilters}
             >
