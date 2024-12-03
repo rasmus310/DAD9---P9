@@ -253,19 +253,19 @@ function App() {
           ))}
           {/*Skralde spands ikon for at lave rydde filtrene fra siden 
           lavede den for sjov så slet hvis ikke vil have den*/}
-          { activeFilters.length > 0 && (
-          <IconButton
-            aria-label="delete"
-            size="small"
-            sx={{
-              color: "#000",
-              position: "flex",
-            }}
-            onClick={deactivateAllFilters}
-          >
-            <DeleteIcon sx={{ fontSize: "25px" }} />
-            <span style={{ fontSize: "16px", padding: "5px" }}> Ryd søgekriterier</span>
-          </IconButton>
+          {activeFilters.length > 0 && (
+            <IconButton
+              aria-label="delete"
+              size="small"
+              sx={{
+                color: "#0f1e82",
+                position: "flex",
+              }}
+              onClick={deactivateAllFilters}
+            >
+              <DeleteIcon sx={{ fontSize: "25px" }} />
+              Ryd søgekriterier
+            </IconButton>
           )}
         </div>
         <div
