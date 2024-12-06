@@ -41,5 +41,11 @@ search_criteria = [
         'valueKey':'lokation__postnummer',
         'displayKey':'postnummer',
     },
+    {
+        'optionsEndpoint':'/api/postdistrikt-options/',
+        'label':'Postdistrikt',
+        'valueKey':'lokation__postdistrikt',
+        'displayKey':'postdistrikt',
+    },
 ]
 

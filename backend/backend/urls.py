@@ -18,8 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from nykredit import views
-from nykredit.views import simple_search2_view, ejendomstype_options, landekode_options, save_search_view, postnummer_options, search_saved_filters_view, forurenet_options, fk_brand_options, risikovurdering_options, by_options, get_search_criteria
-
+#from nykredit.views import simple_search2_view, ejendomstype_options, landekode_options, save_search_view, postnummer_options, search_saved_filters_view, forurenet_options, fk_brand_options, risikovurdering_options, by_options, get_search_criteria
+from nykredit.views import *
 router = routers.DefaultRouter()
 #router.register(r'nykredit', views.simple_search_view, 'nykredit')
 
@@ -37,4 +37,5 @@ urlpatterns = [
     path('api/risikovurdering-options/', risikovurdering_options, name='risikovurdering_options'),
     path('api/by-options/', by_options, name='by_options'),
     path('api/postnummer-options/', postnummer_options, name='postnummer_options'),
+    path('api/postdistrikt-options/', postdistrikt_options, name='postdistrikt_options'),
 ]

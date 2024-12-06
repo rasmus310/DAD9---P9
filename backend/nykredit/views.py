@@ -32,7 +32,11 @@ def risikovurdering_options(request):
     return JsonResponse(list(options), safe=False)
 
 def by_options(request):
-    options = Lokation.objects.values('lokation_id', 'by_navn').distinct()
+    options = Lokation.objects.values('by_navn').distinct()
+    return JsonResponse(list(options), safe=False)
+
+def postdistrikt_options(request):
+    options = Lokation.objects.values('postdistrikt').distinct()
     return JsonResponse(list(options), safe=False)
 
 def postnummer_options(request):
@@ -56,9 +60,10 @@ def simple_search2_view(request):
     # limit = antal ønskede resultater sendt frontend som key:value pair med key "antal_resultater" 
     limit = int(filter_data.pop('antal_resultater', 50))
     randomize = filter_data.pop('randomize', 'false').lower() == 'true'
+    allColumns = filter_data.pop('allColumns', 'false').lower() == 'true'
 
     if randomize: 
-        properties = Ejendomsdata.searchRandom(filter_data, limit)
+        properties = Ejendomsdata.searchRandom(filter_data, allColumns, limit)
     else:
         properties = Ejendomsdata.search(filter_data, limit)
 

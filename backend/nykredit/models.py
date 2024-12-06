@@ -63,7 +63,7 @@ class Ejendomsdata(models.Model):
     
     # classmethod to filter and retrieve a random selection of properties based on the given criteria 
     @classmethod
-    def searchRandom(cls, filter_data, limit=10): 
+    def searchRandom(cls, filter_data, allColumns, limit=10): 
         # create filtering criteria based on filter_data
         q, fields = cls.createFilterCriteria(filter_data)
 
@@ -72,7 +72,11 @@ class Ejendomsdata(models.Model):
             return []
         
         # query the database for properties matching the criteria and randomize the result using order_by(?)
-        properties = Ejendomsdata.objects.filter(q).values(*fields).order_by('?')[:limit]
+        if allColumns:
+            properties = Ejendomsdata.objects.filter(q).values().order_by('?')[:limit]
+        else:
+            properties = Ejendomsdata.objects.filter(q).values(*fields).order_by('?')[:limit]
+
 
         return properties
     

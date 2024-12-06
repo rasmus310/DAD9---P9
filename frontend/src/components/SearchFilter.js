@@ -10,6 +10,7 @@ function SearchFilter({ activeFilters, onFilterToggle }) {
     { label: "Risikovurdering", value: "risikovurdering" },
     { label: "By", value: "lokation__by_navn" },
     { label: "Postnummer", value: "lokation__postnummer" },
+    { label: "Postdistrikt", value: "lokation__postdistrikt" },
   ];
 
   const [inputValue, setInputValue] = useState("");

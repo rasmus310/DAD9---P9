@@ -33,6 +33,7 @@ function App() {
   //const resultForTable = response; BLIVER IKKE BRUGT?
   const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
   const [randomize, setRandomize] = useState(true);
+  const [allColumns, setAllColumns] = useState(true);
   const sectionOneRef = useRef(null);
   const [isTableVisible, setTableVisible] = useState(false);
 
@@ -55,6 +56,10 @@ function App() {
 
   const handleRandomizeToggle = () => {
     setRandomize(!randomize);
+  };
+
+  const handleAllColumnsToggle = () => {
+    setAllColumns(!allColumns);
   };
 
   async function fetchSearchCriteriaConfigurations() {
@@ -84,6 +89,7 @@ function App() {
           ...selected_criteria,
           // add the new key: value pair (bool randomized is converted to string)
           randomize: randomize.toString(),
+          allColumns: allColumns.toString(),
         },
       });
       console.log("Response", response.data);
@@ -315,6 +321,17 @@ function App() {
               />
             }
             label="Tilfældige resultater"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={allColumns}
+                onChange={handleAllColumnsToggle}
+                name="randomize"
+                color="primary"
+              />
+            }
+            label="Vis ALT data"
           />
         </div>
         <div
