@@ -46,7 +46,7 @@ class Ejendomsdata(models.Model):
     
     # classmethod to filter and retrieve properties based on the given criteria 
     @classmethod
-    def search(cls, filter_data, limit=50): 
+    def search(cls, filter_data, allColumns, limit=50): 
         # create filtering criteria based on filter_data
         q, fields = cls.createFilterCriteria(filter_data)
 
@@ -56,8 +56,11 @@ class Ejendomsdata(models.Model):
 
         # query the database for properties matching the criteria 
         # .value(*fields) specifies the returned fileds. 
-        # [:limit] limits the number of returned rows            
-        properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
+        # [:limit] limits the number of returned rows
+        if allColumns:            
+            properties = Ejendomsdata.objects.filter(q).values()[:limit]
+        else:
+            properties = Ejendomsdata.objects.filter(q).values(*fields)[:limit]
 
         return properties
     

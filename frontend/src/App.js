@@ -33,7 +33,7 @@ function App() {
   //const resultForTable = response; BLIVER IKKE BRUGT?
   const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
   const [randomize, setRandomize] = useState(true);
-  const [allColumns, setAllColumns] = useState(true);
+  const [allColumns, setAllColumns] = useState(false);
   const sectionOneRef = useRef(null);
   const [isTableVisible, setTableVisible] = useState(false);
 

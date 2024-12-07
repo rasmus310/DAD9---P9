@@ -65,7 +65,7 @@ def simple_search2_view(request):
     if randomize: 
         properties = Ejendomsdata.searchRandom(filter_data, allColumns, limit)
     else:
-        properties = Ejendomsdata.search(filter_data, limit)
+        properties = Ejendomsdata.search(filter_data, allColumns, limit)
 
     if properties:
         return Response({"response" : properties})
@@ -118,7 +118,8 @@ def search_saved_filters_view(request):
     if not search_criteria:
         return Response({"response": "Saved criteria for ID {search_id} are empty or invalid"})
     
-    properties = Ejendomsdata.searchRandom(search_criteria)
+    # pass allColumns argument as false to searchRandom 
+    properties = Ejendomsdata.searchRandom(search_criteria, False)
 
     if properties:
         return Response({"response" : properties, "search_criteria" : search_criteria})
