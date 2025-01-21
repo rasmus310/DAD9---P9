@@ -6,7 +6,6 @@ from .models import Ejendomsdata, Ejendomstype, Landekode, Lokation, searchSaved
 import random
 from django.db.models import Q
 from django.http import JsonResponse
-from .fieldmapping import search_criteria_mapping, direct_search_criteria
 from .search_criteria_configurations import search_criteria
 
 # Create your views here.
