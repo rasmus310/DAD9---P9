@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Autocomplete, TextField, Box, Typography } from "@mui/material";
 
+// Her viser/skuler vi filtre based på onFilterToggle
 function SearchFilter({ activeFilters, onFilterToggle }) {
   const options = [
     { label: "Ejendomstype", value: "ejendomstype_kode__ejendomstype" },

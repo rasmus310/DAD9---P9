@@ -175,6 +175,7 @@ function App() {
     setSearchID(event.target.value);
   }
 
+  // Funktion til at håndtere filter-tilstand (vist/skjult)
   const handleFilterToggle = (filter) => {
     setActiveFilters((prevActiveFilters) =>
       prevActiveFilters.includes(filter)
@@ -332,28 +333,6 @@ function App() {
             nulstil søgekriterier
           </Button>
           <Button onClick={saveSearchFilters}>Gem søgekriterier</Button>
-          {/* <TextField
-            type="text"
-            variant="outlined"
-            placeholder="Search ID"
-            onChange={handleIdselect}
-            value={searchID || ""}
-          />
-          <Button 
-          variant="contained"
-          sx={{
-            height: '56px', // Match the default height of TextField
-            padding: '0 16px', // Optional: Ensure padding matches
-            paddingInline: '40px', // Optional: Ensure padding matches
-            backgroundColor: '#0f1e82',
-            color: "white",
-            "&:hover": {
-              backgroundColor: "primary.dark",
-            },
-          }} 
-          onClick={handleIdSearch}>
-            Søg på search ID
-          </Button>*/}
           <div>
             {saved_searchID && <div>Gemt med søgenummer: {saved_searchID}</div>}
           </div>

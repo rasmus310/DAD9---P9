@@ -1,10 +1,6 @@
-from django.shortcuts import render
-from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Ejendomsdata, Ejendomstype, Landekode, Lokation, searchSaved
-import random
-from django.db.models import Q
 from django.http import JsonResponse
 from .search_criteria_configurations import search_criteria
 
