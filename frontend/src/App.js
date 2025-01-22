@@ -238,7 +238,8 @@ function App() {
             width: "60%",
           }}
         >
-          {/*Itererer over search_criteria_configuration og laver et FilterComponent for hvert element*/}
+          {/*Itererer over search_criteria_configuration og laver et FilterComponent for hvert element.
+          FilterComponent hentes fra FilterComponent.js*/}
           {search_criteria_configuration.map((criteria) => (
             <FilterComponent
               key={criteria.valueKey}

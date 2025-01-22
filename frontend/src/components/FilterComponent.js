@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Autocomplete, TextField, Typography, Box, Button } from "@mui/material"; //https://mui.com/material-ui/react-autocomplete/
+import { Autocomplete, TextField, Box } from "@mui/material"; //https://mui.com/material-ui/react-autocomplete/
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 
