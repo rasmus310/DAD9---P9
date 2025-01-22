@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Autocomplete, TextField, Box } from "@mui/material";
 
 // Her viser/skuler vi filtre based på onFilterToggle
+// SearchFilter er en react komponent, der tager to props: activeFilters og onFilterToggle
 function SearchFilter({ activeFilters, onFilterToggle }) {
   const options = [
+    // "options" er en liste over objekter, hvor hvert objekt repræsenterer en filtreringsmulighed
     { label: "Ejendomstype", value: "ejendomstype_kode__ejendomstype" },
     { label: "Landekode", value: "land__land_navn" },
     { label: "Forurenet", value: "forurenet" },
@@ -13,12 +15,15 @@ function SearchFilter({ activeFilters, onFilterToggle }) {
     { label: "Postnummer", value: "lokation__postnummer" },
   ];
 
+  // "inputValue" holder styr på den aktuelle værdi i UI'ens tekstfelt
   const [inputValue, setInputValue] = useState("");
+  // "selectedValue" holder styr på den aktuelle valgte værdi i UI'ens dropdown
   const [selectedValue, setSelectedValue] = useState(null);
 
-  // Filter options based on activeFilters
+  // Hold styr på de filtreringsmuligheder, der ikke er aktive (som kan vælges i dropdown)
   const filteredOptions = options.filter(option => !activeFilters.includes(option.value));
 
+  // Frontend stuff for søgefilteret
   return (
     <Box p={8}>
       <Autocomplete

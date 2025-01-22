@@ -1,6 +1,6 @@
 // App.js
 import React, { useEffect, useState, useRef } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import FilterComponent from "./components/FilterComponent";
 import "./App.css";
@@ -8,18 +8,14 @@ import {
   Box,
   Button,
   Checkbox,
-  Typography,
   FormControlLabel,
   IconButton,
 } from "@mui/material";
 import axios from "axios";
-import Postnummer from "./components/search_components/postnummer";
 import Antal_resultater from "./components/search_components/antal_resultater";
 import ResultTable from "./components/ResultTable";
 import SearchFilter from "./components/SearchFilter";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import Logo from "./components/Logo";
 
 function App() {
   const [filters, setFilters] = useState({
@@ -27,7 +23,8 @@ function App() {
   });
   const [response, setResponse] = useState();
   const [selected_criteria, setCriteria] = useState({});
-  const [search_criteria_configuration, setConfiguration] = useState([]);
+  // Her henter vi data fra backenden
+  const [search_criteria_configuration, setConfiguration] = useState([]); 
   const [saved_searchID, setSavedSearch] = useState(null);
   const [searchID, setSearchID] = useState();
   //const resultForTable = response; BLIVER IKKE BRUGT?
@@ -36,10 +33,12 @@ function App() {
   const sectionOneRef = useRef(null);
   const [isTableVisible, setTableVisible] = useState(false);
 
+  // Funlktion til at auto-scrolle til en specifik sektion
   const scrollToSection = (sectionRef) => {
     sectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Auto-scroll til table/tabellen når den er synlig
   useEffect(() => {
     if (isTableVisible) {
       const scrollTimeout = setTimeout(() => {
@@ -49,6 +48,7 @@ function App() {
     }
   }, [isTableVisible]);
 
+  // Kaldes når siden loader
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
   }, []);
@@ -57,6 +57,7 @@ function App() {
     setRandomize(!randomize);
   };
 
+  // Funktion til at hente konfigurationsfilen fra backenden
   async function fetchSearchCriteriaConfigurations() {
     try {
       const response = await axios.get("get_search_criteria/");
@@ -146,6 +147,7 @@ function App() {
     }
   }
 
+  // HVORDAN VIRKER DETTE?
   async function handleIdSearch() {
     // only make request if searchID has a value
     if (!searchID) {
@@ -176,6 +178,7 @@ function App() {
   }
 
   // Funktion til at håndtere filter-tilstand (vist/skjult)
+  // Opdaterer ActiveFilters state i SearchFilter komponenten
   const handleFilterToggle = (filter) => {
     setActiveFilters((prevActiveFilters) =>
       prevActiveFilters.includes(filter)
@@ -184,18 +187,21 @@ function App() {
     );
   };
 
+  // Funktion til at deaktivere et filter
   const deactivateFilter = (filter) => {
     setActiveFilters((prevActiveFilters) =>
       prevActiveFilters.filter((f) => f !== filter)
     );
   };
 
+  // Funktion til at deaktivere alle filtre
   function deactivateAllFilters() {
     setActiveFilters([]);
     resetCriteria();
   }
 
   return (
+    // Router bruges til at håndtere routing (URL's) i React
     <Router>
       <div className="App">
         <Navbar
@@ -232,6 +238,7 @@ function App() {
             width: "60%",
           }}
         >
+          {/*Itererer over search_criteria_configuration og laver et FilterComponent for hvert element*/}
           {search_criteria_configuration.map((criteria) => (
             <FilterComponent
               key={criteria.valueKey}
