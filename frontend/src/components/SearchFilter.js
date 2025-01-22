@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Autocomplete, TextField, Box, Typography } from "@mui/material";
+import { Autocomplete, TextField, Box } from "@mui/material";
 
 // Her viser/skuler vi filtre based på onFilterToggle
 function SearchFilter({ activeFilters, onFilterToggle }) {
