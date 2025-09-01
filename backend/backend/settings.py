@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 import pymysql
 
 pymysql.install_as_MySQLdb()
@@ -81,24 +82,28 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'nykredit',      
-        'USER': 'eberpro',           
-        'PASSWORD': '03yzcweUbvCjMSsSe1Va',       
-        'HOST': 'nykredit.cjkmayqueywc.eu-north-1.rds.amazonaws.com',         
-        'PORT': '3306',                    
-
+# Default to SQLite for local development. Set DJANGO_DB=mysql to enable MySQL using env vars.
+if os.getenv('DJANGO_DB', 'sqlite').lower() == 'mysql':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.getenv('MYSQL_DATABASE', 'nykredit'),
+            'USER': os.getenv('MYSQL_USER', 'eberpro'),
+            'PASSWORD': os.getenv('MYSQL_PASSWORD', ''),
+            'HOST': os.getenv('MYSQL_HOST', 'localhost'),
+            'PORT': os.getenv('MYSQL_PORT', '3306'),
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation

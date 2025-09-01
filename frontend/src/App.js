@@ -19,36 +19,36 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 function App() {
   const [filters, setFilters] = useState({
-    // Add more filters as needed
+    // Lokal UI-state for simple filterfelter (bruges ved behov)
   });
   const [response, setResponse] = useState();
   const [selected_criteria, setCriteria] = useState({});
-  // Her henter vi data fra backenden
+  // State til konfiguration af søgekriterier, hentes fra backend ved load
   const [search_criteria_configuration, setConfiguration] = useState([]); 
   const [saved_searchID, setSavedSearch] = useState(null);
   const [searchID, setSearchID] = useState();
-  //const resultForTable = response; BLIVER IKKE BRUGT?
-  const [activeFilters, setActiveFilters] = useState([]); // State to track active filters
+  // (resultForTable var tiltænkt men bruges ikke – kan fjernes)
+  const [activeFilters, setActiveFilters] = useState([]); // State til at holde styr på hvilke filtre der er aktive
   const [randomize, setRandomize] = useState(true);
   const sectionOneRef = useRef(null);
   const [isTableVisible, setTableVisible] = useState(false);
 
-  // Funlktion til at auto-scrolle til en specifik sektion
+  // Funktion der automatisk scroller til en given sektion på siden
   const scrollToSection = (sectionRef) => {
     sectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Auto-scroll til table/tabellen når den er synlig
+  // Når tabellen bliver synlig, scroll automatisk ned til den
   useEffect(() => {
     if (isTableVisible) {
       const scrollTimeout = setTimeout(() => {
         scrollToSection(sectionOneRef);
-      }, 100); // Wait 100ms to ensure rendering is complete
-      return () => clearTimeout(scrollTimeout); // Cleanup timeout
+      }, 100); // Vent 100ms for at sikre at DOM er renderet
+      return () => clearTimeout(scrollTimeout); // Ryd timeout, hvis komponenten unmountes eller synlighed ændres hurtigt
     }
   }, [isTableVisible]);
 
-  // Kaldes når siden loader
+  // Hent søgekriterie-konfiguration fra backend når komponenten loader første gang
   useEffect(() => {
     fetchSearchCriteriaConfigurations();
   }, []);
@@ -57,7 +57,7 @@ function App() {
     setRandomize(!randomize);
   };
 
-  // Funktion til at hente konfigurationsfilen fra backenden
+  // Henter søgekriterie-konfiguration fra backend API og opdaterer state
   async function fetchSearchCriteriaConfigurations() {
     try {
       const response = await axios.get("get_search_criteria/");
@@ -81,18 +81,18 @@ function App() {
     try {
       const response = await axios.get("search/", {
         params: {
-          // spread operator takes all key-value pairs in selected_criteria and includes them in the params object
+          // Læg alle valgte søgekriterier ind i params-objektet
           ...selected_criteria,
-          // add the new key: value pair (bool randomized is converted to string)
+          // Tilføj randomize som streng (backend forventer string)
           randomize: randomize.toString(),
         },
       });
       console.log("Response", response.data);
       setResponse(response.data);
-      setTableVisible(true); // Show table after receiving data
+      setTableVisible(true); // Vis tabellen når der er modtaget data
     } catch {
       setResponse({
-        //OBS lav om. Overvej hvordan resulttable læser data, og sæt response til noget der giver mening ud fra det
+        // Fallback-fejltekst hvis anmodningen fejler (ResultTable viser dette som ingen resultater)
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler",
       });
     }
@@ -132,7 +132,7 @@ function App() {
 
   async function saveSearchFilters() {
     const criterias_to_save = selected_criteria;
-    // number of results is not saved
+    // Antal resultater gemmes ikke som en del af søgekriterierne
     delete criterias_to_save.antal_resultater;
     try {
       const response = await axios.post("/save_search/", {
@@ -147,9 +147,9 @@ function App() {
     }
   }
 
-  // HVORDAN VIRKER DETTE?
+  // Henter tidligere gemt søgning baseret på søge-ID og opdaterer state med resultater og kriterier
   async function handleIdSearch() {
-    // only make request if searchID has a value
+    // Udfør kun kald hvis der er angivet et søge-ID
     if (!searchID) {
       return;
     }
@@ -160,14 +160,14 @@ function App() {
       });
 
       setResponse(response.data);
-      const search_criteria = response.data.search_criteria; // extract search criteria
-      setCriteria(search_criteria || {}); // set criteria usestate
-      const newActiveFilters = Object.keys(search_criteria); // extract keys from search criteria used to set activeFilters usestate
-      setActiveFilters(newActiveFilters); // set activeFilters
-      setTableVisible(true); // Show table after receiving data
+      const search_criteria = response.data.search_criteria; // Udtræk søgekriterier fra svaret
+      setCriteria(search_criteria || {}); // Opdater state med søgekriterierne
+      const newActiveFilters = Object.keys(search_criteria); // Find hvilke filtre der er brugt
+      setActiveFilters(newActiveFilters); // Opdater aktive filtre i UI
+      setTableVisible(true); // Vis tabellen når der er modtaget data
     } catch {
       setResponse({
-        //OBS lav om. Overvej hvordan resulttable læser data, og sæt response til noget der giver mening ud fra det
+        // Fallback-fejltekst hvis anmodningen fejler (ResultTable viser dette som ingen resultater)
         antal_matches: "request fejlet.. tag dig sammen amatør-udvikler!!",
       });
     }
@@ -177,8 +177,7 @@ function App() {
     setSearchID(event.target.value);
   }
 
-  // Funktion til at håndtere filter-tilstand (vist/skjult)
-  // Opdaterer ActiveFilters state i SearchFilter komponenten
+  // Tilføjer eller fjerner et filter fra listen over aktive filtre, bruges af SearchFilter
   const handleFilterToggle = (filter) => {
     setActiveFilters((prevActiveFilters) =>
       prevActiveFilters.includes(filter)
@@ -187,28 +186,28 @@ function App() {
     );
   };
 
-  // Funktion til at deaktivere et filter
+  // Fjerner et filter fra listen over aktive filtre
   const deactivateFilter = (filter) => {
     setActiveFilters((prevActiveFilters) =>
       prevActiveFilters.filter((f) => f !== filter)
     );
   };
 
-  // Funktion til at deaktivere alle filtre
+  // Nulstiller alle aktive filtre og søgekriterier
   function deactivateAllFilters() {
     setActiveFilters([]);
     resetCriteria();
   }
 
   return (
-    // Router bruges til at håndtere routing (URL's) i React
+    // Router bruges til at håndtere navigation/routing i React-appen
     <Router>
       <div className="App">
         <Navbar
           searchID={searchID}
           handleIdselect={handleIdselect}
           handleIdSearch={handleIdSearch}
-          scrollToSection={() => scrollToSection(sectionOneRef)} // Pass the scrollToSection function
+          scrollToSection={() => scrollToSection(sectionOneRef)} // Sender scrollToSection som prop, så Navbar kan scrolle til tabellen
         />
         <h1
           style={{
@@ -226,9 +225,9 @@ function App() {
           activeFilters={activeFilters}
           onFilterToggle={handleFilterToggle}
         />{" "}
-        {/* Pass state and handler */}
+        {/* Passer state og handler til underkomponenter */}
         <div
-          // Styling til visning af filter-komponenter
+          // Wrapper med styling for at vise filter-komponenterne pænt centreret
           style={{
             display: "flex",
             justifyContent: "center",
@@ -238,8 +237,7 @@ function App() {
             width: "60%",
           }}
         >
-          {/*Itererer over search_criteria_configuration og laver et FilterComponent for hvert element.
-          FilterComponent hentes fra FilterComponent.js*/}
+          {/* Itererer over konfigurationen og opretter et FilterComponent for hvert søgekriterie */}
           {search_criteria_configuration.map((criteria) => (
             <FilterComponent
               key={criteria.valueKey}
@@ -253,15 +251,14 @@ function App() {
                 handleFilterChange(event);
                 handleSelect(event);
               }}
-              active={activeFilters.includes(criteria.valueKey)} // Pass active state
+              active={activeFilters.includes(criteria.valueKey)} // Marker om filteret er aktivt i UI
               deactivateFilter={() => {
                 deactivateFilter(criteria.valueKey);
                 resetFilter(criteria.valueKey);
-              }} // Pass deactivate function
+              }} // Deaktiver og ryd det specifikke filter
             />
           ))}
-          {/*Skralde spands ikon for at lave rydde filtrene fra siden 
-          lavede den for sjov så slet hvis ikke vil have den*/}
+          {/* Skraldespands-ikon til at nulstille alle aktive filtre */}
           {activeFilters.length > 0 && (
             <IconButton
               aria-label="delete"
@@ -269,8 +266,8 @@ function App() {
               sx={{
                 color: "#0f1e82",
                 position: "flex",
-                padding: "5px", // Add padding to ensure clickable area around content
-                borderRadius: "5px", // Make it rounded
+                padding: "5px", // Gør klikområdet større for bedre brugervenlighed
+                borderRadius: "5px", // Afrundede hjørner for bedre visuel fremtoning
               }}
               onClick={deactivateAllFilters}
             >
@@ -279,6 +276,7 @@ function App() {
           )}
         </div>
         <div
+          // Wrapper med styling for at vise søgeknap og ekstra indstillinger centreret
           style={{
             display: "flex",
             justifyContent: "center",
@@ -296,9 +294,9 @@ function App() {
           <Button
             variant="contained"
             sx={{
-              height: "56px", // Match the default height of TextField
-              padding: "0 16px", // Optional: Ensure padding matches
-              paddingInline: "40px", // Optional: Ensure padding matches
+              height: "56px", // Matcher standardhøjden for TextField
+              padding: "0 16px", // Vandret padding for bedre klikområde
+              paddingInline: "40px", // Ekstra bredde på knappen
               backgroundColor: "#0f1e82",
               color: "white",
               "&:hover": {
@@ -327,6 +325,7 @@ function App() {
           />
         </div>
         <div
+          // Wrapper med styling for at vise knapper og status for gemt søgning centreret
           style={{
             display: "flex",
             justifyContent: "center",
